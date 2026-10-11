@@ -132,7 +132,7 @@ describe('TypographyCraftMenu', () => {
     ])
   })
 
-  it('picks a google font via TokenPicker', () => {
+  it('picks a google font via TokenPicker', async () => {
     const node: SceneNode = {
       id: 't1',
       type: 'SiteText',
@@ -145,8 +145,9 @@ describe('TypographyCraftMenu', () => {
         <TypographyCraftMenu node={node} onOps={onOps} />
       </TokenCatalogProvider>,
     )
-    expect(screen.getByTestId('typo-craft-font-picker')).toBeTruthy()
-    const option = screen.getAllByRole('option').find((el) => /Inter/i.test(el.textContent ?? ''))
+    expect(await screen.findByTestId('typo-craft-font-picker')).toBeTruthy()
+    const options = await screen.findAllByRole('option')
+    const option = options.find((el) => /Inter/i.test(el.textContent ?? ''))
     expect(option).toBeTruthy()
     fireEvent.click(option!)
     expect(onOps).toHaveBeenCalled()

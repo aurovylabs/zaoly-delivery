@@ -79,6 +79,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./test.setup.ts'],
+    // CI runners with the full suite need headroom beyond the 5s default.
+    testTimeout: 15_000,
     ...(publicTree
       ? {
           exclude: [
