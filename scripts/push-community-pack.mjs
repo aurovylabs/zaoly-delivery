@@ -26,7 +26,7 @@ if (!status.trim()) {
 
 const msg =
   process.env.ZAOLY_COMMUNITY_COMMIT_MSG ||
-  'chore: refresh community distribution from internal export'
+  'chore: refresh open-source distribution'
 
 git(['commit', '-m', msg])
 git(['push', 'origin', 'HEAD'])

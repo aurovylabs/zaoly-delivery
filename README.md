@@ -4,11 +4,12 @@
 
 Zaoly is an open-source **enterprise web design** editor: compose responsive pages on a canvas, structure them with a Site Kit and masters, bind brand tokens, and hand off real React — not throwaway mockups.
 
-<p align="center">
-  <img src="docs/images/zaoly-landing-hero.png" alt="Zaoly — from design to real components" width="920" />
-</p>
+Try the hosted product at [zaoly.app](https://zaoly.app), or clone this repo to develop and self-host (AGPL).
 
-Hosted product: [zaoly.app](https://zaoly.app) · This repository is the **community** tree — clone, fork, develop, and self-host **from zero** (AGPL). It is not the internal ops/deploy tree.
+<p align="center">
+  <img src="docs/images/zaoly-editor.png" alt="Zaoly editor — canvas, Site Kit library, and design inspector" width="920" />
+</p>
+<p align="center"><em>Editor — canvas, Site Kit, and inspector</em></p>
 
 ---
 
@@ -112,21 +113,8 @@ Public signup defaults **on** when Postgres is configured (`ZAOLY_PUBLIC_SIGNUP=
 
 ---
 
-## Hosted vs this repo
+## Hosted product
 
-| | [zaoly.app](https://zaoly.app) | This community repo |
-|--|--|--|
-| Audience | Hosted product | Developers & self-hosters |
-| Source | Private product tree | Public developable pack |
-| Ops | Managed deploy, mail, seeds | Bring your own `.env` / Postgres |
-| Docs | Product site + in-app | Specs in `specs/` + this README |
-
----
-
-## What is intentionally missing
-
-- Internal `knowledge/` and team task notes
-- Hosted VPS / Traefik / managed mail deploy scripts
-- Desktop / macOS app trees (web-first community pack)
+Prefer managed hosting? Use [zaoly.app](https://zaoly.app). This repository is the developable source: bring your own `.env`, Postgres, and deploy target. Product contracts live under `specs/`.
 
 Questions or enterprise interest: [hey@zaoly.app](mailto:hey@zaoly.app)

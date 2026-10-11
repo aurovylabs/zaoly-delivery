@@ -16,14 +16,16 @@ Maintain **two surfaces**:
 1. Community export MUST include a buildable web app (`apps/web`, `packages/*`, lockfile, `Dockerfile`).
 2. Community export MUST NOT include `knowledge/`, `tasks/`, `.cursor/`, or hosted-only deploy/mail/Traefik scripts.
 3. Community defaults MUST start clean (self-host / localhost) — no `admin@zaoly.app` bootstrap seeds, no weddy VPS paths, no managed SMTP lock as default.
-4. Community README MUST explain local `npm run dev` and self-host Compose from zero, describe the product and main features, and reference screenshot assets under \`docs/images/\` (sourced from internal \`community/docs/images/\` at export).
+4. Community README MUST explain local `npm run dev` and self-host Compose from zero, describe the product and main features, and use an **editor** screenshot as the primary hero under \`docs/images/\` (sourced from internal \`community/docs/images/\` at export).
 5. Export MUST be reproducible via a script in the internal repo (`npm run export:community`).
+6. Public README and delivery commits MUST present Zaoly as the product (open-source / self-hostable) — MUST NOT frame the tree as a lesser “community-only” edition.
 
 ## MUST NOT
 
 1. Treat Compose-only / image-only packs as the community develop surface.
 2. Publish internal `knowledge/` to the community remote.
 3. Require zaoly.app DNS, weddy Traefik, or `/root/.zaoly-*` secrets to boot the community tree.
+4. Market the public repo in README/commit messages as “only the community version.”
 
 ## MAY
 
