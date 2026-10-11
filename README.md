@@ -1,18 +1,21 @@
 # Zaoly delivery
 
-Operator pack on **GitHub** that **runs the Zaoly web app** without shipping product source (`apps/`, `knowledge/`, `specs/`, …).
+Operator pack: **run** Zaoly without cloning the product source tree.
 
-The app itself is the container image **`ghcr.io/chbrdk/zaoly`**. This repo only holds Compose, env, and ops scripts.
+| You want to… | Go here |
+|--------------|---------|
+| **Develop / fork / change the app** | [chbrdk/zaoly](https://github.com/chbrdk/zaoly) · [CONTRIBUTING.md](https://github.com/chbrdk/zaoly/blob/main/CONTRIBUTING.md) |
+| **Just run an instance** | This repo |
+
+The web app binary is **`ghcr.io/chbrdk/zaoly`**. This repo is Compose + env + `up.sh` only.
 
 | | |
 |--|--|
-| This delivery repo | [chbrdk/zaoly-delivery](https://github.com/chbrdk/zaoly-delivery) |
-| Web app image | `ghcr.io/chbrdk/zaoly:<tag>` |
-| Product source (Cursor) | [chris-bordeck/zaoly](https://cursor.com/codebase/chris-bordeck/zaoly) |
-| AGPL source mirror / CI | [chbrdk/zaoly](https://github.com/chbrdk/zaoly) |
-| Pack SSOT | product `delivery/` → `npm run export:delivery` |
+| Delivery | [chbrdk/zaoly-delivery](https://github.com/chbrdk/zaoly-delivery) |
+| Product (source, public) | [chbrdk/zaoly](https://github.com/chbrdk/zaoly) |
+| Image | `ghcr.io/chbrdk/zaoly:<tag>` |
 
-## Install
+## Install (run)
 
 ```bash
 cp .env.example .env
@@ -23,14 +26,9 @@ docker compose pull
 ./scripts/up.sh
 ```
 
-**One-time (owner):** GHCR package **Public** —  
-https://github.com/users/chbrdk/packages/container/package/zaoly → Package settings → Change visibility → Public.
-
-Until then:
-
-```bash
-echo "$GHCR_TOKEN" | docker login ghcr.io -u YOUR_GITHUB_USER --password-stdin
-```
+**Owner once:** set GHCR package **Public** —  
+https://github.com/users/chbrdk/packages/container/package/zaoly → Package settings → Change visibility → Public  
+(until then: `docker login ghcr.io` with `read:packages`).
 
 App: `http://localhost:3000` (or `ZAOLY_HOST_PORT`). Health: `GET /api/health`.
 
@@ -43,4 +41,4 @@ docker compose up -d
 
 ## Source offer (AGPL)
 
-Corresponding source: [chbrdk/zaoly](https://github.com/chbrdk/zaoly) (same commit/tag as the image when published). Day-to-day development: Cursor Origin product repo.
+Corresponding source: [chbrdk/zaoly](https://github.com/chbrdk/zaoly) (same commit/tag as the image).
