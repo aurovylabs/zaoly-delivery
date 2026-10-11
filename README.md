@@ -5,6 +5,7 @@ Operator pack for running Zaoly **without** the product source tree (`apps/`, `k
 | | |
 |--|--|
 | Product (AGPL source) | [chbrdk/zaoly](https://github.com/chbrdk/zaoly) |
+| This delivery repo | [chris-bordeck/zaoly-delivery](https://cursor.com/codebase/chris-bordeck/zaoly-delivery) |
 | Pack SSOT in product repo | `delivery/` (export via `npm run export:delivery`) |
 | Ops matrix | Product knowledge: `zaoly-hosted-vs-self-host.md` · `self-host.md` · `zaoly-delivery-repo.md` |
 
