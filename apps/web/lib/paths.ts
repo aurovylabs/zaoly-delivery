@@ -29,6 +29,8 @@ export const paths = {
       kitAssembly: '/landing/kit-assembly.svg',
       tokenStudioApp: '/landing/token-studio-app.jpg',
       kitPlaygroundApp: '/landing/kit-playground-app.jpg',
+      /** Editor Compare: desktop + tablet + mobile artboards side by side. */
+      editorBreakpointsApp: '/landing/editor-breakpoints-app.jpg',
     },
   },
   faq: {

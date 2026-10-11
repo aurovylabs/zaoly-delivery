@@ -36,13 +36,18 @@ Print / magazine PDF production and suite federation are intentionally out of sc
 | Area | What you get |
 |------|----------------|
 | **Editor** | Immersive `/editor` — undo/redo, pan/zoom, selection, inspect, smart HUD, autosave |
-| **Responsive** | Digital artboards · breakpoint cascade · side-by-side compare |
+| **Responsive** | Digital artboards · breakpoint cascade · **multi-breakpoint compare** (desktop / tablet / mobile) |
 | **System** | Scene-local masters · Site Kit palette · variants · starter landing sections |
 | **Tokens** | Local pack at `/tokens` · bind paths on components · CSS / JSON export |
 | **Kit** | Playground at `/kit` · catalog atoms · patterns when a Collection is bound |
 | **Handoff** | Surface PNG/PDF · HTML preview · code export · React module orientation |
 | **Collab** | Comments · presence · named versions · scene members / client share |
 | **Ops (self-host)** | Local users · public signup · platform admin · SMTP · audit · MFA / passkeys |
+
+<p align="center">
+  <img src="docs/images/zaoly-editor-breakpoints.jpg" alt="Zaoly editor multi-breakpoint compare — desktop, tablet, and mobile artboards" width="920" />
+</p>
+<p align="center"><em>Multi-breakpoint — desktop, tablet, and mobile side by side</em></p>
 
 <p align="center">
   <img src="docs/images/token-studio.jpg" alt="Zaoly Token Studio with sample brand tokens" width="860" />

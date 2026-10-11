@@ -243,7 +243,7 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
           <div className="zl-product-view__intro">
             <Index>{t('EINBLICK IN ZAOLY', 'INSIDE ZAOLY')}</Index>
             <h2 id="zl-product-view-title">{locale === 'de' ? <>Das System.<br /><em>In der Anwendung.</em></> : <>The system.<br /><em>At work.</em></>}</h2>
-            <p>{t('Die Ansichten zeigen Zaoly mit Demodaten: ein lokales Token-Pack und das Kit Playground, in dem Komponenten als Code und Live Preview nebeneinander stehen.', 'These views show Zaoly with sample data: a local token pack and the Kit Playground, where components, code, and live preview sit side by side.')}</p>
+            <p>{t('Die Ansichten zeigen Zaoly mit Demodaten: Token Studio, Kit Playground und den Editor mit Desktop-, Tablet- und Mobile-Artboards nebeneinander.', 'These views show Zaoly with sample data: Token Studio, Kit Playground, and the editor with desktop, tablet, and mobile artboards side by side.')}</p>
           </div>
           <figure className="zl-product-view__figure zl-product-view__figure--tokens">
             <div className="zl-product-view__image zl-product-view__image--tokens">
@@ -258,6 +258,13 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
             </div>
             <figcaption><strong>Zaoly Kit Playground</strong><span>{t('Echte App-Ansicht · Demodaten', 'Actual app view · sample data')}</span></figcaption>
             <p className="zl-product-view__detail">{t('Kit-Atome, TSX und Live Preview stehen nebeneinander. Die technische Struktur bleibt schon beim Gestalten sichtbar.', 'Kit atoms, TSX, and live preview sit side by side, so the technical structure stays visible while you design.')}</p>
+          </figure>
+          <figure className="zl-product-view__figure zl-product-view__figure--breakpoints">
+            <div className="zl-product-view__image zl-product-view__image--breakpoints">
+              <img src={paths.landing.assets.editorBreakpointsApp} width="1024" height="651" loading="lazy" alt={t('Echter Zaoly Editor mit Desktop-, Tablet- und Mobile-Artboards derselben Seite nebeneinander', 'Zaoly editor showing the same page on desktop, tablet, and mobile artboards side by side')} />
+            </div>
+            <figcaption><strong>{t('Multi-Breakpoint', 'Multi-breakpoint')}</strong><span>{t('Echte App-Ansicht · Demodaten', 'Actual app view · sample data')}</span></figcaption>
+            <p className="zl-product-view__detail">{t('Eine Composition, drei Breiten: Desktop, Tablet und Mobile gleichzeitig auf dem Canvas — für bewusstes Responsive-Design.', 'One composition, three widths: desktop, tablet, and mobile together on the canvas for intentional responsive design.')}</p>
           </figure>
         </div>
       </section>
@@ -279,10 +286,28 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
           <div className="zl-breakpoints__intro">
             <Index>{t('BREAKPOINTS IM EDITOR', 'BREAKPOINTS IN THE EDITOR')}</Index>
             <h2 id="zl-breakpoints-title">{locale === 'de' ? <>Eine Seite.<br /><em>Jeder Bildschirm.</em></> : <>One page.<br /><em>Every screen.</em></>}</h2>
-            <p>{t('Wechsle im Editor zwischen Desktop und Mobile. Gestalte die Anordnung für beide Breiten bewusst, damit deine Seite auch auf kleinem Raum ihre Klarheit behält.', 'Switch between desktop and mobile in the editor. Shape the layout for both widths so your page stays clear, even on a small screen.')}</p>
+            <p>{t('Öffne Desktop, Tablet und Mobile nebeneinander auf dem Canvas. Gestalte jede Breite bewusst — ohne automatische Layout-Generierung, mit voller Kontrolle über Anordnung und Hierarchie.', 'Open desktop, tablet, and mobile side by side on the canvas. Shape each width with intent — no automatic layout generation, full control over arrangement and hierarchy.')}</p>
           </div>
+          <figure className="zl-breakpoints__figure">
+            <div className="zl-breakpoints__image">
+              <img
+                src={paths.landing.assets.editorBreakpointsApp}
+                width="1024"
+                height="651"
+                loading="lazy"
+                alt={t(
+                  'Echter Zaoly Editor: dieselbe Landingpage als Desktop-, Tablet- und Mobile-Artboard nebeneinander',
+                  'Zaoly editor: the same landing page as desktop, tablet, and mobile artboards side by side',
+                )}
+              />
+            </div>
+            <figcaption>
+              <strong>{t('Multi-Breakpoint Compare', 'Multi-breakpoint compare')}</strong>
+              <span>{t('Echte App-Ansicht · Demodaten', 'Actual app view · sample data')}</span>
+            </figcaption>
+          </figure>
           <BreakpointLoop locale={locale} />
-          <p className="zl-sequence-note">{t('Illustration zweier gestalteter Breakpoint-Ansichten · 1440 / 390 px', 'Illustration of two designed breakpoint views · 1440 / 390 px')}</p>
+          <p className="zl-sequence-note">{t('Darüber: echte Editor-Aufnahme · darunter Illustration einzelner Breakpoint-Zustände', 'Above: real editor capture · below: illustration of individual breakpoint states')}</p>
         </div>
       </section>
 

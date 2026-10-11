@@ -194,3 +194,14 @@ Die bisherige dreizeilige Workflow-Liste wird durch eine zusammenhängende, gro�
 - Ein dezenter Loop betont nacheinander die drei Zustände und die Verbindung. Die Inhalte selbst bleiben durchgehend sichtbar; es gibt keine Layoutverschiebung. Bei `prefers-reduced-motion: reduce` ist der vollständige Weg sofort als Standbild erkennbar.
 - Auf kleinen Displays stehen die Szenen untereinander und bleiben als eigenständige, gut lesbare Ausschnitte sichtbar. Der Abschnitt bleibt über den zentralen Workflow-Anker erreichbar.
 - UI-Smoke prüft drei Visualisierungen, die korrekte Reihenfolge, den Tokenpfad und React-Handoff. Specs-Inventar, Kit-Contract und Build werden ausgeführt.
+
+## Produkteinblick V15 — Multi-Breakpoint Editor (echte App-Aufnahme)
+
+Die Breakpoint-Sektion und der Produkt-Einblick zeigen eine **echte** Editor-Aufnahme mit nebeneinanderliegenden Desktop-, Tablet- und Mobile-Artboards derselben Landing-Composition (Compare / Multi-Breakpoint).
+
+- Asset: `paths.landing.assets.editorBreakpointsApp` → `apps/web/public/landing/editor-breakpoints-app.jpg` (Fixture-/Demodaten, keine privaten Nutzerdaten).
+- Kennzeichnung wie V8: „Echte App-Ansicht · Demodaten“. Alternativtext benennt Multi-Breakpoint / Compare.
+- Copy erklärt bewusstes Gestalten über Breakpoints und die parallele Ansicht — keine automatische Layout-Generierung.
+- Die illustrative `BreakpointLoop`-Bühne darf unter dem Screenshot bleiben; der Screenshot ist der primäre Beweis.
+- Öffentliche Distribution (README) darf dasselbe Motiv unter `docs/images/zaoly-editor-breakpoints.jpg` führen.
+- UI-Smoke prüft Asset-Pfad, Datei auf Disk und sichtbare Caption; Specs-Inventar und Build.

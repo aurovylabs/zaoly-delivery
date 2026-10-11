@@ -80,13 +80,19 @@ describe('Zaoly landing page', () => {
     const kit = screen.getByRole('img', { name: /Zaoly Kit: Text, Button/i })
     const tokenScreenshot = screen.getByRole('img', { name: /Echte Zaoly Token-Studio-Ansicht/i })
     const kitScreenshot = screen.getByRole('img', { name: /Echtes Zaoly Kit Playground/i })
+    const breakpointShots = screen.getAllByRole('img', {
+      name: /Desktop., Tablet. und Mobile/i,
+    })
     expect(hero).toBeInTheDocument()
     expect(kit).toHaveAttribute('src', paths.landing.assets.kitAssembly)
     expect(tokenScreenshot).toHaveAttribute('src', paths.landing.assets.tokenStudioApp)
     expect(kitScreenshot).toHaveAttribute('src', paths.landing.assets.kitPlaygroundApp)
-    expect(screen.getAllByText('Echte App-Ansicht · Demodaten')).toHaveLength(2)
+    expect(breakpointShots.length).toBeGreaterThanOrEqual(2)
+    expect(breakpointShots[0]).toHaveAttribute('src', paths.landing.assets.editorBreakpointsApp)
+    expect(screen.getAllByText('Echte App-Ansicht · Demodaten')).toHaveLength(4)
     expect(screen.getByText(/Pfade verbinden Werte und Komponenten im Editor/i)).toBeInTheDocument()
     expect(screen.getByText(/Kit-Atome, TSX und Live Preview stehen nebeneinander/i)).toBeInTheDocument()
+    expect(screen.getByText(/Multi-Breakpoint Compare/i)).toBeInTheDocument()
     for (const asset of Object.values(paths.landing.assets)) {
       expect(existsSync(path.join(__dirname, '../public', asset.replace(/^\//, '')))).toBe(true)
     }
