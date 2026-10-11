@@ -34,7 +34,7 @@ describe('platform admin phase-1 UI', () => {
     )
   })
 
-  it('renders overview stats and deep links', async () => {
+  it('renders overview stats and module tiles', async () => {
     render(
       <AppProviders>
         <AdminOverviewPage />
@@ -42,13 +42,21 @@ describe('platform admin phase-1 UI', () => {
     )
     expect(await screen.findByTestId('zaoly-admin-overview')).toBeInTheDocument()
     expect(screen.getByText('3')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Open users' })).toHaveAttribute(
+    expect(screen.getByTestId('zaoly-admin-tile-users')).toHaveAttribute(
       'href',
       paths.routes.adminUsers,
     )
-    expect(screen.getByRole('link', { name: 'Open mail' })).toHaveAttribute(
+    expect(screen.getByTestId('zaoly-admin-tile-mail')).toHaveAttribute(
       'href',
       paths.routes.adminMail,
+    )
+    expect(screen.getByTestId('zaoly-admin-tile-audit')).toHaveAttribute(
+      'href',
+      paths.routes.adminAudit,
+    )
+    expect(screen.getByTestId('zaoly-admin-tile-security')).toHaveAttribute(
+      'href',
+      paths.routes.adminSecurity,
     )
   })
 
@@ -111,13 +119,14 @@ describe('platform admin phase-1 UI', () => {
     expect(src).toContain('requireAdminUser')
   })
 
-  it('overview shows break-glass bootstrap note', async () => {
+  it('overview omits hosted break-glass banner', async () => {
     render(
       <AppProviders>
         <AdminOverviewPage />
       </AppProviders>,
     )
-    expect(await screen.findByTestId('zaoly-admin-break-glass')).toBeInTheDocument()
+    expect(await screen.findByTestId('zaoly-admin-overview')).toBeInTheDocument()
+    expect(screen.queryByTestId('zaoly-admin-break-glass')).toBeNull()
   })
 })
 

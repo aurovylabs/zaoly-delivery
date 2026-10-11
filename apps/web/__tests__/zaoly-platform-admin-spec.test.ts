@@ -243,7 +243,8 @@ describe('zaoly platform admin specs + paths', () => {
       path.join(repoRoot, 'apps/web/components/admin-overview-page.tsx'),
       'utf8',
     )
-    expect(overview).toContain('bootstrapBreakGlass')
+    expect(overview).not.toContain('bootstrapBreakGlass')
+    expect(overview).not.toContain('zaoly-admin-break-glass')
   })
 
   it('ships P1 hardening: session revoke + auth.denied + patch before/after', () => {

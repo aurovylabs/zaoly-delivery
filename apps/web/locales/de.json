@@ -113,7 +113,7 @@
     },
     "admin": {
       "title": "Admin",
-      "lead": "Instanz-Verzeichnis, Mail und Operator-Status."
+      "lead": "Diese Zaoly-Instanz betreiben — Benutzer, Mail, Audit und Sicherheit."
     },
     "adminUsers": {
       "title": "Benutzer",
@@ -171,9 +171,20 @@
     "auditEmpty": "Noch keine Admin-Ereignisse.",
     "auditFailed": "Audit-Log konnte nicht geladen werden",
     "directoryTitle": "Verzeichnis",
-    "directoryHelp": "Konten auf dieser Zaoly-Instanz.",
+    "directoryMeta": "{count} Konten",
+    "directoryHelp": "Lokale Konten auf dieser Instanz.",
+    "modulesTitle": "Module",
+    "modulesHelp": "Zum benötigten Ops-Bereich springen.",
+    "tileUsers": "Benutzer",
+    "tileUsersHelp": "Einladen, Rollen, Sperren und Passwort-Reset erzwingen.",
+    "tileMail": "Mail",
+    "tileMailHelp": "SMTP-Status, Testversand und Managed-Lock.",
+    "tileAudit": "Audit",
+    "tileAuditHelp": "Aktuelle Admin-Änderungen auf dieser Instanz.",
+    "tileSecurity": "Sicherheit",
+    "tileSecurityHelp": "Authenticator-MFA und Passkeys für Staff.",
     "instanceTitle": "Instanz",
-    "instanceHelp": "Signup, Mail und Scene-Store.",
+    "instanceHelp": "Signup-, Mail- und Scene-Store-Status.",
     "statTotal": "Gesamt",
     "statAdmins": "Admins",
     "statMembers": "Mitglieder",
@@ -185,11 +196,12 @@
     "off": "Aus",
     "openUsers": "Benutzer öffnen",
     "openMail": "Mail öffnen",
+    "openAudit": "Audit öffnen",
+    "openSecurity": "Sicherheit öffnen",
     "overviewFailed": "Admin-Übersicht konnte nicht geladen werden",
     "impersonatingAs": "Ansicht als",
     "impersonatingReadonly": "(nur Lesen)",
-    "stopImpersonating": "Beenden",
-    "bootstrapBreakGlass": "Bootstrap admin@zaoly.app ist nur Break-glass — für den Alltag persönliche platform_admin-Accounts nutzen."
+    "stopImpersonating": "Beenden"
   },
   "settings": {
     "hint": "Geräte-lokale Einstellungen — Theme, Sprache und Anzeigename in der Shell.",

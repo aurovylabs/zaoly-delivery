@@ -113,7 +113,7 @@
     },
     "admin": {
       "title": "Admin",
-      "lead": "Instance directory, mail, and operator status."
+      "lead": "Operate this Zaoly instance — users, mail, audit, and security."
     },
     "adminUsers": {
       "title": "Users",
@@ -171,9 +171,20 @@
     "auditEmpty": "No admin events yet.",
     "auditFailed": "Could not load audit log",
     "directoryTitle": "Directory",
-    "directoryHelp": "Accounts on this Zaoly instance.",
+    "directoryMeta": "{count} accounts",
+    "directoryHelp": "Local accounts on this instance.",
+    "modulesTitle": "Modules",
+    "modulesHelp": "Jump to the ops surface you need.",
+    "tileUsers": "Users",
+    "tileUsersHelp": "Invite, roles, disable, and force password reset.",
+    "tileMail": "Mail",
+    "tileMailHelp": "SMTP status, test send, and managed lock.",
+    "tileAudit": "Audit",
+    "tileAuditHelp": "Recent admin mutations on this instance.",
+    "tileSecurity": "Security",
+    "tileSecurityHelp": "Authenticator MFA and passkeys for staff.",
     "instanceTitle": "Instance",
-    "instanceHelp": "Signup, mail, and scene store.",
+    "instanceHelp": "Signup, mail, and scene store health.",
     "statTotal": "Total",
     "statAdmins": "Admins",
     "statMembers": "Members",
@@ -185,11 +196,12 @@
     "off": "Off",
     "openUsers": "Open users",
     "openMail": "Open mail",
+    "openAudit": "Open audit",
+    "openSecurity": "Open security",
     "overviewFailed": "Could not load admin overview",
     "impersonatingAs": "Viewing as",
     "impersonatingReadonly": "(read-only)",
-    "stopImpersonating": "Stop",
-    "bootstrapBreakGlass": "Bootstrap admin@zaoly.app is break-glass only — use a personal platform_admin for daily ops."
+    "stopImpersonating": "Stop"
   },
   "settings": {
     "hint": "Device-local preferences — theme, language, and how you appear in the shell.",

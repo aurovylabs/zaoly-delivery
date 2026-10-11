@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Button, Chip, EmptyState, SettingsBand } from '../lib/zaoly-ui'
+import { Button, Chip, EmptyState, SectionChrome, Text } from '../lib/zaoly-ui'
 import { paths } from '../lib/paths'
 import { useUserPrefs } from '../lib/user-prefs'
 
@@ -12,6 +12,37 @@ type Overview = {
   smtp: { configured: boolean; managed: boolean }
   sceneStore: string
 }
+
+const MODULE_TILES = [
+  {
+    href: paths.routes.adminUsers,
+    titleKey: 'admin.tileUsers',
+    helpKey: 'admin.tileUsersHelp',
+    ctaKey: 'admin.openUsers',
+    testId: 'zaoly-admin-tile-users',
+  },
+  {
+    href: paths.routes.adminMail,
+    titleKey: 'admin.tileMail',
+    helpKey: 'admin.tileMailHelp',
+    ctaKey: 'admin.openMail',
+    testId: 'zaoly-admin-tile-mail',
+  },
+  {
+    href: paths.routes.adminAudit,
+    titleKey: 'admin.tileAudit',
+    helpKey: 'admin.tileAuditHelp',
+    ctaKey: 'admin.openAudit',
+    testId: 'zaoly-admin-tile-audit',
+  },
+  {
+    href: paths.routes.adminSecurity,
+    titleKey: 'admin.tileSecurity',
+    helpKey: 'admin.tileSecurityHelp',
+    ctaKey: 'admin.openSecurity',
+    testId: 'zaoly-admin-tile-security',
+  },
+] as const
 
 export function AdminOverviewPage() {
   const { t } = useUserPrefs()
@@ -44,37 +75,62 @@ export function AdminOverviewPage() {
     return <EmptyState>{t('common.loading')}</EmptyState>
   }
 
+  const stats = [
+    { key: 'total', label: t('admin.statTotal'), value: data.userCounts.total },
+    { key: 'admins', label: t('admin.statAdmins'), value: data.userCounts.admins },
+    { key: 'members', label: t('admin.statMembers'), value: data.userCounts.members },
+    { key: 'disabled', label: t('admin.statDisabled'), value: data.userCounts.disabled },
+  ] as const
+
   return (
     <div className="zaoly-admin-hub" data-testid="zaoly-admin-overview">
-      <p className="zaoly-admin-hub__break-glass" data-testid="zaoly-admin-break-glass">
-        {t('admin.bootstrapBreakGlass')}
-      </p>
-      <SettingsBand title={t('admin.directoryTitle')} help={t('admin.directoryHelp')}>
+      <section
+        className="zaoly-admin-hub__section"
+        aria-label={t('admin.directoryTitle')}
+      >
+        <SectionChrome
+          title={t('admin.directoryTitle')}
+          meta={t('admin.directoryMeta', { count: String(data.userCounts.total) })}
+        />
+        <Text role="meta" as="p">
+          {t('admin.directoryHelp')}
+        </Text>
         <dl className="zaoly-admin-hub__stats">
-          <div>
-            <dt>{t('admin.statTotal')}</dt>
-            <dd>{data.userCounts.total}</dd>
-          </div>
-          <div>
-            <dt>{t('admin.statAdmins')}</dt>
-            <dd>{data.userCounts.admins}</dd>
-          </div>
-          <div>
-            <dt>{t('admin.statMembers')}</dt>
-            <dd>{data.userCounts.members}</dd>
-          </div>
-          <div>
-            <dt>{t('admin.statDisabled')}</dt>
-            <dd>{data.userCounts.disabled}</dd>
-          </div>
+          {stats.map((stat) => (
+            <div key={stat.key}>
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}</dd>
+            </div>
+          ))}
         </dl>
-        <Link href={paths.routes.adminUsers}>
-          <Button variant="primary" size="sm">
-            {t('admin.openUsers')}
-          </Button>
-        </Link>
-      </SettingsBand>
-      <SettingsBand title={t('admin.instanceTitle')} help={t('admin.instanceHelp')}>
+      </section>
+
+      <section className="zaoly-admin-hub__section" aria-label={t('admin.modulesTitle')}>
+        <SectionChrome title={t('admin.modulesTitle')} />
+        <Text role="meta" as="p">
+          {t('admin.modulesHelp')}
+        </Text>
+        <div className="zaoly-admin-hub__tiles">
+          {MODULE_TILES.map((tile) => (
+            <Link
+              key={tile.href}
+              href={tile.href}
+              className="zaoly-admin-hub__tile"
+              data-testid={tile.testId}
+            >
+              <span className="zaoly-admin-hub__tile-title">{t(tile.titleKey)}</span>
+              <span className="zaoly-admin-hub__tile-help">{t(tile.helpKey)}</span>
+              <span className="zaoly-admin-hub__tile-cta">{t(tile.ctaKey)}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="zaoly-admin-hub__section" aria-label={t('admin.instanceTitle')}>
+        <SectionChrome title={t('admin.instanceTitle')} />
+        <Text role="meta" as="p">
+          {t('admin.instanceHelp')}
+        </Text>
         <ul className="zaoly-admin-hub__flags">
           <li>
             <span>{t('admin.publicSignup')}</span>
@@ -96,12 +152,14 @@ export function AdminOverviewPage() {
             </Chip>
           </li>
         </ul>
-        <Link href={paths.routes.adminMail}>
-          <Button variant="ghost" size="sm">
-            {t('admin.openMail')}
-          </Button>
-        </Link>
-      </SettingsBand>
+        <div className="zaoly-admin-hub__actions">
+          <Link href={paths.routes.adminMail}>
+            <Button variant="ghost" size="sm">
+              {t('admin.openMail')}
+            </Button>
+          </Link>
+        </div>
+      </section>
     </div>
   )
 }

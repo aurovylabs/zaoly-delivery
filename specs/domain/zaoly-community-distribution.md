@@ -16,7 +16,7 @@ Maintain **two surfaces**:
 1. Community export MUST include a buildable web app (`apps/web`, `packages/*`, lockfile, `Dockerfile`).
 2. Community export MUST NOT include `knowledge/`, `tasks/`, `.cursor/`, or hosted-only deploy/mail/Traefik scripts.
 3. Community defaults MUST start clean (self-host / localhost) — no `admin@zaoly.app` bootstrap seeds, no weddy VPS paths, no managed SMTP lock as default.
-4. Community README MUST explain local `npm run dev` and self-host Compose from zero.
+4. Community README MUST explain local `npm run dev` and self-host Compose from zero, describe the product and main features, and reference screenshot assets under \`docs/images/\` (sourced from internal \`community/docs/images/\` at export).
 5. Export MUST be reproducible via a script in the internal repo (`npm run export:community`).
 
 ## MUST NOT

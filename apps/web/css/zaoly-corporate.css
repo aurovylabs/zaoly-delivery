@@ -1137,58 +1137,117 @@ body {
   box-sizing: border-box;
 }
 
-.app-frame .zaoly-admin-hub__break-glass {
-  margin: 0;
-  font-size: 0.875rem;
-  color: var(--editor-muted, var(--editor-text));
-  line-height: 1.45;
-}
-
 .app-frame .zaoly-admin-hub__subnav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem 1.25rem;
-  margin: 0 0 0.25rem;
-  padding: 0;
+  gap: 0.35rem 1.5rem;
+  margin: 0 0 0.5rem;
+  padding: 0 0 0.85rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--editor-text) 18%, transparent);
 }
 
 .app-frame .zaoly-admin-hub__subnav-link {
   color: var(--editor-muted, var(--editor-text));
   text-decoration: none;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding-block: 0.15rem;
+  border-bottom: 1px solid transparent;
+}
+
+.app-frame .zaoly-admin-hub__subnav-link:hover {
+  color: var(--editor-text);
 }
 
 .app-frame .zaoly-admin-hub__subnav-link.is-active {
   color: var(--editor-text);
-  border-bottom: 1px solid var(--editor-text);
+  border-bottom-color: var(--editor-text);
+}
+
+.app-frame .zaoly-admin-hub__section {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.app-frame .zaoly-admin-hub__section .section-chrome {
+  border-bottom: none;
+  margin: 0;
+  padding: 0;
 }
 
 .app-frame .zaoly-admin-hub__stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-  gap: 1rem;
-  margin: 0 0 1rem;
+  gap: 1rem 1.25rem;
+  margin: 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--editor-text) 12%, transparent);
 }
 
 .app-frame .zaoly-admin-hub__stats dt {
   margin: 0;
   font-size: 0.75rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--editor-muted, var(--editor-text));
 }
 
 .app-frame .zaoly-admin-hub__stats dd {
-  margin: 0.25rem 0 0;
-  font-size: 1.5rem;
+  margin: 0.35rem 0 0;
+  font-size: 1.75rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.app-frame .zaoly-admin-hub__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.75rem;
+}
+
+.app-frame .zaoly-admin-hub__tile {
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+  padding: 1rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--editor-text) 22%, transparent);
+  color: inherit;
+  text-decoration: none;
+  background: transparent;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.app-frame .zaoly-admin-hub__tile:hover {
+  border-color: var(--editor-text);
+  background: color-mix(in srgb, var(--editor-text) 4%, transparent);
+}
+
+.app-frame .zaoly-admin-hub__tile-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.app-frame .zaoly-admin-hub__tile-help {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--editor-muted, var(--editor-text));
+}
+
+.app-frame .zaoly-admin-hub__tile-cta {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 .app-frame .zaoly-admin-hub__flags {
   list-style: none;
-  margin: 0 0 1rem;
-  padding: 0;
+  margin: 0;
+  padding: 0.85rem 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--editor-text) 12%, transparent);
   display: grid;
   gap: 0.75rem;
 }
@@ -1198,6 +1257,12 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.app-frame .zaoly-admin-hub__actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 

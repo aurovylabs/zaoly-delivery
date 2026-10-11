@@ -1,37 +1,132 @@
-# Zaoly (community)
+# Zaoly
 
-Open AGPL source for the Zaoly design editor. Clone this repo to **develop, fork, and self-host from zero**.
+**From design to real components.**
 
-This distribution is **not** the hosted [zaoly.app](https://zaoly.app) operations tree. It has no internal knowledge base and no weddy/zaoly.app deploy wiring.
+Zaoly is an open-source **enterprise web design** editor: compose responsive pages on a canvas, structure them with a Site Kit and masters, bind brand tokens, and hand off real React — not throwaway mockups.
+
+<p align="center">
+  <img src="docs/images/zaoly-landing-hero.png" alt="Zaoly — from design to real components" width="920" />
+</p>
+
+Hosted product: [zaoly.app](https://zaoly.app) · This repository is the **community** tree — clone, fork, develop, and self-host **from zero** (AGPL). It is not the internal ops/deploy tree.
+
+---
+
+## Why Zaoly
+
+Most design tools stop at pictures. Zaoly keeps designers on a real composition scene that already speaks the language of product UI:
+
+- **Canvas-first editing** with pages, layers, artboards, and desktop / tablet / mobile breakpoints
+- **Site Kit atoms** (Button, Text, Input, Card, layout…) you can compose and promote into masters
+- **Masters, instances, and named variants** so structure stays shared while expression changes
+- **Local Token Studio** for color, type, space, and more — bind tokens in the editor instead of hard-coded values
+- **Kit Playground** to try atoms with live TSX + preview
+- **React / code handoff** with preview and accessibility preflight — for teams that ship to other React apps
+- **Accounts & starter scenes** — each new user gets a personal default landing composition (Postgres)
+
+Print / magazine PDF production and suite federation are intentionally out of scope. Zaoly is web-design first.
+
+---
+
+## Features
+
+| Area | What you get |
+|------|----------------|
+| **Editor** | Immersive `/editor` — undo/redo, pan/zoom, selection, inspect, smart HUD, autosave |
+| **Responsive** | Digital artboards · breakpoint cascade · side-by-side compare |
+| **System** | Scene-local masters · Site Kit palette · variants · starter landing sections |
+| **Tokens** | Local pack at `/tokens` · bind paths on components · CSS / JSON export |
+| **Kit** | Playground at `/kit` · catalog atoms · patterns when a Collection is bound |
+| **Handoff** | Surface PNG/PDF · HTML preview · code export · React module orientation |
+| **Collab** | Comments · presence · named versions · scene members / client share |
+| **Ops (self-host)** | Local users · public signup · platform admin · SMTP · audit · MFA / passkeys |
+
+<p align="center">
+  <img src="docs/images/token-studio.jpg" alt="Zaoly Token Studio with sample brand tokens" width="860" />
+</p>
+<p align="center"><em>Token Studio — local brand pack (demo data)</em></p>
+
+<p align="center">
+  <img src="docs/images/kit-playground.jpg" alt="Zaoly Kit Playground with TSX and live preview" width="860" />
+</p>
+<p align="center"><em>Kit Playground — atoms, TSX, and live preview side by side</em></p>
+
+---
 
 ## Quick start (local)
 
+Requires Node 22+ (see root `package.json` engines if present).
+
 ```bash
+git clone https://github.com/chbrdk/zaoly-delivery.git
+cd zaoly-delivery
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3009/editor`.
+Open [http://localhost:3009/editor](http://localhost:3009/editor).
 
-Optional Postgres (multi-user): see root `docker-compose.yml` / `npm run bootstrap:local-pg` if present, or self-host Compose below.
+JSON / lightweight auth works for solo DX. For multi-user Postgres:
+
+```bash
+docker compose up -d
+# configure ZAOLY_DATABASE_URL + AUTH_SECRET in apps/web/.env.local
+npm run bootstrap:local-pg   # when available
+```
+
+---
 
 ## Self-host (Docker)
 
 ```bash
 cp deploy/.env.example deploy/.env
-# set AUTH_SECRET, ZAOLY_POSTGRES_PASSWORD, ZAOLY_DATABASE_URL,
-# ZAOLY_BOOTSTRAP_ADMIN_EMAIL / PASSWORD, NEXT_PUBLIC_ZAOLY_URL, AUTH_URL
+# Required: AUTH_SECRET, ZAOLY_POSTGRES_PASSWORD, ZAOLY_DATABASE_URL,
+# ZAOLY_BOOTSTRAP_ADMIN_EMAIL / ZAOLY_BOOTSTRAP_ADMIN_PASSWORD,
+# NEXT_PUBLIC_ZAOLY_URL, AUTH_URL
 docker compose -f deploy/docker-compose.self-host.yml --env-file deploy/.env up -d --build
 ```
 
-Bootstrap admin is whatever you put in `.env` — there is no seeded `admin@zaoly.app`.
+Bootstrap admin is whatever you set in `.env` — there is **no** seeded `admin@zaoly.app` in this pack.
+
+Public signup defaults **on** when Postgres is configured (`ZAOLY_PUBLIC_SIGNUP=0` to disable). Each new member gets a **personal** starter landing scene; Site Kit edits stay scene-local until you explicitly publish (Collection fork).
+
+---
+
+## Repo layout
+
+| Path | Role |
+|------|------|
+| `apps/web` | Next.js app — editor, hubs, APIs |
+| `packages/ui` | `@zaoly/ui` design system |
+| `packages/site-kit` | Site Kit atoms & compositions |
+| `packages/contracts` | Shared scene / op shapes |
+| `mcp-server` | Optional MCP tools (`zaoly.*`) |
+| `specs/` | Domain & API specs (source of truth for behavior) |
+| `deploy/` | Self-host Compose + `.env.example` |
+
+---
 
 ## License
 
-[AGPL-3.0-only](LICENSE). Network use of a modified version requires offering corresponding source (§13).
+[AGPL-3.0-only](LICENSE). If you run a modified version as a network service, you must offer corresponding source (AGPL §13).
+
+---
+
+## Hosted vs this repo
+
+| | [zaoly.app](https://zaoly.app) | This community repo |
+|--|--|--|
+| Audience | Hosted product | Developers & self-hosters |
+| Source | Private product tree | Public developable pack |
+| Ops | Managed deploy, mail, seeds | Bring your own `.env` / Postgres |
+| Docs | Product site + in-app | Specs in `specs/` + this README |
+
+---
 
 ## What is intentionally missing
 
 - Internal `knowledge/` and team task notes
-- Hosted deploy (weddy Traefik, `mail.zaoly.app` MTA, VPS scripts)
+- Hosted VPS / Traefik / managed mail deploy scripts
 - Desktop / macOS app trees (web-first community pack)
+
+Questions or enterprise interest: [hey@zaoly.app](mailto:hey@zaoly.app)

@@ -27,7 +27,7 @@ Operators of a Zaoly deployment (especially **hosted zaoly.app**) need a dedicat
 
 | Surface | Who | Behavior |
 |---------|-----|----------|
-| `/admin` | `admin` | Redirect or overview → users + system status cards |
+| `/admin` | `admin` | Overview console: directory metrics · module tiles (Users / Mail / Audit / Security) · instance health |
 | `/admin/users` | `admin` | Canonical directory: search, pagination, invite, role, disable |
 | `/admin/mail` | `admin` | SMTP status / test; Hosted managed = read-only config + test; Self-host = full Settings SMTP parity |
 | `/admin/audit` | `admin` | Phase 2a mutation log |
@@ -120,4 +120,4 @@ Primary nav: when the actor is `admin`, shell **MUST** expose an Admin entry to 
 
 - [x] Read-only impersonation: proxy blocks mutating `/api/*` except stop
 - [x] Banner indicates read-only view-as
-- [x] Break-glass note for hosted bootstrap admin email
+- [x] Break-glass bootstrap policy documented for operators (no overview UI banner — hosted ops already use that account)
