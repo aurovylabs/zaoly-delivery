@@ -10,8 +10,8 @@ Open composition work from the CREATION AppShell via in-app `/editor`.
 
 | Mode | When | Target |
 |------|------|--------|
-| **In-app** | `CREATION_EDITOR_INAPP` truthy (default on outside production) | `/editor` |
-| **Ops deep-link** | Optional `CREATION_EDITOR_URL` — **not** a visible CTA after P61 | Env helper only |
+| **In-app** | `ZAOLY_EDITOR_INAPP` truthy (default on outside production) | `/editor` |
+| **Ops deep-link** | Optional `ZAOLY_EDITOR_URL` — **not** a visible CTA after P61 | Env helper only |
 
 ## Launch helpers
 
@@ -29,7 +29,7 @@ Kit Playground **Open in Editor** (`specs/domain/site-kit-playground.md` SK-V6) 
 **Create Pattern in Editor** (SK-V7) opens `/editor?platformProjectId=&hint=save-pattern` without writing playground TSX.
 
 MUSS: Never hardcode editor FQDN.  
-WENN in-app off, DANN hub/project show enable-hint for `CREATION_EDITOR_INAPP` (no Legacy Zaoly CTA).
+WENN in-app off, DANN hub/project show enable-hint for `ZAOLY_EDITOR_INAPP` (no Legacy Zaoly CTA).
 
 ## Non-goals
 - iframe embed of Zaoly Vite under AppShell (prefer native `/editor`)
@@ -41,6 +41,6 @@ WENN in-app off, DANN hub/project show enable-hint for `CREATION_EDITOR_INAPP` (
 1. In-app flag documented in `knowledge/paths.md`.
 2. `/editor` available when flag on.
 3. Hub + project detail + editor toolbar have **no** Legacy Zaoly CTA.
-4. `CREATION_EDITOR_URL` may remain unset as optional Ops deep-link.
+4. `ZAOLY_EDITOR_URL` may remain unset as optional Ops deep-link.
 5. `insertType` one-shot insert via palette hydrate; query stripped after apply; idempotent per scene+type.
 6. `hint=save-pattern` shows a dismissible banner once (session); no auto-save.

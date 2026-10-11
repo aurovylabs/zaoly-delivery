@@ -21,7 +21,7 @@ import { presenceColorForUserId } from '../lib/editor/presence-color'
 import { softLockConflict } from '../lib/editor/presence-soft-lock'
 import { mergePresenceUsers } from '../lib/editor/presence-merge'
 import { paths } from '../lib/paths'
-import { isCreationRedisConfigured } from '../lib/runtime-config'
+import { isRedisConfigured } from '../lib/runtime-config'
 
 function sampleUser(overrides: Partial<ScenePresenceUser> = {}): ScenePresenceUser {
   return {
@@ -139,9 +139,9 @@ describe('Scene Presence & Multi-Cursor Store (P114)', () => {
     expect(paths.routes.apiScenePresenceHeartbeat('scene-1')).toBe(
       '/api/scenes/scene-1/presence/heartbeat',
     )
-    expect(paths.envCreationRedisUrl).toBe('ZAOLY_REDIS_URL')
-    expect(paths.sceneEventsRedisChannel).toBe('creation:v3:scene-bus')
-    expect(isCreationRedisConfigured()).toBe(false)
+    expect(paths.envRedisUrl).toBe('ZAOLY_REDIS_URL')
+    expect(paths.sceneEventsRedisChannel).toBe('zaoly:scene-bus')
+    expect(isRedisConfigured()).toBe(false)
   })
 
   it('flushPresenceCoalesce is idempotent when buffer empty', async () => {

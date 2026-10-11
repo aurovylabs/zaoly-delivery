@@ -5,7 +5,7 @@ vi.mock('../auth', () => ({
 }))
 
 vi.mock('../lib/runtime-config', () => ({
-  isCreationAuthBypassEnabled: vi.fn(() => false),
+  isAuthBypassEnabled: vi.fn(() => false),
 }))
 
 vi.mock('../lib/users/impersonation', () => ({

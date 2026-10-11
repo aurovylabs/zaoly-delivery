@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '../../../../auth'
 import { sendPasswordChangedEmail, voidSystemMail } from '../../../../lib/mail/system-mail'
-import { isCreationAuthBypassEnabled } from '../../../../lib/runtime-config'
+import { isAuthBypassEnabled } from '../../../../lib/runtime-config'
 import { readImpersonation } from '../../../../lib/users/impersonation'
 import {
   isZaolyUserStoreAvailable,
@@ -11,7 +11,7 @@ import {
 
 /** Set or change password for the signed-in user · Spec `zaoly-user-management.md`. */
 export async function PATCH(req: Request) {
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     return NextResponse.json({ error: 'forbidden' }, { status: 403 })
   }
   if (!isZaolyUserStoreAvailable()) {

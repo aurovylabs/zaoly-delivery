@@ -2,7 +2,7 @@
  * Branded HTML shell for Zaoly system mail (table + inline CSS).
  * Spec: `specs/domain/zaoly-system-mail.md`
  */
-import { creationPublicUrl } from '../runtime-config'
+import { zaolyPublicUrl } from '../runtime-config'
 import { paths } from '../paths'
 import { escapeAttr, escapeHtml, mailBrand } from './mail-brand'
 import type { MailLocale } from './mail-locale'
@@ -20,7 +20,7 @@ export type MailLayoutInput = {
 }
 
 function siteOrigin(): string {
-  return creationPublicUrl().replace(/\/$/, '') || paths.publicSiteOrigin
+  return zaolyPublicUrl().replace(/\/$/, '') || paths.publicSiteOrigin
 }
 
 export function renderMailHtml(input: MailLayoutInput): string {

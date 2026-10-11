@@ -32,7 +32,7 @@ vi.mock('../lib/runtime-config', async () => {
   )
   return {
     ...actual,
-    isCreationAuthBypassEnabled: vi.fn(() => false),
+    isAuthBypassEnabled: vi.fn(() => false),
   }
 })
 
@@ -61,7 +61,7 @@ describe('require-scene-collection-access', () => {
     listSceneMemberUserIds.mockReset()
     listSceneMemberUserIds.mockResolvedValue([])
     const runtime = await import('../lib/runtime-config')
-    vi.mocked(runtime.isCreationAuthBypassEnabled).mockReturnValue(false)
+    vi.mocked(runtime.isAuthBypassEnabled).mockReturnValue(false)
   })
 
   it('allows unbound platformProjectId (Zaoly has no Collection gate)', async () => {
@@ -146,7 +146,7 @@ describe('require-scene-collection-access', () => {
 
   it('bypass list includes legacy unbound scenes', async () => {
     const runtime = await import('../lib/runtime-config')
-    vi.mocked(runtime.isCreationAuthBypassEnabled).mockReturnValue(true)
+    vi.mocked(runtime.isAuthBypassEnabled).mockReturnValue(true)
     await upsertScene(scene('mine', null, 'u1'))
     await upsertScene(scene('theirs', null, 'u2'))
     await upsertScene(scene('legacy-unbound'))

@@ -10,7 +10,7 @@ describe('editorToastMessage', () => {
 
   it('never surfaces Storyblok pack JSON', () => {
     const pack = JSON.stringify({
-      meta: { generator: 'creation-v3-storyblok-poc' },
+      meta: { generator: 'zaoly-storyblok-poc' },
       components: [{ name: 'creation_page' }],
     })
     expect(editorToastMessage(pack)).toBe(

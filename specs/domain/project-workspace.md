@@ -17,7 +17,7 @@ A project MAY contain **many compositions** (`CompositionScene` rows with that `
 ## Administration (`/projects`)
 Magazine collection hub:
 
-- List local capability projects (**Postgres** when `CREATION_DATABASE_URL` is set; otherwise in-memory)
+- List local capability projects (**Postgres** when `ZAOLY_DATABASE_URL` is set; otherwise in-memory)
 - **P71 Collection picker:** Select/combobox from `@zaoly/ui` lists Plexon Collections the signed-in user can see (same set as Sync). Selecting one upserts/opens the CREATION mirror (`platformProjectId`) and navigates to `/projects/:id`. No `?platformProjectId=` required.
 - Prefetch uses Plexon `GET /api/platform/provisioning/accessible-collections` (same `listAccessiblePlatformProjectsForUser` as `sync-capability-mirrors`). Do not invent a second catalog.
 - Pin the Zaoly Collection id (`paths.zaolyDepositPlatformProjectId`) when present — **label from Plexon**, not a hardcoded name.

@@ -124,7 +124,7 @@ export function resolveAtomWriteTarget(input: {
       ok: false,
       code: 'seed-write-forbidden',
       error:
-        'Shared atom seed writes require CREATION_SITE_KIT_SHARED_SEED_WRITE=1 (kit shared lane). Prefer Collection fork or Save as Pattern.',
+        'Shared atom seed writes require ZAOLY_SITE_KIT_SHARED_SEED_WRITE=1 (kit shared lane). Prefer Collection fork or Save as Pattern.',
     }
   }
 

@@ -28,11 +28,11 @@ import '../src/styles.css'
  * Named variants = CSF substories (+ Controls `variant` or Component Set axis selects).
  * Spec: site-kit.md · knowledge/master-component-sets-phase3.md
  */
-const CREATION_ORIGIN = (
+const ZAOLY_ORIGIN = (
   (typeof import.meta !== 'undefined' &&
     (import.meta as ImportMeta & { env?: Record<string, string> }).env
-      ?.STORYBOOK_CREATION_ORIGIN) ||
-  (typeof process !== 'undefined' ? process.env.STORYBOOK_CREATION_ORIGIN : '') ||
+      ?.STORYBOOK_ZAOLY_ORIGIN) ||
+  (typeof process !== 'undefined' ? process.env.STORYBOOK_ZAOLY_ORIGIN : '') ||
   ''
 ).replace(/\/$/, '')
 
@@ -135,7 +135,7 @@ const withLiveOverrides: Decorator = (Story, context) => {
   )
 
   useEffect(() => {
-    if (!componentId || !CREATION_ORIGIN) {
+    if (!componentId || !ZAOLY_ORIGIN) {
       dispatch({ type: 'reset' })
       return
     }
@@ -145,7 +145,7 @@ const withLiveOverrides: Decorator = (Story, context) => {
 
     const pull = () => {
       const url = withSiteKitViewTokenQuery(
-        `${CREATION_ORIGIN}/api/site-kit/overrides/${encodeURIComponent(componentId)}?t=${Date.now()}`,
+        `${ZAOLY_ORIGIN}/api/site-kit/overrides/${encodeURIComponent(componentId)}?t=${Date.now()}`,
       )
       void fetchOverrideJson<OverrideBody>(url, controller.signal, {
         headers: siteKitViewAuthHeaders(),

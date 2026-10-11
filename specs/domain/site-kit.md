@@ -40,7 +40,7 @@ Separate from `@zaoly/ui` product chrome (AppShell, Chat, …). Site Kit = publi
 6a. The atom catalog (`SITE_KIT_CATALOG`) MUST have a single source in `packages/site-kit/src/catalog.ts`; web re-exports and hydrate scripts MUST derive from it (incl. `SiteImage`).
 7. WHEN Site Kit Storybook runs as a static Coolify image, it MUST fetch live overrides from CREATION (`GET /api/site-kit/overrides/:id`) without a user session.
 8. WHERE Storybook fetches overrides cross-origin, `GET /api/site-kit/overrides/*` MUST be public; write/save remain session-gated.
-9. WHEN `CREATION_DATABASE_URL` is set, override writes MUST treat Postgres as SSOT — failed Postgres writes MUST return `pg-unavailable` and MUST NOT report success based on disk alone. Reads MUST reconcile Postgres + disk by `updatedAt`.
+9. WHEN `ZAOLY_DATABASE_URL` is set, override writes MUST treat Postgres as SSOT — failed Postgres writes MUST return `pg-unavailable` and MUST NOT report success based on disk alone. Reads MUST reconcile Postgres + disk by `updatedAt`.
 10. WHEN Publish or Save-as-composition completes, the editor MUST surface `storybookRedeploy.status` (`queued` | `skipped` | `failed`) and partial publish `failures[]` when present.
 11. Storybook live preview MUST reset override state when `componentId` changes, MUST NOT render a previous component when the new fetch is not-found, and MUST mark transient poll failures as stale when a prior tree was loaded.
 

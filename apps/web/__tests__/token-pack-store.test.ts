@@ -12,17 +12,17 @@ import {
 
 describe('token pack store (file)', () => {
   const prevPack = process.env[paths.envTokenPackStorePath]
-  const prevDb = process.env[paths.envCreationDatabaseUrl]
-  const prevDbLegacy = process.env.CREATION_DATABASE_URL
+  const prevDb = process.env[paths.envDatabaseUrl]
+  const prevDbLegacy = process.env.ZAOLY_DATABASE_URL
   let dir = ''
 
   afterEach(() => {
     if (prevPack == null) delete process.env[paths.envTokenPackStorePath]
     else process.env[paths.envTokenPackStorePath] = prevPack
-    if (prevDb == null) delete process.env[paths.envCreationDatabaseUrl]
-    else process.env[paths.envCreationDatabaseUrl] = prevDb
-    if (prevDbLegacy == null) delete process.env.CREATION_DATABASE_URL
-    else process.env.CREATION_DATABASE_URL = prevDbLegacy
+    if (prevDb == null) delete process.env[paths.envDatabaseUrl]
+    else process.env[paths.envDatabaseUrl] = prevDb
+    if (prevDbLegacy == null) delete process.env.ZAOLY_DATABASE_URL
+    else process.env.ZAOLY_DATABASE_URL = prevDbLegacy
     if (dir) {
       try {
         rmSync(dir, { recursive: true, force: true })
@@ -34,8 +34,8 @@ describe('token pack store (file)', () => {
   })
 
   function useTempPackFile() {
-    delete process.env[paths.envCreationDatabaseUrl]
-    delete process.env.CREATION_DATABASE_URL
+    delete process.env[paths.envDatabaseUrl]
+    delete process.env.ZAOLY_DATABASE_URL
     dir = mkdtempSync(path.join(tmpdir(), 'zaoly-token-pack-'))
     const file = path.join(dir, 'token-pack.json')
     process.env[paths.envTokenPackStorePath] = file

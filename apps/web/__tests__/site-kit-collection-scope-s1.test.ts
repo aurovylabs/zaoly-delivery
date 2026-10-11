@@ -40,7 +40,7 @@ vi.mock('../lib/runtime-config', async () => {
     getServiceSecret: vi.fn(() => 'test-service-secret-at-least-32-chars!!'),
     plexonBaseUrl: vi.fn(() => 'http://localhost:3000'),
     isServiceAuthConfigured: vi.fn(() => false),
-    isCreationAuthBypassEnabled: vi.fn(() => true),
+    isAuthBypassEnabled: vi.fn(() => true),
   }
 })
 
@@ -98,7 +98,7 @@ describe('authorizeSiteKitCompositionList', () => {
     __resetProjectStoreForTests()
     const runtime = await import('../lib/runtime-config')
     vi.mocked(runtime.isServiceAuthConfigured).mockReturnValue(false)
-    vi.mocked(runtime.isCreationAuthBypassEnabled).mockReturnValue(true)
+    vi.mocked(runtime.isAuthBypassEnabled).mockReturnValue(true)
     const sceneApi = await import('../lib/require-scene-api-access')
     vi.mocked(sceneApi.requireSceneApiAccess).mockResolvedValue({
       ok: true,
@@ -113,7 +113,7 @@ describe('authorizeSiteKitCompositionList', () => {
       NextResponse.json({ error: 'unauthorized' }, { status: 401 }),
     )
     const runtime = await import('../lib/runtime-config')
-    vi.mocked(runtime.isCreationAuthBypassEnabled).mockReturnValue(false)
+    vi.mocked(runtime.isAuthBypassEnabled).mockReturnValue(false)
     vi.mocked(runtime.isServiceAuthConfigured).mockReturnValue(true)
     vi.mocked(runtime.getServiceSecret).mockReturnValue('')
 
@@ -190,7 +190,7 @@ describe('authorizeSiteKitPatternOverrideRead', () => {
       NextResponse.json({ error: 'unauthorized' }, { status: 401 }),
     )
     const runtime = await import('../lib/runtime-config')
-    vi.mocked(runtime.isCreationAuthBypassEnabled).mockReturnValue(false)
+    vi.mocked(runtime.isAuthBypassEnabled).mockReturnValue(false)
     vi.mocked(runtime.isServiceAuthConfigured).mockReturnValue(true)
     vi.mocked(runtime.getServiceSecret).mockReturnValue('')
 

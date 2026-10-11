@@ -27,14 +27,14 @@ Same dual mode as `scenes.md`, extended for service callers.
 | Caller | Headers / cookie | Allowed |
 |--------|------------------|---------|
 | Browser session | Session cookie | All routes in this spec |
-| MCP / automation | `X-Service-Secret`, `X-Plexon-Contract-Version`, `X-Plexon-User-Id` | All routes in this spec |
-| Unauthenticated | — | Allowed only when Plexon auth **not** configured (local dev) |
+| MCP / automation | `X-Service-Secret`, `X-Federation-Contract-Version`, `X-Actor-User-Id` | All routes in this spec |
+| Unauthenticated | — | Allowed only when local auth bypass / auth unset (local dev) |
 
-WENN Plexon-Auth konfiguriert und weder Session noch gültiger Service-Caller, DANN `401 { "error": "unauthorized" }`.
+WENN Auth konfiguriert und weder Session noch gültiger Service-Caller, DANN `401 { "error": "unauthorized" }`.
 
-Service secret validation: `isProvisioningAuthorized()` in `plexon-contract.ts`.
+Service secret validation: `isProvisioningAuthorized()` in `federation-contract.ts`.
 
-`X-Plexon-User-Id` MUST be present for service callers (non-empty string). Missing → `401 { "error": "actor-required" }`.
+`X-Actor-User-Id` MUST be present for service callers (non-empty string). Missing → `401 { "error": "actor-required" }`.
 
 Ungültige Scene-IDs DÜRFEN unauthentifizierten Callern nicht verraten werden — Antwort `401`, nicht `404` (same as `scenes.md`).
 
@@ -49,10 +49,10 @@ Apply one or more `SceneOp` values atomically.
 | Header | Required | Notes |
 |--------|----------|-------|
 | `Content-Type` | yes | `application/json` |
-| `X-Service-Secret` | service only | Federation secret |
-| `X-Plexon-Contract-Version` | service only | `2026-05-plexon-federation-v3` |
-| `X-Plexon-User-Id` | service only | Acting user id for audit |
-| `X-Creation-Actor-Label` | no | Free-text audit label (e.g. `plexon-assistant`) |
+| `X-Service-Secret` | service only | Service secret (`ZAOLY_SERVICE_SECRET`) |
+| `X-Federation-Contract-Version` | service only | `2026-05-zaoly-federation-v3` |
+| `X-Actor-User-Id` | service only | Acting user id for audit |
+| `X-Actor-Label` | no | Free-text audit label (legacy alias `X-Actor-Label`) |
 
 ### Request body
 
@@ -102,7 +102,7 @@ type SceneOpsResponse = {
 | 400 | `op-rejected` | `applySceneOp` returned `ok: false` |
 | 400 | `tree-too-large` | Post-apply node count exceeded |
 | 401 | `unauthorized` | Auth required and missing |
-| 401 | `actor-required` | Service secret without `X-Plexon-User-Id` |
+| 401 | `actor-required` | Service secret without `X-Actor-User-Id` |
 | 403 | `forbidden` | Bound scene Collection not accessible to the actor (session or service; fail closed) |
 | 404 | `not-found` | Unknown scene id (authenticated) |
 | 409 | `stale-scene` | `baseUpdatedAt` mismatch |
@@ -302,7 +302,7 @@ See `specs/domain/mcp-server.md` § Tool surface v2.
 
 Editor live sync uses `GET /api/scenes/:id/events` (SSE) — **not** an MCP tool (process-local bus; single web replica preferred).
 
-MCP MUST forward federation headers and `X-Plexon-User-Id` on mutating calls. On HTTP errors, MCP MUST return the BFF JSON body (`reason`, `failedIndex`, `scene.updatedAt`, …) so agents can recover locks.
+MCP MUST forward federation headers and `X-Actor-User-Id` on mutating calls. On HTTP errors, MCP MUST return the BFF JSON body (`reason`, `failedIndex`, `scene.updatedAt`, …) so agents can recover locks.
 
 ---
 
@@ -312,7 +312,7 @@ MCP MUST forward federation headers and `X-Plexon-User-Id` on mutating calls. On
 - WENN Op *i* fehlschlägt, DANN DÜRFEN Ops *0..i-1* nicht gespeichert sein.
 - WENN `baseUpdatedAt` fehlt, DANN MUSS der Server `400 missing-base-updated-at` antworten.
 - WENN `GET /api/scenes/:id/tree` aufgerufen wird, DANN MUSS `nodeCount` der Anzahl Einträge in `nodes` entsprechen.
-- WENN ein Service-Caller ohne `X-Plexon-User-Id` mutiert, DANN MUSS der Server `401 actor-required` antworten.
+- WENN ein Service-Caller ohne `X-Actor-User-Id` mutiert, DANN MUSS der Server `401 actor-required` antworten.
 - WENN die Scene an eine Collection gebunden ist und der Actor (Session oder Service) keinen Zugriff hat, DANN MUSS der Server `403 forbidden` antworten (fail closed; unreachable accessible-collections MUST NOT soft-allow).
 - WENN `insert_child` nur `id`+`type` liefert, DANN MUSS der Server Palette-Defaults (`defaultChildForType`) mergen und Aufrufer-Props darüberlegen.
 - WENN `insert_instance` `props` enthält, DANN MUSS der Server sie als `instanceOverrides.props` speichern.

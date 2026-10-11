@@ -4,7 +4,7 @@ import { auth } from '../../auth'
 import { AppShell } from '../../components/app-shell'
 import { EditorWorkspace } from '../../components/editor-workspace'
 import { paths } from '../../lib/paths'
-import { creationEditorInAppEnabled } from '../../lib/runtime-config'
+import { editorInAppEnabled } from '../../lib/runtime-config'
 import { resolveEditorInitialScene } from '../../lib/scene/editor-scene-boot'
 import { Hint, Text } from '../../lib/zaoly-ui'
 
@@ -19,14 +19,14 @@ async function EditorPageBody({
   }>
 }) {
   const params = (await searchParams) ?? {}
-  const inApp = creationEditorInAppEnabled()
+  const inApp = editorInAppEnabled()
 
   if (!inApp) {
     return (
       <AppShell titleKey="pages.editor.title" descriptionKey="pages.editor.lead">
         <Hint panel>
           <Text>
-            In-app editor is off. Set <code>{paths.envCreationEditorInApp}=1</code> to enable{' '}
+            In-app editor is off. Set <code>{paths.envEditorInApp}=1</code> to enable{' '}
             <Link href={paths.routes.compositions}>Compositions</Link> launch into{' '}
             <code>{paths.routes.editor}</code>.
           </Text>

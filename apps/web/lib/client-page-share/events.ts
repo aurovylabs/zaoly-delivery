@@ -8,7 +8,7 @@ export type ClientShareAuditEventType =
   | 'client_share.viewed'
   | 'client_share.unlock_failed'
 
-export const CLIENT_SHARE_AUDIT_PUBLIC_ACTOR = 'creation:client-share-viewer'
+export const CLIENT_SHARE_AUDIT_PUBLIC_ACTOR = 'zaoly:client-share-viewer'
 
 export function emitClientShareAuditEvent(_input: {
   platformProjectId: string

@@ -24,7 +24,7 @@ export { versionStoreBackend } from './pg-version-store'
 const versionsMemoryMap = new Map<string, SceneVersionCheckpoint[]>()
 
 function getVersionsRoot(): string {
-  const explicit = process.env[paths.envCreationVersionStorePath]?.trim()
+  const explicit = process.env[paths.envVersionStorePath]?.trim()
   if (explicit) return explicit
   return path.join(process.cwd(), paths.sceneVersionsStoreRelPath)
 }

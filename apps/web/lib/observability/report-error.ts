@@ -57,29 +57,29 @@ let sentryInitPromise: Promise<SentryModule | null> | null = null
 
 function webhookUrl(): string | null {
   if (typeof window === 'undefined') {
-    return process.env[paths.envCreationErrorWebhookUrl]?.trim() || null
+    return process.env[paths.envErrorWebhookUrl]?.trim() || null
   }
   return (
-    process.env[paths.envCreationErrorWebhookUrlPublic]?.trim() ||
-    process.env[paths.envCreationErrorWebhookUrl]?.trim() ||
+    process.env[paths.envErrorWebhookUrlPublic]?.trim() ||
+    process.env[paths.envErrorWebhookUrl]?.trim() ||
     null
   )
 }
 
 function sentryDsn(): string | null {
   if (typeof window === 'undefined') {
-    return process.env[paths.envCreationSentryDsn]?.trim() || null
+    return process.env[paths.envSentryDsn]?.trim() || null
   }
   return (
-    process.env[paths.envCreationSentryDsnPublic]?.trim() ||
-    process.env[paths.envCreationSentryDsn]?.trim() ||
+    process.env[paths.envSentryDsnPublic]?.trim() ||
+    process.env[paths.envSentryDsn]?.trim() ||
     null
   )
 }
 
 function sentryReplayEnabled(): boolean {
   if (typeof window === 'undefined') return false
-  const raw = process.env[paths.envCreationSentryReplay]?.trim().toLowerCase()
+  const raw = process.env[paths.envSentryReplay]?.trim().toLowerCase()
   return raw === '1' || raw === 'true' || raw === 'yes'
 }
 
@@ -93,7 +93,7 @@ async function loadSentry(dsn: string): Promise<SentryModule | null> {
     const Sentry = (await import('@sentry/nextjs')) as SentryModule
     const init: SentryInitOptions = {
       dsn,
-      environment: 'creation-v3',
+      environment: 'zaoly',
       dataCollection: sentryRestrictiveDataCollection,
     }
     if (typeof window !== 'undefined') {
@@ -151,7 +151,7 @@ export function resetReportErrorSentryStateForTests(): void {
 export function reportError(error: unknown, context: ErrorReportContext): void {
   try {
     const err = toError(error)
-    console.error('[creation:error]', {
+    console.error('[zaoly:error]', {
       message: err.message,
       name: err.name,
       stack: err.stack,
@@ -163,7 +163,7 @@ export function reportError(error: unknown, context: ErrorReportContext): void {
     const url = webhookUrl()
     if (url) {
       const body = JSON.stringify({
-        service: 'creation-v3',
+        service: 'zaoly',
         message: err.message,
         name: err.name,
         source: context.source,

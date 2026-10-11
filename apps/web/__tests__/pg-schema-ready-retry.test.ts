@@ -14,13 +14,13 @@ describe('ensureScenesSchema retry after bootstrap failure', () => {
   beforeEach(() => {
     query.mockReset()
     vi.resetModules()
-    process.env[paths.envCreationDatabaseUrl] = 'postgres://zaoly:zaoly@127.0.0.1:5434/zaoly'
+    process.env[paths.envDatabaseUrl] = 'postgres://zaoly:zaoly@127.0.0.1:5434/zaoly'
   })
 
   afterEach(async () => {
     const { __resetPgPoolForTests } = await import('../lib/scene/pg-store')
     __resetPgPoolForTests()
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     vi.resetModules()
   })
 

@@ -1,4 +1,4 @@
-import { creationPublicUrl } from '../runtime-config'
+import { zaolyPublicUrl } from '../runtime-config'
 import { paths } from '../paths'
 
 export function webauthnRelyingParty(): {
@@ -6,7 +6,7 @@ export function webauthnRelyingParty(): {
   rpName: string
   origin: string
 } {
-  const origin = creationPublicUrl().replace(/\/$/, '')
+  const origin = zaolyPublicUrl().replace(/\/$/, '')
   let rpID = 'localhost'
   try {
     rpID = new URL(origin).hostname

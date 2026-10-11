@@ -22,7 +22,7 @@ describe('client page share P5 audit', () => {
   })
 
   it('uses a stable public audit actor constant', () => {
-    expect(CLIENT_SHARE_AUDIT_PUBLIC_ACTOR).toBe('creation:client-share-viewer')
+    expect(CLIENT_SHARE_AUDIT_PUBLIC_ACTOR).toBe('zaoly:client-share-viewer')
   })
 
   it('emit helper is fire-and-forget (no throw offline)', () => {

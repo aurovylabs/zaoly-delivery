@@ -1,6 +1,6 @@
 /**
  * Durable Site Kit override store for Storybook live preview.
- * Postgres is production SSOT when CREATION_DATABASE_URL is set; disk is dev/cache.
+ * Postgres is production SSOT when ZAOLY_DATABASE_URL is set; disk is dev/cache.
  * Spec: specs/api/site-kit-write.md · knowledge/site-kit-storybook-coolify.md
  */
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'

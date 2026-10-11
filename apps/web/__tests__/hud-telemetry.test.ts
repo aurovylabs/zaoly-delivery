@@ -8,7 +8,7 @@ describe('hud telemetry', () => {
   })
 
   it('no-ops when telemetry env is off (default)', async () => {
-    vi.stubEnv(paths.envCreationHudTelemetry, '')
+    vi.stubEnv(paths.envHudTelemetry, '')
     const { trackHudEvent } = await import('../lib/inspect/hud-telemetry')
     const spy = vi.fn()
     window.addEventListener(paths.hudTelemetryEvent, spy)
@@ -23,7 +23,7 @@ describe('hud telemetry', () => {
   })
 
   it('dispatches CustomEvent when telemetry env is on', async () => {
-    vi.stubEnv(paths.envCreationHudTelemetry, '1')
+    vi.stubEnv(paths.envHudTelemetry, '1')
     const { trackHudEvent } = await import('../lib/inspect/hud-telemetry')
     const spy = vi.fn()
     window.addEventListener(paths.hudTelemetryEvent, spy)

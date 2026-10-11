@@ -184,7 +184,7 @@ describe('VIDEON media BFF (P0 stills)', () => {
       path.join(__dirname, '../components/editor-asset-library-dialog.tsx'),
       'utf8',
     )
-    expect(src).not.toContain('PLEXON_SERVICE_SECRET')
+    expect(src).not.toContain('ZAOLY_SERVICE_SECRET')
     expect(src).not.toContain('ZAOLY_SERVICE_SECRET')
     expect(src).not.toContain('getServiceSecret')
     expect(src).not.toContain('fetch-videon-media')

@@ -7,8 +7,8 @@ import {
   ensureRedisConnected,
   getRedisPublisher,
   launchCodeRedisKey,
-} from './redis/creation-redis'
-import { isCreationRedisConfigured } from './runtime-config'
+} from './redis/zaoly-redis'
+import { isRedisConfigured } from './runtime-config'
 
 export type LaunchCodeClaims = {
   userId: string
@@ -45,7 +45,7 @@ function purgeExpiredMemory(now = Date.now()): void {
 }
 
 async function putClaims(claims: LaunchCodeClaims, ttlSeconds: number): Promise<void> {
-  if (!isCreationRedisConfigured()) {
+  if (!isRedisConfigured()) {
     memoryStore.set(claims.jti, { ...claims, consumed: false })
     return
   }
@@ -58,7 +58,7 @@ async function putClaims(claims: LaunchCodeClaims, ttlSeconds: number): Promise<
 }
 
 async function takeClaims(jti: string): Promise<LaunchCodeClaims | null> {
-  if (!isCreationRedisConfigured()) {
+  if (!isRedisConfigured()) {
     const row = memoryStore.get(jti)
     if (!row || row.consumed) return null
     row.consumed = true
@@ -146,7 +146,7 @@ export async function redeemLaunchCode(launchCode: string): Promise<RedeemLaunch
     return { ok: false, error: 'invalid' }
   }
   if (claims.exp * 1000 <= Date.now()) {
-    if (!isCreationRedisConfigured()) memoryStore.delete(claims.jti)
+    if (!isRedisConfigured()) memoryStore.delete(claims.jti)
     return { ok: false, error: 'expired' }
   }
 

@@ -65,8 +65,8 @@ export async function GET(
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'no-store',
-      'X-Creation-Preview-Source': result.source,
-      'X-Creation-Preview-Page-Id': result.pageId,
+      'X-Zaoly-Preview-Source': result.source,
+      'X-Zaoly-Preview-Page-Id': result.pageId,
     },
   })
 }

@@ -12,7 +12,7 @@ import {
   syncAllGuestCommentsIntoScene,
 } from '../../../../lib/client-page-share/project-guest-comments'
 import { requireApiSession } from '../../../../lib/require-api-session'
-import { isCreationAuthBypassEnabled } from '../../../../lib/runtime-config'
+import { isAuthBypassEnabled } from '../../../../lib/runtime-config'
 import {
   isSceneApiAccess,
   requireSceneApiAccess,
@@ -191,7 +191,7 @@ export async function DELETE(
   })
   if (!isSceneForViewer(loaded)) return loaded
   const role = await resolveSceneAccessRole(loaded.scene, access.userId)
-  if (role !== 'owner' && !isCreationAuthBypassEnabled()) {
+  if (role !== 'owner' && !isAuthBypassEnabled()) {
     return NextResponse.json({ error: 'forbidden' }, { status: 403 })
   }
   const ok = await deleteScene(id)

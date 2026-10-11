@@ -120,8 +120,10 @@ describe('zaolyFetch headers', () => {
       actorLabel: 'zaoly-assistant',
     })
     assert.equal(headers[SERVICE_SECRET_HEADER], 'test-secret')
+    assert.equal(CONTRACT_VERSION_HEADER, 'X-Federation-Contract-Version')
     assert.equal(headers[CONTRACT_VERSION_HEADER], '2026-05-zaoly-federation-v3')
     assert.equal(headers[ACTOR_USER_ID_HEADER], 'user-42')
+    assert.equal(ZAOLY_ACTOR_LABEL_HEADER, 'X-Actor-Label')
     assert.equal(headers[ZAOLY_ACTOR_LABEL_HEADER], 'zaoly-assistant')
     if (prevSecret === undefined) delete process.env.ZAOLY_SERVICE_SECRET
     else process.env.ZAOLY_SERVICE_SECRET = prevSecret

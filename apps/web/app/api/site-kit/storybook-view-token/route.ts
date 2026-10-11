@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '../../../../auth'
 import { requireApiSession } from '../../../../lib/require-api-session'
-import { isCreationAuthBypassEnabled, isServiceAuthConfigured } from '../../../../lib/runtime-config'
+import { isAuthBypassEnabled, isServiceAuthConfigured } from '../../../../lib/runtime-config'
 import { viewerMayAccessCollection } from '../../../../lib/site-kit/site-kit-read-auth'
 import { mintSiteKitViewToken } from '../../../../lib/site-kit/storybook-view-token'
 
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   if (denied) return denied
 
   let userId: string | null = null
-  if (!isServiceAuthConfigured() && isCreationAuthBypassEnabled()) {
+  if (!isServiceAuthConfigured() && isAuthBypassEnabled()) {
     userId = 'dev-local'
   } else {
     const session = await auth()

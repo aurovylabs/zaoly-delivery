@@ -15,18 +15,18 @@ import { paths } from '../lib/paths'
 
 describe('durable scene store', () => {
   const prev = process.env[paths.envSceneStorePath]
-  const prevDb = process.env[paths.envCreationDatabaseUrl]
+  const prevDb = process.env[paths.envDatabaseUrl]
 
   afterEach(() => {
     if (prev == null) delete process.env[paths.envSceneStorePath]
     else process.env[paths.envSceneStorePath] = prev
-    if (prevDb == null) delete process.env[paths.envCreationDatabaseUrl]
-    else process.env[paths.envCreationDatabaseUrl] = prevDb
+    if (prevDb == null) delete process.env[paths.envDatabaseUrl]
+    else process.env[paths.envDatabaseUrl] = prevDb
     __resetSceneStoreForTests({ durable: false })
   })
 
   it('renames and deletes scenes in the JSON store', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-scenes-'))
     const file = path.join(dir, 'scenes.json')
     process.env[paths.envSceneStorePath] = file
@@ -47,7 +47,7 @@ describe('durable scene store', () => {
   })
 
   it('persists upsert to JSON and reloads', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-scenes-'))
     const file = path.join(dir, 'scenes.json')
     process.env[paths.envSceneStorePath] = file
@@ -65,7 +65,7 @@ describe('durable scene store', () => {
   })
 
   it('ignores stale viewport key on load without failing', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-scenes-'))
     const file = path.join(dir, 'scenes.json')
     process.env[paths.envSceneStorePath] = file
@@ -86,7 +86,7 @@ describe('durable scene store', () => {
   })
 
   it('round-trips activeBreakpoint and keeps older saves without it', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-scenes-'))
     const file = path.join(dir, 'scenes.json')
     process.env[paths.envSceneStorePath] = file
@@ -109,7 +109,7 @@ describe('durable scene store', () => {
   })
 
   it('round-trips activePrintPreset (P85)', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-scenes-preset-'))
     const file = path.join(dir, 'scenes.json')
     process.env[paths.envSceneStorePath] = file
@@ -126,7 +126,7 @@ describe('durable scene store', () => {
   })
 
   it('round-trips masters and comments', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-scenes-masters-'))
     const file = path.join(dir, 'scenes.json')
     process.env[paths.envSceneStorePath] = file

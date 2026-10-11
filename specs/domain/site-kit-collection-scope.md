@@ -142,7 +142,7 @@ Each wave: update this spec’s wave status → API/domain deltas → tests → 
 
 ## SK-S1 design notes (locked)
 
-1. **View token (reusable HMAC):** `POST /api/site-kit/storybook-view-token` mints a short-lived signed token for one `platformProjectId`. Storybook Live/Catalog pass it as header `X-Creation-Site-Kit-View` (or query `creationViewToken`). Not one-time (polling). TTL via `paths.siteKitViewTokenTtlSeconds`.
+1. **View token (reusable HMAC):** `POST /api/site-kit/storybook-view-token` mints a short-lived signed token for one `platformProjectId`. Storybook Live/Catalog pass it as header `X-Zaoly-Site-Kit-View` (or query `zaolyViewToken`). Not one-time (polling). TTL via `paths.siteKitViewTokenTtlSeconds`.
 2. **Compositions GET:** Unauthenticated unfiltered list MUST return `401`. Allowed principals: session/service (Collection ACL), view token (exact Collection), provisioning service secret (hydrate/admin dump — CSF bake remains SK-S3).
 3. **Overrides GET:** Atom seed ids (`Site*`) MAY stay public. `Composition*` MUST authorize owning Collection (session/service/view token) or return **`404`** (no existence leak). Legacy unscoped Patterns: session/service only.
 4. **Editor:** Catalog/palette MUST query with `?platformProjectId=` or `?unscoped=1` under session. Storybook deep-links MUST attach view token + Collection when opening Pattern Live.
@@ -159,7 +159,7 @@ Each wave: update this spec’s wave status → API/domain deltas → tests → 
 ## SK-S3 design notes (locked)
 
 1. **Default Storybook image:** MUST NOT bake Pattern CSF for all Collections. `hydrate-composition-stories` bakes Patterns **only** when `STORYBOOK_PLATFORM_PROJECT_ID` is set (optional single-Collection staging image). Otherwise hydrate exits with 0 Pattern CSF — Live/Catalog + view token only.
-2. **Catalog / Live:** Pattern list/preview REQUIRES Collection view token (`creationViewToken`). Without token, Catalog shows a gate message and MUST NOT call unscoped list APIs. No “All Collections” filter in Catalog.
+2. **Catalog / Live:** Pattern list/preview REQUIRES Collection view token (`zaolyViewToken`). Without token, Catalog shows a gate message and MUST NOT call unscoped list APIs. No “All Collections” filter in Catalog.
 3. **Editor:** Storybook deep-links (dialog + Open) MUST open Catalog/Live with view credentials for the active Collection — never bare Storybook origin as the Pattern entry point.
 4. **Atoms:** Static `Site/*` CSF remains world-browsable (shared seed).
 
@@ -167,7 +167,7 @@ Each wave: update this spec’s wave status → API/domain deltas → tests → 
 
 1. **Override id grammar:** Seed remains catalog id (`SiteButton`). Collection fork = `Atom~{scopeKey}~{SiteType}` (same `compositionScopeKey` FNV as Patterns). Max length ≤ 80.
 2. **Default Write/Publish:** When `platformProjectId` is set, atom Publish writes the **fork** id and stamps `platformProjectId` on the override. Does **not** patch shared `*.stories.tsx`.
-3. **Shared seed lane:** `publishLane: 'seed'` (or default without Collection) writes bare `Site*` **only** when `CREATION_SITE_KIT_SHARED_SEED_WRITE=1` (`paths.envSiteKitSharedSeedWrite`). Otherwise `403` `seed-write-forbidden`. Seed writes MUST NOT touch `Atom~*` rows.
+3. **Shared seed lane:** `publishLane: 'seed'` (or default without Collection) writes bare `Site*` **only** when `ZAOLY_SITE_KIT_SHARED_SEED_WRITE=1` (`paths.envSiteKitSharedSeedWrite`). Otherwise `403` `seed-write-forbidden`. Seed writes MUST NOT touch `Atom~*` rows.
 4. **Reads:** `Atom~*` overrides use the same ACL as Pattern overrides (session/view token/provisioning). Seed `Site*` MAY stay public.
 5. **Pull:** Prefer Collection fork override; if missing, fall back to global seed / catalog defaults.
 6. **Product copy:** Designer default for “our button looks different” remains **Save as Pattern**; Publish atoms = Collection fork; shared seed = kit-owner only.

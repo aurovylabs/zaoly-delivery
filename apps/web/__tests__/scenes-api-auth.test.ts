@@ -46,7 +46,7 @@ describe('Scenes API auth (WS-1)', () => {
 
   describe('when local user store is required', () => {
     beforeEach(() => {
-      vi.stubEnv(paths.envCreationAuthBypass, '0')
+      vi.stubEnv(paths.envAuthBypass, '0')
     })
 
     it('POST /api/scenes returns 401 without session', async () => {
@@ -267,12 +267,12 @@ describe('Scenes API auth (WS-1)', () => {
     })
   })
 
-  describe('local auth bypass (CREATION_AUTH_BYPASS)', () => {
+  describe('local auth bypass (ZAOLY_AUTH_BYPASS)', () => {
     it('GET /api/scenes remains open without session when bypass is set', async () => {
       authMock.mockResolvedValue(null)
       delete process.env[paths.envFederationAuthUrl]
       delete process.env[paths.envServiceSecret]
-      vi.stubEnv(paths.envCreationAuthBypass, '1')
+      vi.stubEnv(paths.envAuthBypass, '1')
       const { GET } = await import('../app/api/scenes/route')
       const res = await GET(new Request('http://localhost/api/scenes'))
       expect(res.status).toBe(200)
@@ -282,19 +282,19 @@ describe('Scenes API auth (WS-1)', () => {
       authMock.mockResolvedValue(null)
       delete process.env[paths.envFederationAuthUrl]
       delete process.env[paths.envServiceSecret]
-      vi.stubEnv(paths.envCreationAuthBypass, '0')
+      vi.stubEnv(paths.envAuthBypass, '0')
       const { GET } = await import('../app/api/scenes/route')
       const res = await GET(new Request('http://localhost/api/scenes'))
       expect(res.status).toBe(401)
       expect(await res.json()).toEqual({ error: 'unauthorized' })
     })
 
-    it('ignores CREATION_AUTH_BYPASS in production', async () => {
+    it('ignores ZAOLY_AUTH_BYPASS in production', async () => {
       authMock.mockResolvedValue(null)
       delete process.env[paths.envFederationAuthUrl]
       delete process.env[paths.envServiceSecret]
       vi.stubEnv('NODE_ENV', 'production')
-      vi.stubEnv(paths.envCreationAuthBypass, '1')
+      vi.stubEnv(paths.envAuthBypass, '1')
       vi.resetModules()
       const { GET } = await import('../app/api/scenes/route')
       const res = await GET(new Request('http://localhost/api/scenes'))

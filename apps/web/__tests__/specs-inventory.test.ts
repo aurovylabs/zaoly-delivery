@@ -148,6 +148,7 @@ const requiredSpecs = [
   'knowledge/collection-bindings.md',
   'knowledge/library-fixture-sources.md',
   'knowledge/mcp-server.md',
+  'knowledge/legacy-naming-leftovers.md',
   'knowledge/html-scene-import.md',
   'knowledge/scene-agent-editing.md',
   'knowledge/site-kit.md',
@@ -196,6 +197,7 @@ const requiredSpecs = [
   'knowledge/editor-drag-insert.md',
   'knowledge/creation-postgres.md',
   'knowledge/zaoly-postgres.md',
+  'knowledge/zaoly-redis.md',
   'knowledge/scene-store.md',
   'knowledge/empty-projects-after-ds-deposit.md',
   'knowledge/collection-picker.md',
@@ -388,28 +390,25 @@ describe('specs inventory', () => {
     expect(pathsDoc).toContain('/api/scenes/:id/export')
   })
 
-  it('magcloud-slide-handoff locks publish BFF + provenance', () => {
+  it('magcloud-slide-handoff is removed (410 stubs only)', () => {
     const domain = readFileSync(path.join(repoRoot, 'specs/domain/magcloud-slide-handoff.md'), 'utf8')
-    expect(domain).toContain('Publish to Magcloud')
-    expect(domain).toContain('creation_scene')
-    expect(domain).toContain('Edit in Creation')
-    expect(domain).toContain('islandKey')
+    expect(domain).toContain('Removed')
+    expect(domain).toContain('410')
     expect(domain).toContain('/api/magcloud/boards')
     const api = readFileSync(path.join(repoRoot, 'specs/api/magcloud-slide-handoff.md'), 'utf8')
     expect(api).toContain('apiScenePublishMagcloud')
-    expect(api).toContain('POST /api/scenes/:id/publish-magcloud')
-    expect(api).toContain('MAGCLOUD_UNIVERSE_URL')
-    expect(api).toContain('MAGCLOUD_API_URL')
-    expect(api).toContain('apiMagcloudBoards')
+    expect(api).toContain('print_out_of_scope')
+    expect(api).not.toContain('MAGCLOUD_UNIVERSE_URL')
     const knowledge = readFileSync(path.join(repoRoot, 'knowledge/magcloud-slide-handoff.md'), 'utf8')
+    expect(knowledge).toContain('removed')
     expect(knowledge).toContain('publish-magcloud')
-    expect(knowledge).toContain('creation/deliver')
-    expect(knowledge).toContain('MAGCLOUD_API_URL')
+    expect(knowledge).not.toContain('creation/deliver')
     const pathsDoc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
     expect(pathsDoc).toContain('/api/scenes/:id/publish-magcloud')
     expect(pathsDoc).toContain('/api/magcloud/boards')
-    expect(pathsDoc).toContain('MAGCLOUD_UNIVERSE_URL')
-    expect(pathsDoc).toContain('MAGCLOUD_API_URL')
+    expect(pathsDoc).not.toContain('MAGCLOUD_UNIVERSE_URL')
+    const pathsTs = readFileSync(path.join(repoRoot, 'apps/web/lib/paths.ts'), 'utf8')
+    expect(pathsTs).not.toContain('MAGCLOUD_')
   })
 
   it('app-shell names Zaoly hubs and forbids suite chrome', () => {
@@ -458,16 +457,16 @@ describe('specs inventory', () => {
     const w2 = readFileSync(path.join(repoRoot, 'specs/domain/auth-hardening-w2.md'), 'utf8')
     expect(w2).toContain('GETDEL')
     expect(w2).toContain('NODE_ENV')
-    expect(w2).toContain('CREATION_AUTH_BYPASS')
+    expect(w2).toContain('ZAOLY_AUTH_BYPASS')
     const runtime = readFileSync(path.join(repoRoot, 'apps/web/lib/runtime-config.ts'), 'utf8')
     expect(runtime).toContain("NODE_ENV === 'production'")
     const launch = readFileSync(path.join(repoRoot, 'apps/web/lib/launch-token.ts'), 'utf8')
     expect(launch).toContain('getdel')
     expect(launch).toContain('launch_store_unavailable')
     const pathsDoc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
-    expect(pathsDoc).toContain('creation:v3:launch')
-    const redisDoc = readFileSync(path.join(repoRoot, 'knowledge/creation-redis.md'), 'utf8')
-    expect(redisDoc).toContain('creation:v3:launch')
+    expect(pathsDoc).toContain('zaoly:launch')
+    const redisDoc = readFileSync(path.join(repoRoot, 'knowledge/zaoly-redis.md'), 'utf8')
+    expect(redisDoc).toContain('zaoly:launch')
   })
 
   it('domain hubs document compositions and library Wave 5', () => {
@@ -489,18 +488,18 @@ describe('specs inventory', () => {
     expect(scope).toContain('Isolation key = `platformProjectId`')
     expect(scope).toContain('Isolating by CompositionScene id')
     expect(scope).toContain('storybook-view-token')
-    expect(scope).toContain('X-Creation-Site-Kit-View')
+    expect(scope).toContain('X-Zaoly-Site-Kit-View')
     expect(scope).toContain('Composition~')
     expect(scope).toContain('compositionScopeKey')
     expect(scope).toContain('STORYBOOK_PLATFORM_PROJECT_ID')
-    expect(scope).toContain('creationViewToken')
+    expect(scope).toContain('zaolyViewToken')
     expect(scope).toMatch(/\*\*SK-S1\*\*.*\*\*done\*\*/)
     expect(scope).toMatch(/\*\*SK-S2\*\*.*\*\*done\*\*/)
     expect(scope).toMatch(/\*\*SK-S3\*\*.*\*\*done\*\*/)
     expect(scope).toMatch(/\*\*SK-S4\*\*.*\*\*done\*\*/)
     expect(scope).toMatch(/\*\*SK-S5\*\*.*\*\*done\*\*/)
     expect(scope).toContain('Atom~')
-    expect(scope).toContain('CREATION_SITE_KIT_SHARED_SEED_WRITE')
+    expect(scope).toContain('ZAOLY_SITE_KIT_SHARED_SEED_WRITE')
     expect(scope).toContain('@zaoly/site-kit/c/')
     expect(scope).toContain('compositionPackageImportPath')
 
@@ -532,7 +531,7 @@ describe('specs inventory', () => {
     const pathsDoc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
     expect(pathsDoc).toContain('site-kit-collection-scope.md')
     expect(pathsDoc).toContain('storybook-view-token')
-    expect(pathsDoc).toContain('CREATION_SITE_KIT_SHARED_SEED_WRITE')
+    expect(pathsDoc).toContain('ZAOLY_SITE_KIT_SHARED_SEED_WRITE')
     expect(pathsDoc).toContain('@zaoly/site-kit/c/')
 
     const pkg = JSON.parse(
@@ -550,7 +549,18 @@ describe('specs inventory', () => {
     expect(spec).toContain('zaoly.site_kit_page_save')
     expect(spec).toContain('3102')
     expect(spec).toContain('ZAOLY_API_URL')
-    expect(spec).toContain('CREATION_API_URL')
+    expect(spec).toContain('ZAOLY_API_URL')
+  })
+
+  it('legacy-naming leftovers inventory documents purge vs aliases', () => {
+    const doc = readFileSync(path.join(repoRoot, 'knowledge/legacy-naming-leftovers.md'), 'utf8')
+    expect(doc).toContain('X-Federation-Contract-Version')
+    expect(doc).toMatch(/msqdx|MSQDX/i)
+    expect(doc).toContain('ZAOLY_*')
+    expect(doc).toContain('Magcloud')
+    expect(doc).toContain('Removed')
+    const pathsDoc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
+    expect(pathsDoc).toContain('legacy-naming-leftovers.md')
   })
 
   it('scene-agent-editing documents ops API and optimistic lock', () => {
@@ -672,7 +682,7 @@ describe('specs inventory', () => {
     expect(dockerfile).toContain('npm run build -w @zaoly/ui')
     expect(dockerfile).not.toContain('git clone')
     const staging = readFileSync(path.join(repoRoot, 'knowledge/staging-coolify.md'), 'utf8')
-    expect(staging).toContain('CREATION_FEDERATION_MODE=live')
+    expect(staging).toContain('ZAOLY_FEDERATION_MODE=live')
   })
 
   it('editor float rails documents P64 detach + collapse persist', () => {
@@ -897,7 +907,7 @@ describe('specs inventory', () => {
     expect(p76).toContain('token-picker-browser-p77.md')
     const p77 = readFileSync(path.join(repoRoot, 'knowledge/token-picker-browser-p77.md'), 'utf8')
     expect(p77).toContain('W-TOKEN-PICKER-BROWSER')
-    expect(p77).toContain('creation.inspect.tokenRecent')
+    expect(p77).toContain('zaoly.inspect.tokenRecent')
     const migration = readFileSync(path.join(repoRoot, 'specs/domain/editor-migration.md'), 'utf8')
     expect(migration).toContain('W-TOKEN-PICKER-LENGTH')
     expect(migration).toContain('P76')
@@ -908,7 +918,7 @@ describe('specs inventory', () => {
     const bump = readFileSync(path.join(repoRoot, 'knowledge/creation-p77-token-picker-browser-bump.md'), 'utf8')
     expect(bump).toContain('febe073a7deee9231bd1475a165b6a9e577b42f4')
     const pathsDoc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
-    expect(pathsDoc).toContain('creation.inspect.tokenRecent')
+    expect(pathsDoc).toContain('zaoly.inspect.tokenRecent')
     expect(pathsDoc).toContain('token-picker-browser-p77.md')
     const slots = readFileSync(path.join(repoRoot, 'knowledge/editor-atomic-slots.md'), 'utf8')
     expect(slots).toContain('W-SURFACE-EDIT')
@@ -979,8 +989,8 @@ describe('specs inventory', () => {
 
   it('paths knowledge documents in-app editor flag', () => {
     const doc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
-    expect(doc).toContain('CREATION_EDITOR_INAPP')
-    expect(doc).toContain('NEXT_PUBLIC_CREATION_SMART_HUD')
+    expect(doc).toContain('ZAOLY_EDITOR_INAPP')
+    expect(doc).toContain('NEXT_PUBLIC_ZAOLY_SMART_HUD')
     expect(doc).toContain('canvas-smart-hud.md')
     expect(doc).toContain('/editor')
     expect(doc).toContain('editor-parity-parallel-plan.md')
@@ -1131,7 +1141,7 @@ describe('specs inventory', () => {
     const api = readFileSync(path.join(repoRoot, 'specs/api/videon-media-bff.md'), 'utf8')
     expect(api).toContain('/api/videon-media')
     expect(api).toContain('VIDEON_API_URL')
-    expect(api).toContain('X-Plexon-User-Id')
+    expect(api).toContain('X-Actor-User-Id')
     const inspect = readFileSync(path.join(repoRoot, 'specs/domain/editor-inspect.md'), 'utf8')
     expect(inspect).toContain('videon-asset-consume.md')
     expect(inspect).toContain('videonMediaRef')
@@ -1384,7 +1394,7 @@ describe('specs inventory', () => {
     expect(domainSpec).toContain('Follow polish')
     expect(domainSpec).toContain('Activity chips')
     expect(domainSpec).toContain('Locked ·')
-    expect(domainSpec).toContain('CREATION_REDIS_URL')
+    expect(domainSpec).toContain('ZAOLY_REDIS_URL')
     expect(domainSpec).toContain('Wave D')
     expect(domainSpec).toContain('concurrent-edit-w6.md')
 
@@ -1402,8 +1412,8 @@ describe('specs inventory', () => {
     expect(apiSpec).toContain('"mode":"delta"')
     expect(apiSpec).toContain('upserts')
     expect(apiSpec).toContain('80 ms')
-    expect(apiSpec).toContain('CREATION_REDIS_URL')
-    expect(apiSpec).toContain('creation:v3:scene-bus')
+    expect(apiSpec).toContain('ZAOLY_REDIS_URL')
+    expect(apiSpec).toContain('zaoly:scene-bus')
 
     const knowledge = readFileSync(
       path.join(repoRoot, 'knowledge/presence-collaboration.md'),
@@ -1417,8 +1427,8 @@ describe('specs inventory', () => {
     expect(knowledge).toContain('80 ms')
     expect(knowledge).toContain('PresenceActivityRibbon')
     expect(knowledge).toContain('Follow polish')
-    expect(knowledge).toContain('CREATION_REDIS_URL')
-    expect(knowledge).toContain('creation:v3:scene-bus')
+    expect(knowledge).toContain('ZAOLY_REDIS_URL')
+    expect(knowledge).toContain('zaoly:scene-bus')
   })
 
   it('P116 documents scene version history, milestones, and versions API', () => {
@@ -1457,7 +1467,7 @@ describe('specs inventory', () => {
     const health = readFileSync(path.join(repoRoot, 'apps/web/app/api/health/route.ts'), 'utf8')
     expect(health).toContain('versionStore')
     const pathsDoc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
-    expect(pathsDoc).toContain('CREATION_VERSION_STORE_PATH')
+    expect(pathsDoc).toContain('ZAOLY_VERSION_STORE_PATH')
     expect(pathsDoc).toContain('backup-rollback.md')
   })
 
@@ -1470,12 +1480,12 @@ describe('specs inventory', () => {
     expect(w4).toContain('unbound-scene')
     const obs = readFileSync(path.join(repoRoot, 'knowledge/observability.md'), 'utf8')
     expect(obs).toContain('/api/health')
-    expect(obs).toContain('CREATION_ERROR_WEBHOOK_URL')
+    expect(obs).toContain('ZAOLY_ERROR_WEBHOOK_URL')
     const report = readFileSync(
       path.join(repoRoot, 'apps/web/lib/observability/report-error.ts'),
       'utf8',
     )
-    expect(report).toContain('[creation:error]')
+    expect(report).toContain('[zaoly:error]')
     const acl = readFileSync(
       path.join(repoRoot, 'apps/web/lib/require-scene-collection-access.ts'),
       'utf8',
@@ -1500,20 +1510,20 @@ describe('specs inventory', () => {
       path.join(repoRoot, 'specs/domain/observability-sentry-w9.md'),
       'utf8',
     )
-    expect(w9).toContain('CREATION_SENTRY_DSN')
-    expect(w9).toContain('NEXT_PUBLIC_CREATION_SENTRY_DSN')
+    expect(w9).toContain('ZAOLY_SENTRY_DSN')
+    expect(w9).toContain('NEXT_PUBLIC_ZAOLY_SENTRY_DSN')
     expect(w9).toContain('reportError')
     expect(w9).toContain('captureException')
     expect(existsSync(path.join(repoRoot, 'specs/domain/observability-sentry-w9.md'))).toBe(true)
     const obs = readFileSync(path.join(repoRoot, 'knowledge/observability.md'), 'utf8')
-    expect(obs).toContain('CREATION_SENTRY_DSN')
+    expect(obs).toContain('ZAOLY_SENTRY_DSN')
     expect(obs).toContain('observability-sentry-w9.md')
     const pathsDoc = readFileSync(path.join(repoRoot, 'knowledge/paths.md'), 'utf8')
-    expect(pathsDoc).toContain('CREATION_SENTRY_DSN')
-    expect(pathsDoc).toContain('NEXT_PUBLIC_CREATION_SENTRY_DSN')
+    expect(pathsDoc).toContain('ZAOLY_SENTRY_DSN')
+    expect(pathsDoc).toContain('NEXT_PUBLIC_ZAOLY_SENTRY_DSN')
     const pathsTs = readFileSync(path.join(repoRoot, 'apps/web/lib/paths.ts'), 'utf8')
-    expect(pathsTs).toContain('envCreationSentryDsn')
-    expect(pathsTs).toContain('CREATION_SENTRY_DSN')
+    expect(pathsTs).toContain('envSentryDsn')
+    expect(pathsTs).toContain('ZAOLY_SENTRY_DSN')
     const report = readFileSync(
       path.join(repoRoot, 'apps/web/lib/observability/report-error.ts'),
       'utf8',
@@ -1535,14 +1545,14 @@ describe('specs inventory', () => {
     )
     expect(w10).toContain('withSentryConfig')
     expect(w10).toContain('sentryTunnelPath')
-    expect(w10).toContain('NEXT_PUBLIC_CREATION_SENTRY_REPLAY')
+    expect(w10).toContain('NEXT_PUBLIC_ZAOLY_SENTRY_REPLAY')
     expect(w10).toContain('SENTRY_AUTH_TOKEN')
     const obs = readFileSync(path.join(repoRoot, 'knowledge/observability.md'), 'utf8')
     expect(obs).toContain('observability-sentry-w10.md')
     expect(obs).toContain('/monitoring/sentry-tunnel')
     const pathsTs = readFileSync(path.join(repoRoot, 'apps/web/lib/paths.ts'), 'utf8')
     expect(pathsTs).toContain('sentryTunnelPath')
-    expect(pathsTs).toContain('envCreationSentryReplay')
+    expect(pathsTs).toContain('envSentryReplay')
     const nextConfig = readFileSync(path.join(repoRoot, 'apps/web/next.config.ts'), 'utf8')
     expect(nextConfig).toContain('withSentryConfig')
     expect(nextConfig).toContain('@sentry/nextjs/config')

@@ -9,7 +9,7 @@ describe('dockerfile packaging', () => {
   it('exposes port 3009 and in-repo UI workspace layout', () => {
     const df = readFileSync(path.join(repoRoot, 'Dockerfile'), 'utf8')
     expect(df).toContain('EXPOSE 3009')
-    expect(df).toContain('/workspace/creation-v3')
+    expect(df).toContain('/workspace/zaoly')
     expect(df).toContain('ZAOLY_UI_SOURCE=in-repo')
     expect(df).toContain(paths.zaolyUiSourceDefault)
     expect(df).not.toContain('/workspace/zaoly-ui')

@@ -21,11 +21,11 @@ import {
  * Hot catalog: polls CREATION for Collection-scoped compositions (SK-S3).
  * Spec: site-kit-collection-scope.md · site-kit-compositions.md
  */
-const CREATION_ORIGIN = (
+const ZAOLY_ORIGIN = (
   (typeof import.meta !== 'undefined' &&
     (import.meta as ImportMeta & { env?: Record<string, string> }).env
-      ?.STORYBOOK_CREATION_ORIGIN) ||
-  (typeof process !== 'undefined' ? process.env.STORYBOOK_CREATION_ORIGIN : '') ||
+      ?.STORYBOOK_ZAOLY_ORIGIN) ||
+  (typeof process !== 'undefined' ? process.env.STORYBOOK_ZAOLY_ORIGIN : '') ||
   ''
 ).replace(/\/$/, '')
 
@@ -53,10 +53,10 @@ type OverrideBody = {
 }
 
 async function fetchCatalog(): Promise<CatalogEntry[] | { error: 'unauthorized' | 'network' }> {
-  if (!CREATION_ORIGIN) return []
+  if (!ZAOLY_ORIGIN) return []
   if (!hasSiteKitViewCredentials()) return { error: 'unauthorized' }
   try {
-    const res = await fetch(siteKitCompositionsListUrl(CREATION_ORIGIN), {
+    const res = await fetch(siteKitCompositionsListUrl(ZAOLY_ORIGIN), {
       cache: 'no-store',
       headers: siteKitViewAuthHeaders(),
     })
@@ -70,10 +70,10 @@ async function fetchCatalog(): Promise<CatalogEntry[] | { error: 'unauthorized' 
 }
 
 async function fetchOverride(componentId: string): Promise<OverrideBody | null> {
-  if (!CREATION_ORIGIN || !hasSiteKitViewCredentials()) return null
+  if (!ZAOLY_ORIGIN || !hasSiteKitViewCredentials()) return null
   const res = await fetch(
     withSiteKitViewTokenQuery(
-      `${CREATION_ORIGIN}/api/site-kit/overrides/${encodeURIComponent(componentId)}?t=${Date.now()}`,
+      `${ZAOLY_ORIGIN}/api/site-kit/overrides/${encodeURIComponent(componentId)}?t=${Date.now()}`,
     ),
     { cache: 'no-store', headers: siteKitViewAuthHeaders() },
   )
@@ -184,10 +184,10 @@ function CatalogPanel() {
         ? override.composition
         : null)
 
-  if (!CREATION_ORIGIN) {
+  if (!ZAOLY_ORIGIN) {
     return (
       <p style={{ fontFamily: 'system-ui', color: '#555' }}>
-        Set <code>STORYBOOK_CREATION_ORIGIN</code> at Storybook build time to enable live
+        Set <code>STORYBOOK_ZAOLY_ORIGIN</code> at Storybook build time to enable live
         catalog polling.
       </p>
     )
@@ -202,7 +202,7 @@ function CatalogPanel() {
         <strong>Collection scope required</strong>
         <p style={{ color: '#555', margin: 0 }}>
           Pattern Catalog is Collection-gated (SK-S3). Open Storybook from the CREATION editor
-          or Library so the link includes a <code>creationViewToken</code> for your Collection.
+          or Library so the link includes a <code>zaolyViewToken</code> for your Collection.
           Anonymous browsing of other companies’ Patterns is not allowed.
         </p>
       </div>
@@ -303,7 +303,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Collection-scoped hot catalog (SK-S3). Open from CREATION with creationViewToken — no cross-tenant Pattern browse.',
+          'Collection-scoped hot catalog (SK-S3). Open from CREATION with zaolyViewToken — no cross-tenant Pattern browse.',
       },
     },
   },

@@ -80,7 +80,7 @@ export function assessKitDrift(
   }
 }
 
-export const KIT_DRIFT_DISMISS_STORAGE_KEY = 'creation.kit.drift.dismissed.v1'
+export const KIT_DRIFT_DISMISS_STORAGE_KEY = 'zaoly.kit.drift.dismissed.v1'
 
 export function kitDriftDismissFingerprint(
   sceneId: string,

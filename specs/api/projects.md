@@ -16,7 +16,7 @@ Accepted (Wave 3 + **P71 / W-COLLECTION-PICKER** + **P73 / picker-sync**) — 20
 | PATCH | `/api/projects/:id` | Name / description |
 | POST | `/api/projects/:id/archive` | Archive Collection via Plexon when bound; local `status: archived` → `ProjectDetail` |
 | DELETE | `/api/projects/:id` | **Alias of archive** (204) — no hard-delete of Collection mirrors |
-| POST | `/api/projects/:id/sync-plexon` | Outbound origin + bind (`CREATION_FEDERATION_MODE=live` required; else `503 federation_mode_dummy`) |
+| POST | `/api/projects/:id/sync-plexon` | Outbound origin + bind (`ZAOLY_FEDERATION_MODE=live` required; else `503 federation_mode_dummy`) |
 | POST | `/api/projects/sync-from-plexon` | Ask Plexon to upsert CREATION mirrors for **all Collections the user can see** (live mode) |
 | PUT | `/api/platform/provisioning/projects/:id` | Plexon → CREATION upsert |
 | GET | `/api/platform/provisioning/projects/:id` | Dashboard summary |
@@ -26,10 +26,10 @@ Accepted (Wave 3 + **P71 / W-COLLECTION-PICKER** + **P73 / picker-sync**) — 20
 { name: string; description?: string; platformProjectId?: string; ownerPlexonUserId?: string; platformCompanyId?: string }
 ```
 - When `platformProjectId` is a real Collection UUID → bind locally, skip origin
-- Otherwise generate `plx-local-…` and call origin when `CREATION_FEDERATION_MODE=live`
+- Otherwise generate `plx-local-…` and call origin when `ZAOLY_FEDERATION_MODE=live`
 
 ## Archive (global)
-When `CREATION_FEDERATION_MODE=live` and the project has a real Collection UUID, archive calls Plexon `PATCH /api/platform/provisioning/projects/:platformProjectId` with service secret + `X-Plexon-User-Id` (`{ status: 'archived' }`). Fan-out upserts archived to sibling products. Unbound / dummy: local archive only. Restore via Plexon hub. Hard-delete of local rows remains store/ops only.
+When `ZAOLY_FEDERATION_MODE=live` and the project has a real Collection UUID, archive calls Plexon `PATCH /api/platform/provisioning/projects/:platformProjectId` with service secret + `X-Actor-User-Id` (`{ status: 'archived' }`). Fan-out upserts archived to sibling products. Unbound / dummy: local archive only. Restore via Plexon hub. Hard-delete of local rows remains store/ops only.
 
 ## Contract shapes
 `@zaoly/contracts` — `ProjectSummary`, `ProjectDetail`, `CreateProjectInput`, `UpdateProjectInput`.

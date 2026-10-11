@@ -39,7 +39,7 @@ declare global {
         }
       }
     }
-    __CREATION_NATIVE_BRIDGE__?: {
+    __ZAOLY_NATIVE_BRIDGE__?: {
       dispatchCommand: (cmd: CreationNativeCommand) => void
     }
   }

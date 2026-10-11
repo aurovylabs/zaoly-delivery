@@ -1,36 +1,25 @@
 /**
  * HTTP client for the Zaoly web BFF.
- * Auth: ZAOLY_SERVICE_SECRET (+ aliases) and X-Actor-User-Id for service writes.
+ * Auth: ZAOLY_SERVICE_SECRET + X-Actor-User-Id for service writes.
  */
 
 const CONTRACT =
-  process.env.ZAOLY_FEDERATION_CONTRACT_VERSION?.trim() ||
-  process.env.PLEXON_FEDERATION_CONTRACT_VERSION?.trim() ||
-  '2026-05-zaoly-federation-v3'
+  process.env.ZAOLY_FEDERATION_CONTRACT_VERSION?.trim() || '2026-05-zaoly-federation-v3'
 
 function zaolyApiBaseUrl(): string {
-  return (
-    process.env.ZAOLY_API_URL?.trim() ||
-    process.env.CREATION_API_URL?.trim() ||
-    ''
-  )
+  return process.env.ZAOLY_API_URL?.trim() || ''
 }
 
 function serviceSecret(): string {
-  return (
-    process.env.ZAOLY_SERVICE_SECRET?.trim() ||
-    process.env.PLEXON_SERVICE_SECRET?.trim() ||
-    process.env.CREATION_SERVICE_SECRET?.trim() ||
-    ''
-  )
+  return process.env.ZAOLY_SERVICE_SECRET?.trim() || ''
 }
 
 /** Matches apps/web/lib/require-scene-api-access.ts */
 export const ACTOR_USER_ID_HEADER = 'X-Actor-User-Id'
-/** Legacy alias still accepted by BFF for service actor labels. */
-export const ZAOLY_ACTOR_LABEL_HEADER = 'X-Creation-Actor-Label'
+export const ZAOLY_ACTOR_LABEL_HEADER = 'X-Actor-Label'
 export const SERVICE_SECRET_HEADER = 'X-Service-Secret'
-export const CONTRACT_VERSION_HEADER = 'X-Plexon-Contract-Version'
+/** Matches apps/web/lib/federation-contract.ts */
+export const CONTRACT_VERSION_HEADER = 'X-Federation-Contract-Version'
 
 export type ZaolyFetchOptions = {
   actorUserId?: string
@@ -62,20 +51,14 @@ export function buildZaolyHeaders(
     headers[CONTRACT_VERSION_HEADER] = CONTRACT
   }
   const actor = opts.actorUserId?.trim()
-  if (actor) {
-    headers[ACTOR_USER_ID_HEADER] = actor
-  }
+  if (actor) headers[ACTOR_USER_ID_HEADER] = actor
   const label = opts.actorLabel?.trim()
-  if (label) {
-    headers[ZAOLY_ACTOR_LABEL_HEADER] = label
-  }
+  if (label) headers[ZAOLY_ACTOR_LABEL_HEADER] = label
   return headers
 }
 
 export type ZaolyRequestInit = RequestInit & {
   zaoly?: ZaolyFetchOptions
-  /** @deprecated use `zaoly` */
-  creation?: ZaolyFetchOptions
 }
 
 function messageFromErrorBody(body: Record<string, unknown>, status: number): string {
@@ -93,8 +76,8 @@ export async function zaolyFetch<T = unknown>(
   if (!zaolyApiBaseUrl()) {
     return { error: true, message: 'ZAOLY_API_URL not configured' }
   }
-  const { zaoly, creation, ...fetchOptions } = options
-  const actorOpts = zaoly ?? creation ?? {}
+  const { zaoly, ...fetchOptions } = options
+  const actorOpts = zaoly ?? {}
   const base = zaolyApiBaseUrl()
   const url = path.startsWith('http')
     ? path
@@ -145,15 +128,3 @@ export async function zaolyFetch<T = unknown>(
 export function isZaolyError<T>(r: T | ZaolyFetchError): r is ZaolyFetchError {
   return typeof r === 'object' && r !== null && 'error' in r && (r as ZaolyFetchError).error === true
 }
-
-/** @deprecated aliases */
-export const creationFetch = zaolyFetch
-export const isCreationError = isZaolyError
-export const buildCreationHeaders = buildZaolyHeaders
-export const CREATION_ACTOR_LABEL_HEADER = ZAOLY_ACTOR_LABEL_HEADER
-export const PLEXON_USER_ID_HEADER = ACTOR_USER_ID_HEADER
-export const PLEXON_SERVICE_SECRET_HEADER = SERVICE_SECRET_HEADER
-export const PLEXON_CONTRACT_VERSION_HEADER = CONTRACT_VERSION_HEADER
-export type CreationFetchOptions = ZaolyFetchOptions
-export type CreationRequestInit = ZaolyRequestInit
-export type CreationFetchError = ZaolyFetchError

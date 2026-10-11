@@ -57,4 +57,4 @@
 
 ## Service headers
 
-Same as scene ops: `X-Plexon-User-Id` / actor attribution when called from MCP.
+Same as scene ops: `X-Actor-User-Id` / actor attribution when called from MCP.

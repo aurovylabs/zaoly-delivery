@@ -13,15 +13,15 @@ import { paths } from '../lib/paths'
 import { DEFAULT_SCENE_PAGE_ID } from '../lib/scene/scene-pages'
 
 describe('client page share P8 — project guest pins into scene.comments', () => {
-  const prevBackend = process.env.CREATION_SCENE_STORE
+  const prevBackend = process.env.ZAOLY_SCENE_STORE
 
   beforeEach(() => {
-    process.env.CREATION_SCENE_STORE = 'memory'
+    process.env.ZAOLY_SCENE_STORE = 'memory'
   })
 
   afterEach(() => {
-    if (prevBackend === undefined) delete process.env.CREATION_SCENE_STORE
-    else process.env.CREATION_SCENE_STORE = prevBackend
+    if (prevBackend === undefined) delete process.env.ZAOLY_SCENE_STORE
+    else process.env.ZAOLY_SCENE_STORE = prevBackend
   })
 
   it('maps guest id to cmt_crs_ scene comment id via paths', () => {

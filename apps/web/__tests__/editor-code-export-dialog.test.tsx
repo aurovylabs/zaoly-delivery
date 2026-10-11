@@ -503,7 +503,7 @@ describe('EditorCodeExportDialog (P98 / P99 Developer Handoff)', () => {
     })
     expect(screen.queryByTestId('export-copy-storyblok-btn')).toBeNull()
     expect(screen.queryByTestId('export-storyblok-pack')).toBeNull()
-    expect(document.body.textContent ?? '').not.toContain('creation-v3-storyblok-poc')
+    expect(document.body.textContent ?? '').not.toContain('zaoly-storyblok-poc')
   })
 
   it('does not expose a Download action (copy-only handoff)', () => {

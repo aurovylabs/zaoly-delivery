@@ -14,7 +14,7 @@ Extend optional Sentry **behind env** without requiring Coolify DSN or build tok
 | Browser **tunnel** | Client init uses `paths.sentryTunnelPath`; middleware treats tunnel as public |
 | `withSentryConfig` | Any DSN or `SENTRY_AUTH_TOKEN` present at build |
 | Source map upload | `SENTRY_AUTH_TOKEN` + `SENTRY_ORG` + `SENTRY_PROJECT` |
-| Session Replay | Browser DSN **and** `NEXT_PUBLIC_CREATION_SENTRY_REPLAY` truthy — **error-only** (`replaysSessionSampleRate: 0`, `replaysOnErrorSampleRate: 1`), masked text/inputs |
+| Session Replay | Browser DSN **and** `NEXT_PUBLIC_ZAOLY_SENTRY_REPLAY` truthy — **error-only** (`replaysSessionSampleRate: 0`, `replaysOnErrorSampleRate: 1`), masked text/inputs |
 
 Call sites stay on `reportError`. No app-wide `Sentry.capture*` scatter. Horizontal scale remains out of scope.
 
@@ -22,8 +22,8 @@ Call sites stay on `reportError`. No app-wide `Sentry.capture*` scatter. Horizon
 
 | Env | Role |
 |-----|------|
-| `CREATION_SENTRY_DSN` / `NEXT_PUBLIC_CREATION_SENTRY_DSN` | Runtime DSN (W9) |
-| `NEXT_PUBLIC_CREATION_SENTRY_REPLAY` | Opt-in error-only Session Replay (W10) |
+| `ZAOLY_SENTRY_DSN` / `NEXT_PUBLIC_ZAOLY_SENTRY_DSN` | Runtime DSN (W9) |
+| `NEXT_PUBLIC_ZAOLY_SENTRY_REPLAY` | Opt-in error-only Session Replay (W10) |
 | `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Build-time source maps (W10; never commit token) |
 | Tunnel path | `paths.sentryTunnelPath` = `/monitoring/sentry-tunnel` |
 

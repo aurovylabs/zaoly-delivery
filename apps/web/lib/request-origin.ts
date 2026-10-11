@@ -5,7 +5,7 @@
  */
 
 import { paths } from './paths'
-import { creationPublicUrl } from './runtime-config'
+import { zaolyPublicUrl } from './runtime-config'
 
 function originFromUrl(raw: string | null | undefined): string | null {
   const v = raw?.trim()
@@ -20,11 +20,11 @@ function originFromUrl(raw: string | null | undefined): string | null {
 /** Canonical browser origins that may mutate CREATION with session cookies. */
 export function allowedMutatingApiOrigins(): string[] {
   const set = new Set<string>()
-  const pub = originFromUrl(creationPublicUrl())
+  const pub = originFromUrl(zaolyPublicUrl())
   if (pub) set.add(pub)
   set.add(`http://localhost:${paths.devPort}`)
   set.add(`http://127.0.0.1:${paths.devPort}`)
-  const staging = originFromUrl(paths.ecosystemStagingCreation)
+  const staging = originFromUrl(paths.ecosystemStagingZaoly)
   if (staging) set.add(staging)
   return [...set]
 }

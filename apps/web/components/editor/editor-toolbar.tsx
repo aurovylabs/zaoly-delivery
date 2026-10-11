@@ -46,10 +46,8 @@ export type EditorToolbarProps = {
   onSave: () => void
   pdfBusy: boolean
   exportBusy?: boolean
-  magcloudBusy?: boolean
   onDownloadPdf: () => void
   onSurfaceExport?: (format: 'png' | 'pdf', scope?: 'active' | 'all') => void
-  onPublishToMagcloud?: () => void
   onHtmlPreviewOpen: () => void
   onCodeExportOpen: () => void
   onSavePageAsPattern?: (opts?: { allPages?: boolean; pageId?: string }) => void
@@ -152,8 +150,7 @@ export function EditorToolbarTools({
         },
       )
     }
-    // Magazin PDF / Magcloud — out of scope for Zaoly web design
-    // (`knowledge/print-out-of-scope-for-zaoly.md`). Surface PNG/PDF remain.
+    // Magazin PDF out of scope (`print-out-of-scope-for-zaoly.md`). Surface PNG/PDF remain.
     items.push(
       {
         id: 'html',

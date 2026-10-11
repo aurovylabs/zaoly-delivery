@@ -21,18 +21,18 @@ import { paths } from '../lib/paths'
 
 describe('resolveEditorInitialScene', () => {
   const prev = process.env[paths.envSceneStorePath]
-  const prevDb = process.env[paths.envCreationDatabaseUrl]
+  const prevDb = process.env[paths.envDatabaseUrl]
 
   afterEach(() => {
     if (prev == null) delete process.env[paths.envSceneStorePath]
     else process.env[paths.envSceneStorePath] = prev
-    if (prevDb == null) delete process.env[paths.envCreationDatabaseUrl]
-    else process.env[paths.envCreationDatabaseUrl] = prevDb
+    if (prevDb == null) delete process.env[paths.envDatabaseUrl]
+    else process.env[paths.envDatabaseUrl] = prevDb
     __resetSceneStoreForTests({ durable: false })
   })
 
   it('loads persisted default scene without sceneId query param', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -48,7 +48,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('does not regenerate in-code demo when store has scene-demo', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -75,7 +75,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('loads explicit sceneId when provided', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -89,7 +89,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('loads personal starter for viewerUserId instead of shared scene-demo', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -106,7 +106,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('preserves ownerUserId when soft-reseeding Zaoly default landing', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -133,7 +133,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('seeds Zaoly default landing on first visit when store is empty', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -149,7 +149,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('seeds Zaoly default landing for a new Collection with no scenes', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -168,7 +168,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('upgrades an empty Untitled blank to the Zaoly default landing', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -183,7 +183,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('seeds deposit landing for Zaoly Collection', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -197,7 +197,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('reuses persisted deposit landing for Zaoly Collection', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -214,7 +214,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('auto-reseeds legacy single-page deposit landing to three artboards', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -231,7 +231,7 @@ describe('resolveEditorInitialScene', () => {
   })
 
   it('seeds Vaillant landing for Vaillant Group Collection', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'creation-editor-boot-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })

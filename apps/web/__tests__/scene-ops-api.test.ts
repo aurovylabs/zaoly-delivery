@@ -479,7 +479,7 @@ describe('Scene ops API (P90)', () => {
     beforeEach(() => {
       vi.stubEnv(paths.envFederationAuthUrl, 'https://plexon.test')
       vi.stubEnv(paths.envServiceSecret, 'test-secret')
-      vi.stubEnv(paths.envCreationAuthBypass, '0')
+      vi.stubEnv(paths.envAuthBypass, '0')
     })
 
     it('POST /api/scenes/:id/ops accepts service secret with actor', async () => {

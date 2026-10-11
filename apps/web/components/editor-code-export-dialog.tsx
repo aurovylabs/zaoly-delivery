@@ -406,7 +406,9 @@ export function EditorCodeExportDialog({
     } catch (err) {
       const raw = err instanceof Error ? err.message : 'Storyblok push failed'
       setStoryblokError(
-        raw.length > 240 || raw.includes('creation-v3-storyblok-poc')
+        raw.length > 240 ||
+        raw.includes('zaoly-storyblok-poc') ||
+        raw.includes('zaoly-storyblok-poc')
           ? 'Storyblok push failed'
           : raw,
       )

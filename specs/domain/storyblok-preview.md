@@ -34,4 +34,4 @@ Host a **public** HTTPS preview that Storyblok Visual Editor can iframe, renderi
 
 - Unit tests: blok → composition mapping for stack/text/button.
 - Specs inventory lists this file; paths document preview URL for Space Settings.
-- Staging URL: `{URL_CREATION_V3}/preview/storyblok/` (set as Visual Editor Location).
+- Staging URL: `{URL_ZAOLY_STAGING}/preview/storyblok/` (set as Visual Editor Location).

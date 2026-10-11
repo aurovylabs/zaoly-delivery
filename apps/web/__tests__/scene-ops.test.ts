@@ -666,7 +666,7 @@ describe('palette drop insert plan (P31)', () => {
 
 describe('scene store', () => {
   it('upserts and binds platformProjectId', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     __resetSceneStoreForTests({ durable: false })
     const scene = createLegacyFixtureScene()
     const saved = await upsertScene(scene)

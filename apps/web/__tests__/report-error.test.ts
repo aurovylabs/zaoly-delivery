@@ -1,3 +1,4 @@
+/** @vitest-environment jsdom */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { paths } from '../lib/paths'
 
@@ -20,7 +21,7 @@ describe('reportError (W4 + W9)', () => {
     replayIntegration.mockClear()
   })
 
-  it('logs structured creation:error without throwing', async () => {
+  it('logs structured zaoly:error without throwing', async () => {
     const { reportError, resetReportErrorSentryStateForTests } = await import(
       '../lib/observability/report-error'
     )
@@ -34,7 +35,7 @@ describe('reportError (W4 + W9)', () => {
     expect(payload.digest).toBe('d9')
   })
 
-  it('posts to webhook when CREATION_ERROR_WEBHOOK_URL is set', async () => {
+  it('posts to webhook when ZAOLY_ERROR_WEBHOOK_URL is set', async () => {
     const { reportError, resetReportErrorSentryStateForTests } = await import(
       '../lib/observability/report-error'
     )
@@ -42,7 +43,7 @@ describe('reportError (W4 + W9)', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     const fetchMock = vi.fn(async () => new Response(null, { status: 204 }))
     vi.stubGlobal('fetch', fetchMock)
-    vi.stubEnv(paths.envCreationErrorWebhookUrl, 'https://hooks.example/creation')
+    vi.stubEnv(paths.envErrorWebhookUrl, 'https://hooks.example/creation')
     reportError(new Error('hooked'), { source: 'webhook-test' })
     expect(fetchMock).toHaveBeenCalled()
     const [url, initOpts] = fetchMock.mock.calls[0]!
@@ -52,7 +53,7 @@ describe('reportError (W4 + W9)', () => {
       service: string
       message: string
     }
-    expect(body.service).toBe('creation-v3')
+    expect(body.service).toBe('zaoly')
     expect(body.message).toBe('hooked')
   })
 
@@ -69,13 +70,13 @@ describe('reportError (W4 + W9)', () => {
     expect(captureException).not.toHaveBeenCalled()
   })
 
-  it('captures to Sentry when CREATION_SENTRY_DSN is set (W9)', async () => {
+  it('captures to Sentry when ZAOLY_SENTRY_DSN is set (W9)', async () => {
     const { reportError, resetReportErrorSentryStateForTests } = await import(
       '../lib/observability/report-error'
     )
     resetReportErrorSentryStateForTests()
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    vi.stubEnv(paths.envCreationSentryDsn, 'https://key@example.ingest.sentry.io/1')
+    vi.stubEnv(paths.envSentryDsn, 'https://key@example.ingest.sentry.io/1')
     reportError(new Error('sentry-me'), {
       source: 'sentry-set',
       digest: 'dig-1',
@@ -90,7 +91,7 @@ describe('reportError (W4 + W9)', () => {
     )
     expect(init).toHaveBeenCalledWith({
       dsn: 'https://key@example.ingest.sentry.io/1',
-      environment: 'creation-v3',
+      environment: 'zaoly',
       tunnel: paths.sentryTunnelPath,
       dataCollection: sentryRestrictiveDataCollection,
     })
@@ -108,14 +109,14 @@ describe('reportError (W4 + W9)', () => {
     expect(JSON.stringify(hint)).not.toContain('huge')
   })
 
-  it('enables error-only replay when NEXT_PUBLIC_CREATION_SENTRY_REPLAY is set (W10)', async () => {
+  it('enables error-only replay when NEXT_PUBLIC_ZAOLY_SENTRY_REPLAY is set (W10)', async () => {
     const { reportError, resetReportErrorSentryStateForTests } = await import(
       '../lib/observability/report-error'
     )
     resetReportErrorSentryStateForTests()
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    vi.stubEnv(paths.envCreationSentryDsnPublic, 'https://key@example.ingest.sentry.io/1')
-    vi.stubEnv(paths.envCreationSentryReplay, '1')
+    vi.stubEnv(paths.envSentryDsnPublic, 'https://key@example.ingest.sentry.io/1')
+    vi.stubEnv(paths.envSentryReplay, '1')
     // jsdom = browser
     reportError(new Error('replay-me'), { source: 'replay-test' })
     await vi.waitFor(() => {

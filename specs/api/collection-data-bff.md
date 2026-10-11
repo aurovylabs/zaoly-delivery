@@ -9,12 +9,12 @@
 
 | Route | Auth |
 |-------|------|
-| `GET /api/collection-data/collections` | Session **or** service secret + `X-Plexon-User-Id` |
-| `GET /api/collection-data/catalog` | Session **or** service secret + `X-Plexon-User-Id`; Collection access for `platformProjectId` |
+| `GET /api/collection-data/collections` | Session **or** service secret + `X-Actor-User-Id` |
+| `GET /api/collection-data/catalog` | Session **or** service secret + `X-Actor-User-Id`; Collection access for `platformProjectId` |
 | `POST /api/collection-data/resolve` | Same; scene Collection ACL + ACL for every scoped `collection.{uuid}.…` ref |
 
-Upstream: `X-Service-Secret` + `X-Plexon-Contract-Version` + `X-Plexon-User-Id`.  
-Env: `METRON_API_URL` / `NEXT_PUBLIC_METRON_URL`; `CHECKION_API_URL` / `NEXT_PUBLIC_CHECKION_URL`; `PLEXON_SERVICE_SECRET`.
+Upstream: `X-Service-Secret` + `X-Federation-Contract-Version` + `X-Actor-User-Id`.  
+Env: `METRON_API_URL` / `NEXT_PUBLIC_METRON_URL`; `CHECKION_API_URL` / `NEXT_PUBLIC_CHECKION_URL`; `ZAOLY_SERVICE_SECRET`.
 
 ## Collections directory
 
@@ -181,4 +181,4 @@ Env: `METRON_API_URL` / `NEXT_PUBLIC_METRON_URL`; `CHECKION_API_URL` / `NEXT_PUB
 - Unit: ref parse + fixture catalog/resolve
 - Contract: catalog requires Collection ACL
 - Spec inventory includes this file + domain
-- Client MUST NOT embed `PLEXON_SERVICE_SECRET`
+- Client MUST NOT embed `ZAOLY_SERVICE_SECRET`

@@ -22,9 +22,7 @@ Expose Zaoly library / composition / project / scene APIs as MCP tools for assis
 | Key | Required | Notes |
 |-----|----------|-------|
 | `ZAOLY_API_URL` | Yes | Base URL of Zaoly web (e.g. `http://localhost:3009`) |
-| `CREATION_API_URL` | No | Alias for `ZAOLY_API_URL` |
 | `ZAOLY_SERVICE_SECRET` | For service tools | Shared secret — machine calls with `X-Service-Secret` |
-| `PLEXON_SERVICE_SECRET` / `CREATION_SERVICE_SECRET` | No | Aliases for `ZAOLY_SERVICE_SECRET` |
 | `MCP_TRANSPORT` | No | `stdio` or omit/`http` |
 | `MCP_PORT` | No | Default `3102` |
 | `MCP_STATELESS` | No | `1` when behind a reverse proxy that drops session headers |

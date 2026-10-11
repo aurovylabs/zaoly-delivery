@@ -51,4 +51,4 @@ Every handler requires a session, loads the project via `getProject`, gates with
 `viewerCanAccessProject`, and rejects unbound projects (`collection_required`, 400)
 via `isRealPlatformProjectId`. Outbound calls live in
 `apps/web/lib/collection-members-plexon.ts` and return `federation_off` (503) unless
-`CREATION_FEDERATION_MODE=live` with Plexon configured.
+`ZAOLY_FEDERATION_MODE=live` with Plexon configured.

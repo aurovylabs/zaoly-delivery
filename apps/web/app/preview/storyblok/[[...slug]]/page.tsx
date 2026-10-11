@@ -38,7 +38,7 @@ async function StoryblokPreviewBody({ params, searchParams }: PageProps) {
           Set Coolify <code>{paths.envStoryblokPreviewToken}</code> and ensure the story exists as
           draft. Visual Editor Location should be{' '}
           <code>
-            {paths.ecosystemStagingCreation}
+            {paths.ecosystemStagingZaoly}
             {paths.routes.storyblokPreview}/
           </code>
         </p>

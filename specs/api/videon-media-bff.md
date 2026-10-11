@@ -9,10 +9,10 @@
 
 | Route | Auth |
 |-------|------|
-| `GET /api/videon-media` | Session **or** service secret + `X-Plexon-User-Id` (middleware machine path); Collection access for `platformProjectId` |
+| `GET /api/videon-media` | Session **or** service secret + `X-Actor-User-Id` (middleware machine path); Collection access for `platformProjectId` |
 | `GET /api/videon-media/:mediaAssetId/frame` | Same |
 
-Upstream to VIDEON: `X-Service-Secret` + `X-Plexon-Contract-Version` + `X-Plexon-User-Id` (actor). Env: `VIDEON_API_URL` (prefer) / `NEXT_PUBLIC_VIDEON_URL` fallback; `PLEXON_SERVICE_SECRET`.
+Upstream to VIDEON: `X-Service-Secret` + `X-Federation-Contract-Version` + `X-Actor-User-Id` (actor). Env: `VIDEON_API_URL` (prefer) / `NEXT_PUBLIC_VIDEON_URL` fallback; `ZAOLY_SERVICE_SECRET`.
 
 ## List
 
@@ -67,4 +67,4 @@ Upstream to VIDEON: `X-Service-Secret` + `X-Plexon-Contract-Version` + `X-Plexon
 - Unit: URL builders + empty list when unconfigured  
 - Contract: list requires Collection ACL; frame proxies content-type  
 - Spec inventory includes this file  
-- Client modules MUST NOT embed `PLEXON_SERVICE_SECRET`
+- Client modules MUST NOT embed `ZAOLY_SERVICE_SECRET`

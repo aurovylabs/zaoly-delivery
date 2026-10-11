@@ -6,14 +6,14 @@
 ARG NODE_IMAGE=node:22-bookworm-slim
 ARG NGINX_IMAGE=nginx:1.27-alpine
 # CREATION web origin for live override fetch (no hardcoded paths in app code beyond this build arg).
-ARG STORYBOOK_CREATION_ORIGIN=https://creation-v3.projects-a.plygrnd.tech
+ARG STORYBOOK_ZAOLY_ORIGIN=https://creation-v3.projects-a.plygrnd.tech
 
 FROM ${NODE_IMAGE} AS builder
 WORKDIR /workspace/packages/site-kit
 COPY packages/site-kit/package.json ./
 ENV NODE_ENV=development
-ARG STORYBOOK_CREATION_ORIGIN
-ENV STORYBOOK_CREATION_ORIGIN=${STORYBOOK_CREATION_ORIGIN}
+ARG STORYBOOK_ZAOLY_ORIGIN
+ENV STORYBOOK_ZAOLY_ORIGIN=${STORYBOOK_ZAOLY_ORIGIN}
 RUN npm install --no-audit --no-fund
 COPY packages/site-kit ./
 RUN npm run hydrate:variants \

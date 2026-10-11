@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { CompositionScene } from '@zaoly/contracts'
 import { getProjectByPlatformId, listProjectsForViewer } from './fixtures/project-store'
 import { viewerCanAccessProject } from './project-access'
-import { isCreationAuthBypassEnabled } from './runtime-config'
+import { isAuthBypassEnabled } from './runtime-config'
 import { sortScenesByUpdatedAtDesc } from './scene/scene-summary'
 import { getScene, listScenes } from './scene/scene-store'
 import {
@@ -85,7 +85,7 @@ async function sceneAllowedForViewer(
     if (!pid) return true
     return viewerCanAccessPlatformProjectId(pid, viewerId)
   }
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     const owner = scene.ownerUserId?.trim()
     if (owner && owner !== viewerId) return false
     const pid = scene.platformProjectId?.trim()
@@ -166,7 +166,7 @@ export async function listScenesForViewer(
         if (!pid) return true
         return projectIds.has(pid)
       }
-      if (isCreationAuthBypassEnabled()) {
+      if (isAuthBypassEnabled()) {
         if (owner && owner !== viewerId) return false
         const pid = s.platformProjectId?.trim()
         if (!pid) return true

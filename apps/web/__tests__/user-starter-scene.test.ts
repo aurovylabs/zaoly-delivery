@@ -13,18 +13,18 @@ import path from 'node:path'
 
 describe('ensureStarterLandingForUser', () => {
   const prev = process.env[paths.envSceneStorePath]
-  const prevDb = process.env[paths.envCreationDatabaseUrl]
+  const prevDb = process.env[paths.envDatabaseUrl]
 
   afterEach(() => {
     if (prev == null) delete process.env[paths.envSceneStorePath]
     else process.env[paths.envSceneStorePath] = prev
-    if (prevDb == null) delete process.env[paths.envCreationDatabaseUrl]
-    else process.env[paths.envCreationDatabaseUrl] = prevDb
+    if (prevDb == null) delete process.env[paths.envDatabaseUrl]
+    else process.env[paths.envDatabaseUrl] = prevDb
     __resetSceneStoreForTests({ durable: false })
   })
 
   it('creates a personal Zaoly landing owned by the user', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'zaoly-starter-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })
@@ -38,7 +38,7 @@ describe('ensureStarterLandingForUser', () => {
   })
 
   it('is idempotent — does not create a second owned scene', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'zaoly-starter-'))
     process.env[paths.envSceneStorePath] = path.join(dir, 'scenes.json')
     __resetSceneStoreForTests({ durable: true, wipeDisk: true })

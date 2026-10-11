@@ -129,7 +129,7 @@ WENN a node field is fontFamily / fontSize / fontWeight / lineHeight / letterSpa
 WENN TokenPicker shows a bound typography option (or the bound strip), DANN MUST the visible label prefer the **resolved facet value** for that field (font family name, size length, weight number, line-height) — not the raw path leaf alone (e.g. not only `Family`). Role may appear as a short suffix for disambiguation (`Geist · Body`, `2rem · H1`).
 
 ### CT-12 Secret stays server-side
-Browser MUST NOT receive `PLEXON_SERVICE_SECRET`. Live consume goes CREATION BFF → Brandion.
+Browser MUST NOT receive `ZAOLY_SERVICE_SECRET`. Live consume goes CREATION BFF → Brandion.
 
 ### CT-13 Pending leaves
 Pending Brandion leaves MUST NOT appear in inspect options or canvas resolve.

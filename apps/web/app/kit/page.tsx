@@ -4,7 +4,7 @@ import { KitPlayground } from '../../components/kit-playground/kit-playground'
 import { auth } from '../../auth'
 import { listProjectsForViewer } from '../../lib/fixtures/project-store'
 import { paths } from '../../lib/paths'
-import { creationEditorInAppEnabled } from '../../lib/runtime-config'
+import { editorInAppEnabled } from '../../lib/runtime-config'
 
 async function safeLoadProjects(viewerId: string | null) {
   try {
@@ -32,7 +32,7 @@ async function KitPlaygroundBody({
       projects={projects}
       initialComponentId={initialComponentId}
       initialPlatformProjectId={initialPlatformProjectId}
-      inAppEditor={creationEditorInAppEnabled()}
+      inAppEditor={editorInAppEnabled()}
     />
   )
 }
@@ -50,7 +50,7 @@ export default function KitPlaygroundPage({
             projects={[]}
             initialComponentId={null}
             initialPlatformProjectId={null}
-            inAppEditor={creationEditorInAppEnabled()}
+            inAppEditor={editorInAppEnabled()}
           />
         }
       >

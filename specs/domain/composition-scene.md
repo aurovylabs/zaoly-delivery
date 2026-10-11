@@ -331,8 +331,8 @@ A selected palette node MUST expose instance geometry and chrome on **that** nod
 ## Persistence
 
 - Wave E5: in-memory store via `/api/scenes` (`specs/api/scenes.md`).
-- E6 / P13: durable-enough JSON under `paths.sceneStoreRelPath` (or `CREATION_SCENE_STORE_PATH`); same `CompositionScene` shape; no format fork.
-- **Postgres (P18) = Phase B landed** — Coolify `creation-v3-postgres` + `CREATION_DATABASE_URL` (`paths.envCreationDatabaseUrl`). JSON fallback when unset. Same `CompositionScene` shape; no dual-write. See `knowledge/creation-postgres.md`.
+- E6 / P13: durable-enough JSON under `paths.sceneStoreRelPath` (or `ZAOLY_SCENE_STORE_PATH`); same `CompositionScene` shape; no format fork.
+- **Postgres (P18) = Phase B landed** — Coolify `creation-v3-postgres` + `ZAOLY_DATABASE_URL` (`paths.envDatabaseUrl`). JSON fallback when unset. Same `CompositionScene` shape; no dual-write. See `knowledge/creation-postgres.md`.
 
 ## Non-goals
 

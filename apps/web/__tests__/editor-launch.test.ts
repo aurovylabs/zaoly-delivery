@@ -10,16 +10,16 @@ import {
   EDITOR_LAUNCH_CODE_QUERY_PARAM,
   EDITOR_PLATFORM_PROJECT_QUERY_PARAM,
 } from '../lib/editor-launch'
-import { creationEditorUrl } from '../lib/runtime-config'
+import { editorDeepLinkUrl } from '../lib/runtime-config'
 import { paths } from '../lib/paths'
 
 describe('editor launch', () => {
-  const prev = process.env.CREATION_EDITOR_URL
+  const prev = process.env.ZAOLY_EDITOR_URL
 
   afterEach(() => {
     vi.unstubAllEnvs()
-    if (prev === undefined) delete process.env.CREATION_EDITOR_URL
-    else process.env.CREATION_EDITOR_URL = prev
+    if (prev === undefined) delete process.env.ZAOLY_EDITOR_URL
+    else process.env.ZAOLY_EDITOR_URL = prev
   })
 
   it('builds absolute launch URL with platformProjectId and launchCode', () => {
@@ -43,26 +43,26 @@ describe('editor launch', () => {
   })
 
   it('uses env when set', () => {
-    process.env.CREATION_EDITOR_URL = 'https://editor.example/'
-    expect(creationEditorUrl()).toBe('https://editor.example')
+    process.env.ZAOLY_EDITOR_URL = 'https://editor.example/'
+    expect(editorDeepLinkUrl()).toBe('https://editor.example')
   })
 
   it('falls back locally outside production', () => {
-    delete process.env.CREATION_EDITOR_URL
+    delete process.env.ZAOLY_EDITOR_URL
     vi.stubEnv('NODE_ENV', 'development')
-    expect(creationEditorUrl()).toBe(paths.editorDevFallbackHttp)
+    expect(editorDeepLinkUrl()).toBe(paths.editorDevFallbackHttp)
   })
 
   it('returns null in production when unset', () => {
-    delete process.env.CREATION_EDITOR_URL
+    delete process.env.ZAOLY_EDITOR_URL
     vi.stubEnv('NODE_ENV', 'production')
-    expect(creationEditorUrl()).toBeNull()
+    expect(editorDeepLinkUrl()).toBeNull()
   })
 })
 
 describe('launch token (memory)', () => {
   beforeEach(() => {
-    delete process.env[paths.envCreationRedisUrl]
+    delete process.env[paths.envRedisUrl]
     __resetLaunchCodeStoreForTests()
   })
 
@@ -128,19 +128,19 @@ describe('launch token (redis backend)', () => {
       )
       return {
         ...actual,
-        isCreationRedisConfigured: () => true,
+        isRedisConfigured: () => true,
       }
     })
-    vi.doMock('../lib/redis/creation-redis', () => ({
+    vi.doMock('../lib/redis/zaoly-redis', () => ({
       getRedisPublisher: () => redis,
       ensureRedisConnected: async () => true,
-      launchCodeRedisKey: (jti: string) => `creation:v3:launch:${jti}`,
+      launchCodeRedisKey: (jti: string) => `zaoly:launch:${jti}`,
     }))
   })
 
   afterEach(() => {
     vi.doUnmock('../lib/runtime-config')
-    vi.doUnmock('../lib/redis/creation-redis')
+    vi.doUnmock('../lib/redis/zaoly-redis')
     vi.resetModules()
   })
 
@@ -168,13 +168,13 @@ describe('launch token (redis backend)', () => {
       )
       return {
         ...actual,
-        isCreationRedisConfigured: () => true,
+        isRedisConfigured: () => true,
       }
     })
-    vi.doMock('../lib/redis/creation-redis', () => ({
+    vi.doMock('../lib/redis/zaoly-redis', () => ({
       getRedisPublisher: () => null,
       ensureRedisConnected: async () => false,
-      launchCodeRedisKey: (jti: string) => `creation:v3:launch:${jti}`,
+      launchCodeRedisKey: (jti: string) => `zaoly:launch:${jti}`,
     }))
     const { mintLaunchCode: mint } = await import('../lib/launch-token')
     await expect(mint({ userId: 'u3', email: 'x@example.com' })).rejects.toThrow(

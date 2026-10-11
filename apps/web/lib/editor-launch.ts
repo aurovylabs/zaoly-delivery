@@ -40,7 +40,7 @@ export function buildEditorLaunchUrl(
     return url.toString()
   } catch {
     // Relative in-app path (`/editor`) — URL() needs a base.
-    const url = new URL(trimmed, 'http://creation.local')
+    const url = new URL(trimmed, 'http://zaoly.local')
     applyParams(url.searchParams)
     return `${url.pathname}${url.search}`
   }

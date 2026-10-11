@@ -178,7 +178,7 @@ describe('EditorTopbarChrome P101 thematic menus', () => {
     })
     const href = String(openSpy.mock.calls[0]?.[0] ?? '')
     expect(href).toContain('compositions-catalog')
-    expect(href).toContain('creationViewToken=view.tok')
+    expect(href).toContain('zaolyViewToken=view.tok')
     expect(href).toContain('platformProjectId=plx-test')
     expect(openSpy.mock.calls[0]?.[1]).toBe('_blank')
     openSpy.mockRestore()

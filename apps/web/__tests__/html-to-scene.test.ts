@@ -149,7 +149,7 @@ describe('htmlToSceneRoot', () => {
 body { background: #0a0a0a; color: #f8f8f8; }
 </style>
 <header style="display:flex;flex-direction:row;gap:16px">
-  <div><span>MSQ</span><span>DX</span></div>
+  <div><span>ZA</span><span>OLY</span></div>
 </header>
 <div class="stat">
   <span>3</span><span>+</span>

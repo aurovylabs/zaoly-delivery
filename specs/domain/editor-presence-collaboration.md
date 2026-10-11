@@ -43,7 +43,7 @@ Enterprise teams require near-real-time visibility into who is reviewing or modi
 
 7. **Platform:** Web MUST. macOS Native MUST (same API contract).
 
-8. **Replica stance (Wave D):** In-process SSE + memory presence is valid while Coolify `swarm_replicas=1` and `CREATION_REDIS_URL` is unset. When Redis is configured, Scene SSE Pub/Sub and the presence hash store MUST run on Redis (`knowledge/presence-collaboration.md`). Redis is REQUIRED before replicas > 1.
+8. **Replica stance (Wave D):** In-process SSE + memory presence is valid while Coolify `swarm_replicas=1` and `ZAOLY_REDIS_URL` is unset. When Redis is configured, Scene SSE Pub/Sub and the presence hash store MUST run on Redis (`knowledge/presence-collaboration.md`). Redis is REQUIRED before replicas > 1.
 
 ---
 

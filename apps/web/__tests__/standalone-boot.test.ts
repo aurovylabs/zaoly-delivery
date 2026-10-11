@@ -4,8 +4,8 @@ import { describe, expect, it, afterEach, beforeEach, vi } from 'vitest'
 import { paths } from '../lib/paths'
 import {
   envGet,
-  isCreationAuthBypassEnabled,
-  creationEditorInAppEnabled,
+  isAuthBypassEnabled,
+  editorInAppEnabled,
 } from '../lib/runtime-config'
 
 const webRoot = path.resolve(__dirname, '..')
@@ -16,10 +16,9 @@ describe('zaoly standalone boot', () => {
   beforeEach(() => {
     for (const key of [
       'ZAOLY_AUTH_BYPASS',
-      'CREATION_AUTH_BYPASS',
       'ZAOLY_STANDALONE',
       'ZAOLY_DATABASE_URL',
-      'CREATION_DATABASE_URL',
+      'ZAOLY_EDITOR_INAPP',
       'NODE_ENV',
     ]) {
       prev[key] = process.env[key]
@@ -42,44 +41,45 @@ describe('zaoly standalone boot', () => {
 
   it('defaults auth bypass on outside production when Postgres unset', () => {
     delete process.env.ZAOLY_AUTH_BYPASS
-    delete process.env.CREATION_AUTH_BYPASS
     delete process.env.ZAOLY_STANDALONE
     delete process.env.ZAOLY_DATABASE_URL
-    delete process.env.CREATION_DATABASE_URL
     vi.stubEnv('NODE_ENV', 'development')
-    expect(isCreationAuthBypassEnabled()).toBe(true)
+    expect(isAuthBypassEnabled()).toBe(true)
   })
 
   it('defaults auth bypass off when Postgres is configured', () => {
     delete process.env.ZAOLY_AUTH_BYPASS
-    delete process.env.CREATION_AUTH_BYPASS
     process.env.ZAOLY_DATABASE_URL = 'postgresql://zaoly:zaoly@localhost:5434/zaoly'
     vi.stubEnv('NODE_ENV', 'development')
-    expect(isCreationAuthBypassEnabled()).toBe(false)
+    expect(isAuthBypassEnabled()).toBe(false)
   })
 
   it('honours explicit ZAOLY_AUTH_BYPASS=1 with Postgres', () => {
     process.env.ZAOLY_DATABASE_URL = 'postgresql://zaoly:zaoly@localhost:5434/zaoly'
     process.env.ZAOLY_AUTH_BYPASS = '1'
     vi.stubEnv('NODE_ENV', 'development')
-    expect(isCreationAuthBypassEnabled()).toBe(true)
+    expect(isAuthBypassEnabled()).toBe(true)
   })
 
   it('honours ZAOLY_STANDALONE=0 to disable default bypass without Postgres', () => {
     delete process.env.ZAOLY_AUTH_BYPASS
-    delete process.env.CREATION_AUTH_BYPASS
     delete process.env.ZAOLY_DATABASE_URL
-    delete process.env.CREATION_DATABASE_URL
     process.env.ZAOLY_STANDALONE = '0'
     vi.stubEnv('NODE_ENV', 'development')
-    expect(isCreationAuthBypassEnabled()).toBe(false)
+    expect(isAuthBypassEnabled()).toBe(false)
   })
 
-  it('resolves legacy CREATION_* env aliases', () => {
+  it('resolves ZAOLY_EDITOR_INAPP without legacy aliases', () => {
+    delete process.env.CREATION_EDITOR_INAPP
+    process.env.ZAOLY_EDITOR_INAPP = '1'
+    expect(envGet(paths.envEditorInApp)).toBe('1')
+    expect(editorInAppEnabled()).toBe(true)
+  })
+
+  it('does not resolve CREATION_* env aliases', () => {
     delete process.env.ZAOLY_EDITOR_INAPP
     process.env.CREATION_EDITOR_INAPP = '1'
-    expect(envGet(paths.envCreationEditorInApp)).toBe('1')
-    expect(creationEditorInAppEnabled()).toBe(true)
+    expect(envGet(paths.envEditorInApp)).toBeUndefined()
   })
 
   it('exposes editor route as primary surface', () => {
@@ -137,7 +137,7 @@ describe('zaoly standalone boot', () => {
     expect(standalone).toContain('self-host.md')
 
     const readme = readFileSync(path.join(repoRoot, 'README.md'), 'utf8')
-    expect(readme).toContain('self-host.md')
-    expect(readme).toContain('zaoly-hosted-vs-self-host.md')
+    expect(readme).toContain('zaoly-community-distribution.md')
+    expect(readme).toContain('zaoly.app')
   })
 })

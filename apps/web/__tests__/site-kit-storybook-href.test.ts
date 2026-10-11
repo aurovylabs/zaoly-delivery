@@ -45,7 +45,7 @@ describe('siteKitCompositionStoryHref', () => {
 })
 
 describe('withSiteKitViewCredentials', () => {
-  it('attaches creationViewToken and platformProjectId', () => {
+  it('attaches zaolyViewToken and platformProjectId', () => {
     const href = withSiteKitViewCredentials(
       siteKitLiveCompositionHref('https://creation-site-kit.example', 'CompositionHero'),
       { viewToken: 'abc.sig', platformProjectId: 'plx-1' },

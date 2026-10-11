@@ -10,7 +10,7 @@ vi.mock('../lib/runtime-config', async () => {
   )
   return {
     ...actual,
-    isCreationAuthBypassEnabled: vi.fn(() => false),
+    isAuthBypassEnabled: vi.fn(() => false),
   }
 })
 

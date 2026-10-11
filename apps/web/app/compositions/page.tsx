@@ -4,8 +4,8 @@ import { CompositionsHub } from '../../components/compositions-hub'
 import { auth } from '../../auth'
 import { listProjectsForViewer } from '../../lib/fixtures/project-store'
 import {
-  creationEditorInAppEnabled,
-  isCreationAuthBypassEnabled,
+  editorInAppEnabled,
+  isAuthBypassEnabled,
   isServiceAuthConfigured,
 } from '../../lib/runtime-config'
 import { listScenesForViewer } from '../../lib/require-scene-collection-access'
@@ -21,7 +21,7 @@ async function safeLoad<T>(load: () => Promise<T>, fallback: T): Promise<T> {
 
 function resolveViewerId(sessionUserId: string | null | undefined): string {
   if (sessionUserId?.trim()) return sessionUserId.trim()
-  if (!isServiceAuthConfigured() && isCreationAuthBypassEnabled()) return 'dev-local'
+  if (!isServiceAuthConfigured() && isAuthBypassEnabled()) return 'dev-local'
   return 'anonymous'
 }
 
@@ -41,7 +41,7 @@ async function CompositionsHubBody() {
     <CompositionsHub
       compositions={compositions}
       projects={projects}
-      inAppEditor={creationEditorInAppEnabled()}
+      inAppEditor={editorInAppEnabled()}
       standalone={standalone}
     />
   )
@@ -56,7 +56,7 @@ export default function CompositionsPage() {
           <CompositionsHub
             compositions={[]}
             projects={[]}
-            inAppEditor={creationEditorInAppEnabled()}
+            inAppEditor={editorInAppEnabled()}
             standalone={standalone}
           />
         }

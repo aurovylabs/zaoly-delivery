@@ -18,8 +18,8 @@ Optional **Sentry** capture lives **only** inside `reportError`. Call sites stay
 
 | Env | Role |
 |-----|------|
-| `CREATION_SENTRY_DSN` | Server DSN (`paths.envCreationSentryDsn`) |
-| `NEXT_PUBLIC_CREATION_SENTRY_DSN` | Browser / error boundaries (`paths.envCreationSentryDsnPublic`) |
+| `ZAOLY_SENTRY_DSN` | Server DSN (`paths.envSentryDsn`) |
+| `NEXT_PUBLIC_ZAOLY_SENTRY_DSN` | Browser / error boundaries (`paths.envSentryDsnPublic`) |
 
 Init environment name: `creation-v3`. Fail closed: `reportError` MUST never throw.
 

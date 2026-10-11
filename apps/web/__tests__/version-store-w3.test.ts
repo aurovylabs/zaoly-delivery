@@ -8,15 +8,15 @@ import { GET as healthGet } from '../app/api/health/route'
 
 describe('version store backend (W3)', () => {
   afterEach(() => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     __resetSceneStoreForTests({ durable: false })
     __resetVersionStoreForTests()
   })
 
-  it('selects fs without CREATION_DATABASE_URL and postgres when set', () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+  it('selects fs without ZAOLY_DATABASE_URL and postgres when set', () => {
+    delete process.env[paths.envDatabaseUrl]
     expect(versionStoreBackend()).toBe('fs')
-    process.env[paths.envCreationDatabaseUrl] = 'postgres://creation:x@127.0.0.1:5432/creation'
+    process.env[paths.envDatabaseUrl] = 'postgres://creation:x@127.0.0.1:5432/creation'
     expect(versionStoreBackend()).toBe('postgres')
   })
 
@@ -49,7 +49,7 @@ describe('version store backend (W3)', () => {
   })
 
   it('health reports versionStore without leaking secrets', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const res = await healthGet()
     const body = (await res.json()) as Record<string, unknown>
     expect(body.versionStore).toBe('fs')
@@ -116,7 +116,7 @@ describe('version store postgres path (mocked pool)', () => {
     rows.length = 0
     query.mockClear()
     vi.resetModules()
-    process.env[paths.envCreationDatabaseUrl] = 'postgres://creation:x@127.0.0.1:5432/creation'
+    process.env[paths.envDatabaseUrl] = 'postgres://creation:x@127.0.0.1:5432/creation'
     vi.doMock('../lib/scene/pg-store', async () => {
       const actual = await vi.importActual<typeof import('../lib/scene/pg-store')>(
         '../lib/scene/pg-store',
@@ -131,7 +131,7 @@ describe('version store postgres path (mocked pool)', () => {
   })
 
   afterEach(() => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     vi.doUnmock('../lib/scene/pg-store')
     vi.resetModules()
   })

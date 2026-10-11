@@ -474,7 +474,7 @@ export function CompositionsHub({
             ) : null}
             {!inAppEditor ? (
               <Hint panel>
-                {t('pages.compositions.inAppOffHint', { env: paths.envCreationEditorInApp })}
+                {t('pages.compositions.inAppOffHint', { env: paths.envEditorInApp })}
               </Hint>
             ) : null}
           </form>

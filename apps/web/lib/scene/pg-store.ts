@@ -24,7 +24,7 @@ type SceneRow = {
 }
 
 export function creationDatabaseUrl(): string | null {
-  const raw = envGet(paths.envCreationDatabaseUrl)?.trim()
+  const raw = envGet(paths.envDatabaseUrl)?.trim()
   return raw || null
 }
 
@@ -37,7 +37,7 @@ let schemaReady: Promise<void> | null = null
 
 export function getScenePool(): Pool {
   const url = creationDatabaseUrl()
-  if (!url) throw new Error(`${paths.envCreationDatabaseUrl} is not set`)
+  if (!url) throw new Error(`${paths.envDatabaseUrl} is not set`)
   if (!pool) pool = new Pool({ connectionString: url, max: 5 })
   return pool
 }

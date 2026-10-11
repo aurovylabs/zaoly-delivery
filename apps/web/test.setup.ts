@@ -2,8 +2,8 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
 import { afterEach, beforeEach, vi } from 'vitest'
 
-/** Vitest defaults to local auth bypass (ZAOLY_AUTH_BYPASS; CREATION_* alias also accepted). */
-if (!process.env.ZAOLY_AUTH_BYPASS && !process.env.CREATION_AUTH_BYPASS) {
+/** Vitest defaults to local auth bypass (`ZAOLY_AUTH_BYPASS`). */
+if (!process.env.ZAOLY_AUTH_BYPASS && !process.env.ZAOLY_AUTH_BYPASS) {
   process.env.ZAOLY_AUTH_BYPASS = '1'
 }
 

@@ -14,7 +14,7 @@
 
 - App MUST expose `reportError(error, context)` in `apps/web/lib/observability/report-error.ts`.
 - MUST always log structured `console.error` with `source` (+ optional `digest`).
-- MAY POST a minimal JSON payload to `CREATION_ERROR_WEBHOOK_URL` (server) and/or `NEXT_PUBLIC_CREATION_ERROR_WEBHOOK_URL` (browser) when set — fire-and-forget; MUST NOT throw to callers.
+- MAY POST a minimal JSON payload to `ZAOLY_ERROR_WEBHOOK_URL` (server) and/or `NEXT_PUBLIC_ZAOLY_ERROR_WEBHOOK_URL` (browser) when set — fire-and-forget; MUST NOT throw to callers.
 - `app/error.tsx` and `app/global-error.tsx` MUST call `reportError` (not raw `console.error` only).
 - Non-goal this wave: shipping a paid vendor SDK. **W9:** optional Sentry inside `reportError` (`specs/domain/observability-sentry-w9.md`) — still no app-wide SDK scatter.
 

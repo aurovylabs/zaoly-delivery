@@ -14,7 +14,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Live CREATION Patterns (Collection-gated). Open from the editor with creationViewToken, then set Controls → componentId (e.g. Composition~…~Hero). Optional variantName selects a flat named variant; Component Set stories expose one Select per Master axis instead.',
+          'Live CREATION Patterns (Collection-gated). Open from the editor with zaolyViewToken, then set Controls → componentId (e.g. Composition~…~Hero). Optional variantName selects a flat named variant; Component Set stories expose one Select per Master axis instead.',
       },
     },
   },

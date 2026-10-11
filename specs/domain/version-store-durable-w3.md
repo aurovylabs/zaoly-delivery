@@ -6,15 +6,15 @@
 
 ## Goals
 
-1. Scene version checkpoints MUST survive container recycle when Postgres is configured (same gate as live scenes: `CREATION_DATABASE_URL`).
+1. Scene version checkpoints MUST survive container recycle when Postgres is configured (same gate as live scenes: `ZAOLY_DATABASE_URL`).
 2. Operators MUST have a written backup/restore/rollback path for the single-host Coolify topology.
 
 ## Version store backends
 
 | Backend | When | Location |
 |---------|------|----------|
-| `postgres` | `CREATION_DATABASE_URL` set | Table `scene_versions` (created on first use) |
-| `fs` | DB unset (local / Vitest) | `CREATION_VERSION_STORE_PATH` or `paths.sceneVersionsStoreRelPath` (`.data/scene-versions`) |
+| `postgres` | `ZAOLY_DATABASE_URL` set | Table `scene_versions` (created on first use) |
+| `fs` | DB unset (local / Vitest) | `ZAOLY_VERSION_STORE_PATH` or `paths.sceneVersionsStoreRelPath` (`.data/scene-versions`) |
 
 - WHEN Postgres is configured, mint/list/get/restore MUST use `scene_versions` — do **not** write only to ephemeral container FS.
 - WHEN Postgres is unset, the FS + in-process cache remain valid for local/tests.
@@ -40,7 +40,7 @@ Unique `(scene_id, version_number)`. Index `(scene_id, version_number DESC)`.
 
 ## Backup / scale notes
 
-- Single Coolify app + one Postgres + one Redis on StandaloneDocker — replicas blocked (`knowledge/creation-redis.md`). Documented in `knowledge/backup-rollback.md`.
+- Single Coolify app + one Postgres + one Redis on StandaloneDocker — replicas blocked (`knowledge/zaoly-redis.md`). Documented in `knowledge/backup-rollback.md`.
 - Postgres Coolify Backups tab (S3 optional) covers `scenes` **and** `scene_versions`.
 - Redis (presence / launch codes) is ephemeral by design — not a restore target.
 

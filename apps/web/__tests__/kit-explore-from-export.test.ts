@@ -38,7 +38,7 @@ describe('resolveKitExploreFromExport', () => {
     )
     const fork = atomForkComponentId('SiteButton', COLLECTION)
     expect(bound.componentId).toBe(fork)
-    const params = new URL(bound.href, 'http://creation.local').searchParams
+    const params = new URL(bound.href, 'http://zaoly.local').searchParams
     expect(params.get('componentId')).toBe(fork)
     expect(params.get(paths.activePackQueryKey)).toBe(COLLECTION)
   })

@@ -108,7 +108,7 @@ Limits MUST match or be stricter than editor practical bounds; document changes 
 
 ## Authorization model
 
-WENN Plexon-Auth konfiguriert ist (`PLEXON_AUTH_URL` + `PLEXON_SERVICE_SECRET`), DANN gilt:
+WENN Auth konfiguriert ist (`ZAOLY_FEDERATION_AUTH_URL` + `ZAOLY_SERVICE_SECRET`), DANN gilt:
 
 ### Session callers (browser, user cookie)
 
@@ -117,8 +117,8 @@ WENN Plexon-Auth konfiguriert ist (`PLEXON_AUTH_URL` + `PLEXON_SERVICE_SECRET`),
 
 ### Service callers (MCP, automation)
 
-- MUST present valid federation headers (`X-Service-Secret`, `X-Plexon-Contract-Version`) per `plexon-contract.ts`.
-- MUST present `X-Plexon-User-Id` (non-empty) — the human or service account the automation acts for.
+- MUST present valid service headers (`X-Service-Secret`, `X-Federation-Contract-Version`) per `federation-contract.ts`.
+- MUST present `X-Actor-User-Id` (non-empty) — the human or service account the automation acts for.
 - MUST NOT bypass collection binding rules: when scene has `platformProjectId`, caller MUST be entitled to that Collection in Plexon (same ACL as session callers via `require-scene-collection-access`). Unreachable federation / empty accessible set → `403 { "error": "forbidden" }` (fail closed). Unbound scenes remain allowed for authenticated service actors.
 
 WENN Auth nicht konfiguriert (local dev), DANN routes bleiben offen wie heute.
@@ -225,7 +225,7 @@ WENN `entityUpdatedAt` / Scene-Lock nach Save oder Live-Sync wechselt, DANN DARF
 2. **R2:** WENN ein Op in der Batch-Kette fehlschlägt, DANN MUSS der Server keinen Teil der Batch persistieren.
 3. **R3:** WENN `baseUpdatedAt` nicht mit der gespeicherten Scene übereinstimmt, DANN MUSS der Server `409 stale-scene` antworten.
 4. **R4:** WENN `op: 'select'` gesendet wird, DANN MUSS der Server `400 op-not-persisted` antworten.
-5. **R5:** WENN Plexon-Auth aktiv ist und der Caller kein Session-Cookie hat, DANN MUSS ein gültiger Service-Secret **und** `X-Plexon-User-Id` vorliegen, sonst `401`.
+5. **R5:** WENN Auth aktiv ist und der Caller kein Session-Cookie hat, DANN MUSS ein gültiger Service-Secret **und** `X-Actor-User-Id` vorliegen, sonst `401`.
 6. **R6:** WENN ein MCP-Tool `zaoly.scene_apply_ops` aufruft, DANN MUSS es ausschließlich `POST /api/scenes/:id/ops` verwenden (kein paralleles Apply im MCP-Prozess).
 6a. **R6a:** WENN der Nutzer eine neue Page/Zeichenfläche verlangt (z. B. PDP, Pricing), DANN MUSS der Agent `add_page` (mit `name` wenn genannt) vor Inhalts-Inserts nutzen; nach Erfolg MUSS er `updatedAt` + neuen Page-Root aus Response oder `scene_tree_index` lesen bevor `insert_child` / `insert_instance` folgt.
 7. **R7:** `GET /api/scenes/:id/tree` MUSS für jede Scene-Knoten id, type, name, parentId, index (sibling order), childCount, instanceOf, hidden, locked liefern — ohne vollständige props.

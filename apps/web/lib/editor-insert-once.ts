@@ -29,7 +29,7 @@ export function claimEditorInsertOnce(sceneId: string, insertType: string): bool
 /** Strip `insertType` from an absolute or relative URL / current location href. */
 export function stripEditorInsertTypeFromUrl(href: string): string {
   try {
-    const url = new URL(href, 'http://creation.local')
+    const url = new URL(href, 'http://zaoly.local')
     url.searchParams.delete(EDITOR_INSERT_TYPE_QUERY_PARAM)
     url.searchParams.delete(paths.editorInsertTypeQueryParam)
     if (href.startsWith('http://') || href.startsWith('https://')) {

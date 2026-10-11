@@ -23,7 +23,7 @@ import { pushStoryblokHandoffPack } from '../lib/codegen/storyblok-push'
 
 const pack = {
   meta: {
-    generator: 'creation-v3-storyblok-poc',
+    generator: 'zaoly-storyblok-poc',
     collectionId: null,
     sceneId: 's1',
     tokenPackNote: 'n',

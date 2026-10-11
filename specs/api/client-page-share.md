@@ -12,7 +12,7 @@
 | `GET /api/scenes/:id/client-shares` | Session; scene viewer (list metadata + `shareUrl` when `token_plain` present; never on public routes) |
 | `DELETE /api/scenes/:id/client-shares/:shareId` | Session; lifecycle manage (revoke) |
 | `PATCH /api/scenes/:id/client-shares/:shareId` | Session; lifecycle manage (refresh snapshot, rotate password, extend TTL) |
-| `DELETE /api/platform/provisioning/collections/:platformProjectId/client-shares/:shareId` | Plexon service secret + `X-Plexon-User-Id` (Collection admin revoke fan-out; P4) |
+| `DELETE /api/platform/provisioning/collections/:platformProjectId/client-shares/:shareId` | Plexon service secret + `X-Actor-User-Id` (Collection admin revoke fan-out; P4) |
 | `GET /api/public/client-shares/:token` | Public; optional `Authorization: Bearer` unused in P1; password via header or body on challenge |
 | `POST /api/public/client-shares/:token/unlock` | Public; `{ password }` → short-lived viewer cookie/JWT scoped to share id |
 | `GET /api/public/client-shares/:token/comments` | Public; unlocked share |
@@ -88,7 +88,7 @@ Revoke of an **approved** share best-effort clears the same slot (`clear: true`)
 
 ## Policy
 
-Before create/resolve, BFF MAY call Plexon policy endpoint (P1 minimal: env flag `CREATION_CLIENT_SHARE_ENABLED`; P2: live `GET …/client-share-policy`). If disabled → **403** on create, **404** on public resolve.
+Before create/resolve, BFF MAY call Plexon policy endpoint (P1 minimal: env flag `ZAOLY_CLIENT_SHARE_ENABLED`; P2: live `GET …/client-share-policy`). If disabled → **403** on create, **404** on public resolve.
 
 ## Errors
 

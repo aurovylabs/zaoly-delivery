@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { AppShell } from '../../../components/app-shell'
 import { ProjectDetailPanel } from '../../../components/project-detail-panel'
 import { getProject } from '../../../lib/fixtures/project-store'
-import { creationEditorInAppEnabled } from '../../../lib/runtime-config'
+import { editorInAppEnabled } from '../../../lib/runtime-config'
 import { listScenes } from '../../../lib/scene/scene-store'
 import {
   sceneToCompositionSummary,
@@ -34,7 +34,7 @@ async function ProjectDetailBody({ params }: { params: Promise<{ id: string }> }
       <ProjectDetailPanel
         project={project}
         compositions={compositions}
-        inAppEditor={creationEditorInAppEnabled()}
+        inAppEditor={editorInAppEnabled()}
       />
     </AppShell>
   )

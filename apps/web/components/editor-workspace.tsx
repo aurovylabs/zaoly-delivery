@@ -118,7 +118,6 @@ export function EditorWorkspace({
     saveState,
     pdfBusy,
     exportBusy,
-    magcloudBusy,
     publishBusy,
     publishStatus,
     setPublishStatus,
@@ -211,7 +210,6 @@ export function EditorWorkspace({
     reloadSceneFromServer,
     onDownloadPdf,
     onSurfaceExport,
-    onPublishToMagcloud,
     onPublishToStorybook,
     onPullFromSiteKit,
     runSiteKitPull,
@@ -405,11 +403,9 @@ export function EditorWorkspace({
     },
     pdfBusy,
     exportBusy,
-    magcloudBusy,
     onDownloadPdf: () => void onDownloadPdf(),
     onSurfaceExport: (format: 'png' | 'pdf', scope?: 'active' | 'all') =>
       void onSurfaceExport(format, scope),
-    onPublishToMagcloud: () => void onPublishToMagcloud(),
     onHtmlPreviewOpen: () => setHtmlPreviewOpen(true),
     onCodeExportOpen: () => setCodeExportOpen(true),
     onSavePageAsPattern: (opts?: { allPages?: boolean; pageId?: string }) =>

@@ -55,7 +55,7 @@ describe('Chart studio open-state', () => {
   })
 
   it('documents dock storage key centrally', () => {
-    expect(paths.chartStudioDockStorageKey).toBe('creation.editor.chart-studio.dock.v1')
+    expect(paths.chartStudioDockStorageKey).toBe('zaoly.editor.chart-studio.dock.v1')
     const knowledge = readFileSync(path.join(root, '../../knowledge/paths.md'), 'utf8')
     expect(knowledge).toContain('chartStudioDockStorageKey')
   })

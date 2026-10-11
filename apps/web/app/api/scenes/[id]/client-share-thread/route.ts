@@ -17,7 +17,7 @@ import {
   isSceneForViewer,
   requireSceneForViewer,
 } from '../../../../../lib/require-scene-collection-access'
-import { creationPublicUrl, isClientPageShareEnabled } from '../../../../../lib/runtime-config'
+import { zaolyPublicUrl, isClientPageShareEnabled } from '../../../../../lib/runtime-config'
 import { paths } from '../../../../../lib/paths'
 
 
@@ -74,7 +74,7 @@ export async function POST(
     return NextResponse.json({ error: result.error }, { status: 422 })
   }
   const sceneName = loaded.scene.name?.trim() || id
-  const origin = creationPublicUrl().replace(/\/$/, '')
+  const origin = zaolyPublicUrl().replace(/\/$/, '')
   for (const n of result.notifies) {
     if (!n.shareToken) continue
     voidSystemMail(

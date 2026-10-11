@@ -2,7 +2,7 @@ import type { StorybookConfig } from '@storybook/react-vite'
 import { mergeConfig } from 'vite'
 
 const creationOrigin =
-  process.env.STORYBOOK_CREATION_ORIGIN?.trim() ||
+  process.env.STORYBOOK_ZAOLY_ORIGIN?.trim() ||
   'https://creation-v3.projects-a.plygrnd.tech'
 
 const config: StorybookConfig = {
@@ -14,8 +14,8 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     return mergeConfig(config, {
       define: {
-        'import.meta.env.STORYBOOK_CREATION_ORIGIN': JSON.stringify(creationOrigin),
-        'process.env.STORYBOOK_CREATION_ORIGIN': JSON.stringify(creationOrigin),
+        'import.meta.env.STORYBOOK_ZAOLY_ORIGIN': JSON.stringify(creationOrigin),
+        'process.env.STORYBOOK_ZAOLY_ORIGIN': JSON.stringify(creationOrigin),
       },
     })
   },

@@ -4,7 +4,7 @@ import { auth } from './auth'
 import { isProvisioningAuthorized } from './lib/federation-contract'
 import {
   getServiceSecret,
-  isCreationAuthBypassEnabled,
+  isAuthBypassEnabled,
   isZaolyDatabaseConfigured,
 } from './lib/runtime-config'
 import { paths } from './lib/paths'
@@ -132,7 +132,7 @@ export default function proxy(req: NextRequest) {
   const readonly = forbidImpersonationWrite(req)
   if (readonly) return readonly
 
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     const badOrigin = forbidBadOrigin(req)
     if (badOrigin) return badOrigin
     return NextResponse.next()

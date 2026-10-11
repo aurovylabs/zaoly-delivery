@@ -44,8 +44,8 @@ describe('catalog API routes', () => {
   it('compositions list returns scene-store summaries', async () => {
     vi.stubEnv(paths.envFederationAuthUrl, 'https://plexon.test')
     vi.stubEnv(paths.envServiceSecret, 'test-secret')
-    vi.stubEnv(paths.envCreationAuthBypass, '0')
-    delete process.env[paths.envCreationDatabaseUrl]
+    vi.stubEnv(paths.envAuthBypass, '0')
+    delete process.env[paths.envDatabaseUrl]
 
     const project = await createProject({
       name: 'Catalog Wire',
@@ -70,7 +70,7 @@ describe('catalog API routes', () => {
   it('compositions list returns 401 without session when auth configured', async () => {
     vi.stubEnv(paths.envFederationAuthUrl, 'https://plexon.test')
     vi.stubEnv(paths.envServiceSecret, 'test-secret')
-    vi.stubEnv(paths.envCreationAuthBypass, '0')
+    vi.stubEnv(paths.envAuthBypass, '0')
     authMock.mockResolvedValue(null)
     const { GET } = await import('../app/api/compositions/route')
     const res = await GET(new Request('http://localhost/api/compositions'))

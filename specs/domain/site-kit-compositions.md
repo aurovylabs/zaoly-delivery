@@ -78,7 +78,7 @@ Non-goals on save: `hidden`/`locked`, multi-breakpoint matrix in the kit payload
 - Editor may re-open a composition by loading its serialized tree into the scene (future).
 - Storybook prefers `composition` override payload via `CompositionPreview`; falls back to compiled story module after rebuild.
 - Coolify static Storybook MUST ship baked `Compositions/Live` and `Compositions/Catalog` stories for instant preview.
-- **SK-S3:** Pattern CSF MUST NOT be world-browsable across Collections. Default Coolify image bakes **zero** Pattern CSF unless `STORYBOOK_PLATFORM_PROJECT_ID` is set. Catalog/Live require `creationViewToken` (`site-kit-collection-scope.md`).
+- **SK-S3:** Pattern CSF MUST NOT be world-browsable across Collections. Default Coolify image bakes **zero** Pattern CSF unless `STORYBOOK_PLATFORM_PROJECT_ID` is set. Catalog/Live require `zaolyViewToken` (`site-kit-collection-scope.md`).
 - Catalog polls `GET /api/site-kit/compositions` (~4s) for a live list (scoped); Live/Catalog poll overrides for content hot-reload (not Vite file HMR).
 - Override ids: allowlisted atoms (`Site*`) **and** namespaced / legacy composition ids — do not reject compositions as unknown-component. **SK-S2** Pattern ids use Collection-namespaced grammar.
 

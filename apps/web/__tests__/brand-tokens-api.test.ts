@@ -52,7 +52,7 @@ describe('Zaoly brand-tokens route (retired)', () => {
     ]
     for (const rel of clientFiles) {
       const src = readFileSync(path.join(root, rel), 'utf8')
-      expect(src).not.toMatch(/PLEXON_SERVICE_SECRET/)
+      expect(src).not.toMatch(/ZAOLY_SERVICE_SECRET/)
       expect(src).not.toMatch(/ZAOLY_SERVICE_SECRET/)
       expect(src).not.toMatch(/getServiceSecret/)
     }

@@ -134,7 +134,7 @@ export function LibraryHub({
               <Button type="button">{t('library.openEditor')}</Button>
             </Link>
           ) : (
-            <Hint panel>{t('pages.compositions.inAppOffHint', { env: paths.envCreationEditorInApp })}</Hint>
+            <Hint panel>{t('pages.compositions.inAppOffHint', { env: paths.envEditorInApp })}</Hint>
           )}
           <Link href={kitPlaygroundHref({})}>
             <Button type="button" data-testid="library-open-kit-playground">

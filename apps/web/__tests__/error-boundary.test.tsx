@@ -16,7 +16,7 @@ describe('creation error boundaries (W1/W4)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     expect(reset).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalled()
-    expect(String(spy.mock.calls[0]?.[0])).toContain('[creation:error]')
+    expect(String(spy.mock.calls[0]?.[0])).toContain('[zaoly:error]')
     spy.mockRestore()
   })
 

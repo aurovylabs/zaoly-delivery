@@ -3,7 +3,7 @@
  * Key documented in `knowledge/paths.md`.
  */
 
-export const TOKEN_RECENT_STORAGE_KEY = 'creation.inspect.tokenRecent'
+export const TOKEN_RECENT_STORAGE_KEY = 'zaoly.inspect.tokenRecent'
 
 const MAX = 8
 

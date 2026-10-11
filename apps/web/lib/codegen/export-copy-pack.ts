@@ -61,7 +61,7 @@ export function resolveExportKitAbsoluteUrl(kitHref: string): string {
   if (typeof window !== 'undefined' && window.location?.origin) {
     return `${window.location.origin}${href}`
   }
-  return `${paths.ecosystemStagingCreation}${href}`
+  return `${paths.ecosystemStagingZaoly}${href}`
 }
 
 /** Media vars + @media stubs from pack leaves (seeds when pack omitted). */

@@ -94,28 +94,28 @@ describe('scene normalize + pg row mapping (P18)', () => {
   })
 
   it('selects postgres backend only when ZAOLY_DATABASE_URL is set', () => {
-    const prev = process.env[paths.envCreationDatabaseUrl]
-    delete process.env[paths.envCreationDatabaseUrl]
+    const prev = process.env[paths.envDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     __resetSceneStoreForTests({ durable: false })
     expect(isPostgresSceneStore()).toBe(false)
     expect(sceneStoreBackend()).toBe('json')
-    process.env[paths.envCreationDatabaseUrl] = 'postgres://creation:x@127.0.0.1:5432/creation'
+    process.env[paths.envDatabaseUrl] = 'postgres://creation:x@127.0.0.1:5432/creation'
     expect(isPostgresSceneStore()).toBe(true)
     expect(sceneStoreBackend()).toBe('postgres')
-    if (prev == null) delete process.env[paths.envCreationDatabaseUrl]
-    else process.env[paths.envCreationDatabaseUrl] = prev
+    if (prev == null) delete process.env[paths.envDatabaseUrl]
+    else process.env[paths.envDatabaseUrl] = prev
     __resetSceneStoreForTests({ durable: false })
   })
 })
 
 describe('health sceneStore (P18)', () => {
   afterEach(() => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     __resetSceneStoreForTests({ durable: false })
   })
 
   it('reports json without a database url and does not leak secrets', async () => {
-    delete process.env[paths.envCreationDatabaseUrl]
+    delete process.env[paths.envDatabaseUrl]
     const { GET: healthGet } = await import('../app/api/health/route')
     const res = await healthGet()
     const body = (await res.json()) as Record<string, unknown>
@@ -127,7 +127,7 @@ describe('health sceneStore (P18)', () => {
   })
 
   it('reports postgres when ZAOLY_DATABASE_URL is set at request time', async () => {
-    process.env[paths.envCreationDatabaseUrl] = 'postgresql://zaoly:zaoly@localhost:5434/zaoly'
+    process.env[paths.envDatabaseUrl] = 'postgresql://zaoly:zaoly@localhost:5434/zaoly'
     __resetSceneStoreForTests({ durable: false })
     const { GET: healthGet } = await import('../app/api/health/route')
     const res = await healthGet()

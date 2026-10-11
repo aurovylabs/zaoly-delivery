@@ -17,7 +17,7 @@ import {
 } from '../site-kit/sync-tree'
 import { prepareSiteKitExportRoot } from './codegen-react'
 
-export const STORYBLOK_HANDOFF_GENERATOR = 'creation-v3-storyblok-poc' as const
+export const STORYBLOK_HANDOFF_GENERATOR = 'zaoly-storyblok-poc' as const
 export const STORYBLOK_PAGE_COMPONENT = 'creation_page' as const
 
 /** Site Kit containers nest children under Storyblok `body` (bloks). */

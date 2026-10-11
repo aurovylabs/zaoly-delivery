@@ -25,14 +25,14 @@ const kitRoot = path.resolve(__dirname, '..')
 const TYPE_TO_EXPORT = buildTypeToExport(SITE_KIT_CATALOG)
 
 const ORIGIN = (
-  process.env.STORYBOOK_CREATION_ORIGIN ||
+  process.env.STORYBOOK_ZAOLY_ORIGIN ||
   'https://creation-v3.projects-a.plygrnd.tech'
 ).replace(/\/$/, '')
 
 /** Optional provisioning secret for SK-S1 hydrate (no public catalog dump). */
 function hydrateHeaders() {
   const secret =
-    process.env.CREATION_SITE_KIT_HYDRATE_SECRET?.trim() ||
+    process.env.ZAOLY_SITE_KIT_HYDRATE_SECRET?.trim() ||
     process.env.ZAOLY_SERVICE_SECRET?.trim() ||
     ''
   const contract =
@@ -84,18 +84,18 @@ async function main() {
   // SK-S3: never bake a world-readable Pattern CSF dump into the shared Storybook image.
   if (!scope) {
     console.warn(
-      '[hydrate-compositions] SK-S3: skipping Pattern CSF bake (no STORYBOOK_PLATFORM_PROJECT_ID). Use Live/Catalog + creationViewToken, or set STORYBOOK_PLATFORM_PROJECT_ID for a single-Collection image.',
+      '[hydrate-compositions] SK-S3: skipping Pattern CSF bake (no STORYBOOK_PLATFORM_PROJECT_ID). Use Live/Catalog + zaolyViewToken, or set STORYBOOK_PLATFORM_PROJECT_ID for a single-Collection image.',
     )
     console.log('[hydrate-compositions] done — 0 composition(s)')
     return
   }
   const catalogUrl = `${ORIGIN}/api/site-kit/compositions?platformProjectId=${encodeURIComponent(scope)}`
   if (
-    !process.env.CREATION_SITE_KIT_HYDRATE_SECRET?.trim() &&
+    !process.env.ZAOLY_SITE_KIT_HYDRATE_SECRET?.trim() &&
     !process.env.ZAOLY_SERVICE_SECRET?.trim()
   ) {
     console.warn(
-      '[hydrate-compositions] no CREATION_SITE_KIT_HYDRATE_SECRET / ZAOLY_SERVICE_SECRET — Pattern CSF bake skipped unless authorized (SK-S1)',
+      '[hydrate-compositions] no ZAOLY_SITE_KIT_HYDRATE_SECRET / ZAOLY_SERVICE_SECRET — Pattern CSF bake skipped unless authorized (SK-S1)',
     )
   }
   const catalog = await fetchJson(catalogUrl)

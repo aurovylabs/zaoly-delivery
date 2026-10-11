@@ -9,7 +9,7 @@ describe('request-origin allowlist', () => {
   })
 
   it('allows localhost and staging creation origins', async () => {
-    vi.stubEnv(paths.envCreationPublicUrl, 'https://creation-v3.projects-a.plygrnd.tech')
+    vi.stubEnv(paths.envPublicUrl, 'https://creation-v3.projects-a.plygrnd.tech')
     vi.resetModules()
     const { isAllowedMutatingApiOrigin, allowedMutatingApiOrigins } = await import(
       '../lib/request-origin'

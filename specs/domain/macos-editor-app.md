@@ -163,7 +163,7 @@ The macOS editor workspace supports true native multi-window docking and undocki
   - **Custom Chrome (No Standard Traffic Lights):** Standard macOS traffic lights (`closeButton`, `miniaturizeButton`, `zoomButton`) are hidden via `standardWindowButton(_:).isHidden = true` and `titlebarAppearsTransparent = true`, `titleVisibility = .hidden`.
   - **Window Level:** `.floating` (floats conveniently above the canvas without stealing active application focus unnecessarily).
   - **Movable by Background:** `isMovableByWindowBackground = true`, allowing window dragging from custom header bar or background areas.
-  - **Frame Persistence:** Persists user-adjusted window coordinates and dimensions across app launches via `setFrameAutosaveName("CREATION_LeftRailPanel")` and `setFrameAutosaveName("CREATION_RightRailPanel")`.
+  - **Frame Persistence:** Persists user-adjusted window coordinates and dimensions across app launches via `setFrameAutosaveName("ZAOLY_LeftRailPanel")` and `setFrameAutosaveName("ZAOLY_RightRailPanel")`.
   - **Multi-Monitor:** Can be moved completely outside the main document window, onto secondary monitors or side screens.
 
 ### 8.3 Interaction, Drag-to-Detach & Snap Redocking (P64 / P66)

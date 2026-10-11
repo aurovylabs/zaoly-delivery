@@ -72,7 +72,7 @@ export interface CreateSceneVersionInput {
 
 ## 3. Storage & Persistence
 
-1. **Postgres Storage (`CREATION_DATABASE_URL`) — production SSOT (W3):**
+1. **Postgres Storage (`ZAOLY_DATABASE_URL`) — production SSOT (W3):**
    - Table `scene_versions` (aligned with `scenes` / `scene_op_audit` naming):
      - `id` (TEXT primary key)
      - `scene_id` (TEXT, scene id)
@@ -86,7 +86,7 @@ export interface CreateSceneVersionInput {
      - `created_at` (timestamptz)
    - Spec: `specs/domain/version-store-durable-w3.md`
 2. **File Store Fallback:**
-   - When running without Postgres, stored as `{CREATION_VERSION_STORE_PATH|paths.sceneVersionsStoreRelPath}/:sceneId/:versionId.json`.
+   - When running without Postgres, stored as `{ZAOLY_VERSION_STORE_PATH|paths.sceneVersionsStoreRelPath}/:sceneId/:versionId.json`.
 3. **Backup:** `knowledge/backup-rollback.md` — Coolify Postgres dumps cover scenes + versions.
 
 ---

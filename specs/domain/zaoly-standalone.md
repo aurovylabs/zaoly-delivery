@@ -12,7 +12,7 @@ Zaoly is a **standalone** composition design editor. Sibling CREATION remains a 
 
 1. `npm run dev` MUST open the in-app editor without suite-federation or upstream pack env.
 2. The public `/` route MUST introduce Zaoly; `/editor` remains the primary product workspace and primary in-app nav item (`zaoly-landingpage-concept.md`).
-3. Env keys MUST prefer `ZAOLY_*` / `NEXT_PUBLIC_ZAOLY_*`; legacy `CREATION_*` aliases MAY resolve.
+3. Env keys MUST be `ZAOLY_*` / `NEXT_PUBLIC_ZAOLY_*` only — no `CREATION_*` / `PLEXON_*` aliases (`envGet`).
 4. Scene format MUST remain `CompositionScene` JSON (`@zaoly/contracts`).
 5. UI primitives MUST come from `@zaoly/ui` (no Stencil WC canvas).
 6. Durable compositions MUST use Postgres when `ZAOLY_DATABASE_URL` is set (`specs/domain/zaoly-composition-persistence.md`); JSON fallback when unset.

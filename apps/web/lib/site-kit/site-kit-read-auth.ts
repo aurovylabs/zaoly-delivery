@@ -11,7 +11,7 @@ import {
   requireSceneApiAccess,
 } from '../require-scene-api-access'
 import { viewerCanAccessPlatformProjectId } from '../require-scene-collection-access'
-import { getServiceSecret, isCreationAuthBypassEnabled, isServiceAuthConfigured } from '../runtime-config'
+import { getServiceSecret, isAuthBypassEnabled, isServiceAuthConfigured } from '../runtime-config'
 import type { ListSiteKitCompositionsFilter } from './composition-write'
 import {
   extractSiteKitViewToken,
@@ -46,7 +46,7 @@ export async function resolveSiteKitReadPrincipal(
     }
   }
 
-  if (!isServiceAuthConfigured() && isCreationAuthBypassEnabled()) {
+  if (!isServiceAuthConfigured() && isAuthBypassEnabled()) {
     return { kind: 'session', userId: 'dev-local' }
   }
 

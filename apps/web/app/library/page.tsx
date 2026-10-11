@@ -3,7 +3,7 @@ import { AppShell } from '../../components/app-shell'
 import { LibraryHub } from '../../components/library-hub'
 import { auth } from '../../auth'
 import { listProjectsForViewer } from '../../lib/fixtures/project-store'
-import { creationEditorInAppEnabled } from '../../lib/runtime-config'
+import { editorInAppEnabled } from '../../lib/runtime-config'
 
 async function safeLoadProjects(viewerId: string | null) {
   try {
@@ -16,13 +16,13 @@ async function safeLoadProjects(viewerId: string | null) {
 async function LibraryHubBody() {
   const session = await auth()
   const projects = await safeLoadProjects(session?.user?.id ?? null)
-  return <LibraryHub inAppEditor={creationEditorInAppEnabled()} projects={projects} />
+  return <LibraryHub inAppEditor={editorInAppEnabled()} projects={projects} />
 }
 
 export default function LibraryPage() {
   return (
     <AppShell titleKey="pages.library.title" descriptionKey="pages.library.lead">
-      <Suspense fallback={<LibraryHub inAppEditor={creationEditorInAppEnabled()} projects={[]} />}>
+      <Suspense fallback={<LibraryHub inAppEditor={editorInAppEnabled()} projects={[]} />}>
         <LibraryHubBody />
       </Suspense>
     </AppShell>

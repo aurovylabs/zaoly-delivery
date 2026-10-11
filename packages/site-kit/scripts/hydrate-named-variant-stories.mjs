@@ -18,7 +18,7 @@ const kitRoot = path.resolve(__dirname, '..')
 const CATALOG = SITE_KIT_CATALOG
 
 const ORIGIN = (
-  process.env.STORYBOOK_CREATION_ORIGIN ||
+  process.env.STORYBOOK_ZAOLY_ORIGIN ||
   'https://creation-v3.projects-a.plygrnd.tech'
 ).replace(/\/$/, '')
 

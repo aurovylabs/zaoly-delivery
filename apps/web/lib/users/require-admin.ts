@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '../../auth'
-import { isCreationAuthBypassEnabled } from '../runtime-config'
+import { isAuthBypassEnabled } from '../runtime-config'
 import { voidRecordAdminAudit } from './admin-audit'
 import { forbidIfImpersonating, readImpersonation } from './impersonation'
 import {
@@ -52,7 +52,7 @@ async function resolveEffectiveUser(): Promise<ZaolyUser | null> {
 export async function requireAdminUser(): Promise<
   { user: ZaolyUser } | NextResponse
 > {
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     return {
       user: {
         id: 'dev-local',
@@ -126,7 +126,7 @@ export function isAdminUser(
 export async function requireSessionUser(): Promise<
   { user: ZaolyUser } | NextResponse
 > {
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     return requireAdminUser()
   }
   if (!isZaolyUserStoreAvailable()) {

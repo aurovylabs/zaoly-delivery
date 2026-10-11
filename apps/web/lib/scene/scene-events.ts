@@ -2,9 +2,9 @@
  * In-process SSE fan-out for editor live reload after scene writes + presence.
  *
  * **Replica stance (Wave D):**
- * - Default (no `CREATION_REDIS_URL`): listeners live in this Node process only.
+ * - Default (no `ZAOLY_REDIS_URL`): listeners live in this Node process only.
  *   Valid while Coolify `swarm_replicas=1`.
- * - With `CREATION_REDIS_URL`: publish/subscribe on `paths.sceneEventsRedisChannel`
+ * - With `ZAOLY_REDIS_URL`: publish/subscribe on `paths.sceneEventsRedisChannel`
  *   so every replica delivers `scene-updated` + `presence-updated` to its SSE clients.
  *   Own publishes are tagged with an instance id and ignored on the subscriber echo.
  */
@@ -15,8 +15,8 @@ import {
   getRedisPublisher,
   getRedisSubscriber,
   sceneEventsChannel,
-} from '../redis/creation-redis'
-import { isCreationRedisConfigured } from '../runtime-config'
+} from '../redis/zaoly-redis'
+import { isRedisConfigured } from '../runtime-config'
 
 type SceneEventSource =
   | 'scene_ops'
@@ -86,7 +86,7 @@ function deliverLocal(event: SceneBusEvent): void {
 
 async function ensureRedisSubscriber(): Promise<void> {
   const state = sceneEventBusState()
-  if (state.redisSubscribed || !isCreationRedisConfigured()) return
+  if (state.redisSubscribed || !isRedisConfigured()) return
   const sub = getRedisSubscriber()
   if (!(await ensureRedisConnected(sub))) return
   if (!sub) return
@@ -106,7 +106,7 @@ async function ensureRedisSubscriber(): Promise<void> {
 }
 
 async function publishRemote(event: SceneBusEvent): Promise<void> {
-  if (!isCreationRedisConfigured()) return
+  if (!isRedisConfigured()) return
   await ensureRedisSubscriber()
   const pub = getRedisPublisher()
   if (!(await ensureRedisConnected(pub)) || !pub) return

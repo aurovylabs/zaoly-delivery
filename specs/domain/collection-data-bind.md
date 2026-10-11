@@ -92,7 +92,7 @@ WENN the editor paints nodes with `dataBindings`, DANN MUST `POST /api/collectio
 CREATION MUST NOT store KPI formulas, Checkion scan rows, or a parallel metrics DB. Display only.
 
 ### CD-7 Auth
-Catalog/resolve/collections BFF MUST use session or service auth + Collection access (same gate as VIDEON media BFF). Upstream calls MUST forward `X-Service-Secret` + contract + `X-Plexon-User-Id`.
+Catalog/resolve/collections BFF MUST use session or service auth + Collection access (same gate as VIDEON media BFF). Upstream calls MUST forward `X-Service-Secret` + contract + `X-Actor-User-Id`.
 
 ## Scene model
 

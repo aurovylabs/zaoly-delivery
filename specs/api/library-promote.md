@@ -7,7 +7,7 @@
 `paths.routes.apiLibraryPromoteDryRun` → `/api/library/promote/dry-run`  
 `paths.routes.apiLibraryPromote` → `/api/library/promote`
 
-Auth: Session required when Plexon auth is configured (`requireApiSession`). Local open only with `CREATION_AUTH_BYPASS=1`. Phase 3 never writes git. Phase 4 opens a PR only.
+Auth: Session required when Plexon auth is configured (`requireApiSession`). Local open only with `ZAOLY_AUTH_BYPASS=1`. Phase 3 never writes git. Phase 4 opens a PR only.
 
 ## POST `/api/library/promote/dry-run`
 

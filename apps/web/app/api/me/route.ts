@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '../../../auth'
-import { isCreationAuthBypassEnabled } from '../../../lib/runtime-config'
+import { isAuthBypassEnabled } from '../../../lib/runtime-config'
 import { readImpersonation } from '../../../lib/users/impersonation'
 import {
   getUserAccountFlags,
@@ -11,7 +11,7 @@ import {
 
 
 export async function GET() {
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     return NextResponse.json({
       id: 'dev-local',
       email: 'dev-local@localhost',
@@ -57,7 +57,7 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     return NextResponse.json({ error: 'forbidden' }, { status: 403 })
   }
   if (!isZaolyUserStoreAvailable()) {

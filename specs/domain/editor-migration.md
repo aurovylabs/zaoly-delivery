@@ -12,9 +12,9 @@
 2. Editor chrome is **rebuilt** in creation-v3 + zaoly-ui organisms (no 1:1 port of Zaoly chrome).
 3. Scene format is **JSON tree** (`CompositionScene`) in `@zaoly/contracts` — not long-term `*.zaoly.html`.
 4. Validate-before-write edit discipline is preserved as CREATION scene ops (not CEM/OP envelope 1:1).
-5. **Usability:** In-app `/editor` is primary when `CREATION_EDITOR_INAPP` on. Legacy Zaoly CTA removed (P61). `CREATION_EDITOR_URL` may remain as optional unused Ops deep-link.
+5. **Usability:** In-app `/editor` is primary when `ZAOLY_EDITOR_INAPP` on. Legacy Zaoly CTA removed (P61). `ZAOLY_EDITOR_URL` may remain as optional unused Ops deep-link.
 6. **Inspect contracts:** typed keep-prop registry (P16) — not full Stencil CEM parse (**wont-do**).
-7. **Postgres scenes:** Phase B attached on Coolify (`CREATION_DATABASE_URL`); JSON fallback when unset (P18).
+7. **Postgres scenes:** Phase B attached on Coolify (`ZAOLY_DATABASE_URL`); JSON fallback when unset (P18).
 
 ## Waves
 
@@ -42,7 +42,7 @@ Sectioned PropertyInspector (Component / Auto layout / Constraints / Appearance 
 
 ## Remaining workstreams → E6 (core — largely landed)
 
-Push in **parallel** (see `knowledge/editor-parity-parallel-plan.md`). Cutover gate is the **core** parity checklist (P1–P15) — not staged beta flags beyond `CREATION_EDITOR_INAPP`.
+Push in **parallel** (see `knowledge/editor-parity-parallel-plan.md`). Cutover gate is the **core** parity checklist (P1–P15) — not staged beta flags beyond `ZAOLY_EDITOR_INAPP`.
 
 | ID | Workstream | Owner repo | Outcome for E6 |
 |----|------------|------------|----------------|

@@ -104,7 +104,7 @@ UX metaphor: CodePen / [Web Maker](https://github.com/chinchang/web-maker) (tree
 28. WHERE the TSX Monaco pane is shown, the system MUST enable React JSX compiler options and MUST disable semantic validation (avoid false-positive red squiggles for Site Kit imports).
 29. WHEN the user clicks **Format TSX**, the system MUST regenerate the editor source from the current composition via `generateCompositionModule` (pretty-print) without writing SSOT.
 30. WHERE the root composition has `style` keys, the Props pane MUST list them for ephemeral edit (same regenerate path as props).
-31. Ephemeral drafts MUST use `creation.kit.playground.draft.v2` so pre-pretty-print session drafts do not override readable seeds.
+31. Ephemeral drafts MUST use `zaoly.kit.playground.draft.v2` so pre-pretty-print session drafts do not override readable seeds.
 
 ## SK-V10 requirements (Developer Hub — Wave 1 app engineer)
 

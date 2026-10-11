@@ -1,5 +1,5 @@
 /**
- * Durable Client Page Share store (JSON file or Postgres when CREATION_DATABASE_URL set).
+ * Durable Client Page Share store (JSON file or Postgres when ZAOLY_DATABASE_URL set).
  * Spec: specs/domain/client-page-share.md (P1+P2)
  */
 import fs from 'node:fs'

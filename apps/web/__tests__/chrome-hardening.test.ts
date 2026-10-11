@@ -16,6 +16,6 @@ describe('chrome hardening (Tooltip + HUD inline-edit gate)', () => {
 
   it('paths documents inlineEditActiveEvent', () => {
     const src = readFileSync(path.join(__dirname, '../lib/paths.ts'), 'utf8')
-    expect(src).toContain("inlineEditActiveEvent: 'creation:inline-edit-active'")
+    expect(src).toContain("inlineEditActiveEvent: 'zaoly:inline-edit-active'")
   })
 })

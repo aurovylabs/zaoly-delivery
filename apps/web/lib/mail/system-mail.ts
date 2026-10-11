@@ -4,7 +4,7 @@
  */
 import 'server-only'
 import { editorHref } from '../editor-launch'
-import { creationPublicUrl } from '../runtime-config'
+import { zaolyPublicUrl } from '../runtime-config'
 import { paths } from '../paths'
 import { resolveSmtpConfig } from './smtp-config'
 import { loadSmtpDbSettings } from './smtp-store'
@@ -38,7 +38,7 @@ async function withSmtp(
 }
 
 function publicUrl(route: string): string {
-  return `${creationPublicUrl().replace(/\/$/, '')}${route}`
+  return `${zaolyPublicUrl().replace(/\/$/, '')}${route}`
 }
 
 export async function getSmtpStatus(): Promise<SmtpPublicStatus> {

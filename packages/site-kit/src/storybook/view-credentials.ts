@@ -3,8 +3,8 @@
  * Spec: site-kit-collection-scope.md
  */
 
-export const SITE_KIT_VIEW_TOKEN_QUERY = 'creationViewToken'
-export const SITE_KIT_VIEW_TOKEN_HEADER = 'X-Creation-Site-Kit-View'
+export const SITE_KIT_VIEW_TOKEN_QUERY = 'zaolyViewToken'
+export const SITE_KIT_VIEW_TOKEN_HEADER = 'X-Zaoly-Site-Kit-View'
 export const SITE_KIT_PLATFORM_PROJECT_QUERY = 'platformProjectId'
 
 export function readSiteKitViewTokenFromLocation(

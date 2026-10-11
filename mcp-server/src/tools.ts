@@ -35,11 +35,6 @@ export const ZAOLY_V1_TOOL_NAMES = [
 
 export const ZAOLY_TOOL_NAMES = [...ZAOLY_V1_TOOL_NAMES, ...ZAOLY_V2_TOOL_NAMES] as const
 
-/** @deprecated use ZAOLY_TOOL_NAMES */
-export const CREATION_TOOL_NAMES = ZAOLY_TOOL_NAMES
-/** @deprecated use ZAOLY_V1_TOOL_NAMES */
-export const CREATION_V1_TOOL_NAMES = ZAOLY_V1_TOOL_NAMES
-
 export function registerZaolyTools(server: ToolServer) {
   server.registerTool(
     'zaoly.health',
@@ -154,6 +149,3 @@ export function registerZaolyTools(server: ToolServer) {
 
   registerZaolyV2Tools(server)
 }
-
-/** @deprecated use registerZaolyTools */
-export const registerCreationTools = registerZaolyTools

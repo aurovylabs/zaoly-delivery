@@ -5,7 +5,11 @@ import { paths } from './paths'
  */
 export function editorToastMessage(raw: string, fallback = 'Something went wrong'): string {
   const text = raw.trim() || fallback
-  if (text.includes('creation-v3-storyblok-poc') || text.includes('"components"')) {
+  if (
+    text.includes('zaoly-storyblok-poc') ||
+    text.includes('zaoly-storyblok-poc') ||
+    text.includes('"components"')
+  ) {
     return 'Storyblok handoff is not available on this host.'
   }
   if (text === 'forbidden' || text.includes('"error":"forbidden"')) {

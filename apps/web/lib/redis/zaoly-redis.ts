@@ -1,10 +1,10 @@
 /**
  * Redis client helpers for Scene SSE + presence (Wave D).
- * Lazy-connect; no-op when `CREATION_REDIS_URL` is unset.
+ * Lazy-connect; no-op when `ZAOLY_REDIS_URL` is unset.
  */
 import Redis from 'ioredis'
 import { paths } from '../paths'
-import { getCreationRedisUrl } from '../runtime-config'
+import { getZaolyRedisUrl } from '../runtime-config'
 
 declare global {
   // eslint-disable-next-line no-var
@@ -14,7 +14,7 @@ declare global {
 }
 
 function createClient(label: string): Redis | null {
-  const url = getCreationRedisUrl()
+  const url = getZaolyRedisUrl()
   if (!url) return null
   const client = new Redis(url, {
     maxRetriesPerRequest: 2,
@@ -22,13 +22,13 @@ function createClient(label: string): Redis | null {
     lazyConnect: true,
   })
   client.on('error', (err) => {
-    console.error(`[creation-redis:${label}]`, err.message)
+    console.error(`[zaoly-redis:${label}]`, err.message)
   })
   return client
 }
 
 export function getRedisPublisher(): Redis | null {
-  if (!getCreationRedisUrl()) return null
+  if (!getZaolyRedisUrl()) return null
   if (!globalThis.__creationRedisPublisher__) {
     globalThis.__creationRedisPublisher__ = createClient('pub') ?? undefined
   }
@@ -36,7 +36,7 @@ export function getRedisPublisher(): Redis | null {
 }
 
 export function getRedisSubscriber(): Redis | null {
-  if (!getCreationRedisUrl()) return null
+  if (!getZaolyRedisUrl()) return null
   if (!globalThis.__creationRedisSubscriber__) {
     globalThis.__creationRedisSubscriber__ = createClient('sub') ?? undefined
   }
@@ -61,7 +61,7 @@ export async function ensureRedisConnected(client: Redis | null): Promise<boolea
     if (client.status === 'wait') await client.connect()
     return true
   } catch (err) {
-    console.error('[creation-redis] connect failed', err)
+    console.error('[zaoly-redis] connect failed', err)
     return false
   }
 }

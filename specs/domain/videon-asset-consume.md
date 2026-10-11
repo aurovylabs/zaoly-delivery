@@ -14,7 +14,7 @@ Designers pick **Collection-bound VIDEON media** from the CREATION Asset Library
 
 1. **Collection-bound only** — list/frame require the scene’s real `platformProjectId`. Unbound / local scenes show an empty VIDEON category (no accessible-mediathek fan-out in P0).
 2. **Domain state stays in VIDEON** — CREATION MUST NOT copy media binaries into scene JSON or a CREATION blob store. Scene stores a **stable ref** plus a same-origin BFF frame URL for paint.
-3. **Product→Product** — CREATION BFF calls VIDEON with `PLEXON_SERVICE_SECRET` + actor (`X-Plexon-User-Id`). MUST NOT route media bytes through Plexon.
+3. **Product→Product** — CREATION BFF calls VIDEON with `ZAOLY_SERVICE_SECRET` + actor (`X-Actor-User-Id`). MUST NOT route media bytes through Plexon.
 4. **Access Model B** — VIDEON enforces workspace membership; CREATION BFF additionally checks Collection access for the session actor before proxying.
 5. **No hardcoded FQDNs** — `VIDEON_API_URL` / paths helpers only.
 

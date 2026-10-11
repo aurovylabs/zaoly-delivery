@@ -5,7 +5,7 @@
  * - MCP_TRANSPORT=stdio  → stdio
  * - MCP_TRANSPORT=http   → Streamable HTTP on MCP_PORT (default 3102)
  * - MCP_STATELESS=true   → one transport + McpServer per request
- * Always: ZAOLY_API_URL (alias CREATION_API_URL); ZAOLY_SERVICE_SECRET for service tools
+ * Always: ZAOLY_API_URL; ZAOLY_SERVICE_SECRET for service tools
  */
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
 import { randomUUID } from 'node:crypto'
@@ -19,7 +19,7 @@ const PORT = Number(process.env.MCP_PORT) || 3102
 const STATELESS = process.env.MCP_STATELESS === 'true' || process.env.MCP_STATELESS === '1'
 
 function apiUrlConfigured(): boolean {
-  return Boolean(process.env.ZAOLY_API_URL?.trim() || process.env.CREATION_API_URL?.trim())
+  return Boolean(process.env.ZAOLY_API_URL?.trim())
 }
 
 function log(msg: string): void {

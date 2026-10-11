@@ -14,7 +14,7 @@
 | GET | `/api/site-kit/catalog` | Session |
 | GET | `/api/site-kit/overrides/:id` | Atom seed (`Site*`) MAY stay public. **SK-S1:** `Composition*` MUST authorize owning Collection (session/service/view token) else `404` |
 
-Live overrides are durable in Postgres table `site_kit_overrides` when `CREATION_DATABASE_URL` is set. **Postgres is the production SSOT:** when configured, a write MUST succeed in Postgres or return `pg-unavailable` — disk under `.data/site-kit/overrides/` is a dev/local cache only and MUST NOT make a failed Postgres write appear successful. Reads merge Postgres + disk by `updatedAt` (newer wins). Storybook live polling MUST reset preview state when `componentId` changes and MUST surface loading / not-found / stale states instead of retaining a prior component tree.
+Live overrides are durable in Postgres table `site_kit_overrides` when `ZAOLY_DATABASE_URL` is set. **Postgres is the production SSOT:** when configured, a write MUST succeed in Postgres or return `pg-unavailable` — disk under `.data/site-kit/overrides/` is a dev/local cache only and MUST NOT make a failed Postgres write appear successful. Reads merge Postgres + disk by `updatedAt` (newer wins). Storybook live polling MUST reset preview state when `componentId` changes and MUST surface loading / not-found / stale states instead of retaining a prior component tree.
 
 ## POST `/api/site-kit/write` (atom)
 
@@ -42,7 +42,7 @@ Behavior: allowlist atom id → resolve **SK-S4 publish lane** → best-effort p
 |---------------|---------------------|--------|
 | omitted + Collection | set | **fork** → override id `Atom~{scopeKey}~{SiteType}`; no disk CSF patch |
 | `fork` | required | same |
-| `seed` / omitted without Collection | — | global `Site*` **only if** `CREATION_SITE_KIT_SHARED_SEED_WRITE=1`; else `403` `seed-write-forbidden` |
+| `seed` / omitted without Collection | — | global `Site*` **only if** `ZAOLY_SITE_KIT_SHARED_SEED_WRITE=1`; else `403` `seed-write-forbidden` |
 
 Reject codes: `unknown-component`, `missing-platform-project-id`, `seed-write-forbidden`, `seed-lane-conflict`, `scope-mismatch`, …
 
@@ -151,7 +151,7 @@ Returns `{ compositions: [{ name, exportName, storyTitle, componentId, platformP
 | Principal | Behavior |
 |-----------|----------|
 | Session / scene-api service | `platformProjectId` → ACL check + exact filter; `unscoped=1` → unscoped only; neither → intersect viewer’s accessible Collections (never world dump) |
-| View token (`X-Creation-Site-Kit-View` / `creationViewToken`) | Exact token Collection only |
+| View token (`X-Zaoly-Site-Kit-View` / `zaolyViewToken`) | Exact token Collection only |
 | Provisioning (`X-Service-Secret` + contract) | Admin/hydrate may list all (or honor query filter) |
 | None | `401` `{ error: 'unauthorized', code: 'site-kit-scope-required' }` |
 
@@ -162,7 +162,7 @@ Query:
 | `platformProjectId=<id>` | exact Collection match only (must be authorized) |
 | `unscoped=1` | only `platformProjectId == null` (legacy / unbound editor; session/service) |
 
-CORS `*` + allow header `X-Creation-Site-Kit-View`. `Cache-Control: no-store`.
+CORS `*` + allow header `X-Zaoly-Site-Kit-View`. `Cache-Control: no-store`.
 
 `POST /api/site-kit/compositions/from-scene` MUST stamp `scene.platformProjectId` the same way (reject when unbound).
 

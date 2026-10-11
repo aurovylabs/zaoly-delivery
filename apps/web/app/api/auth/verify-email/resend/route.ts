@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { auth } from '../../../../../auth'
 import { resolveMailLocale } from '../../../../../lib/mail/mail-locale'
 import { sendEmailVerifyEmail, voidSystemMail } from '../../../../../lib/mail/system-mail'
-import { isCreationAuthBypassEnabled } from '../../../../../lib/runtime-config'
+import { isAuthBypassEnabled } from '../../../../../lib/runtime-config'
 import { readImpersonation } from '../../../../../lib/users/impersonation'
 import {
   createEmailVerification,
@@ -13,7 +13,7 @@ import {
 
 /** Resend soft email-verify · Spec `zaoly-user-management.md`. */
 export async function POST(req: Request) {
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     return NextResponse.json({ error: 'forbidden' }, { status: 403 })
   }
   if (!isZaolyUserStoreAvailable()) {

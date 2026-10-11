@@ -22,8 +22,8 @@ Plexon user → creation-v3 NextAuth session → opaque launchCode → (later) Z
 | Collection context | existing `platformProjectId` (Wave 3) |
 | TTL | `paths.editorLaunchCodeTtlSeconds` (default 120) |
 | Use | Single-use; second redeem fails |
-| Signing | HMAC with `AUTH_SECRET` (or `CREATION_LAUNCH_TOKEN_SECRET` when set) |
-| Store (W2) | Redis key `paths.launchCodeRedisKeyPrefix:{jti}` when `CREATION_REDIS_URL` set (`GETDEL` consume); else in-process Map · `specs/domain/auth-hardening-w2.md` |
+| Signing | HMAC with `AUTH_SECRET` (or `ZAOLY_LAUNCH_TOKEN_SECRET` when set) |
+| Store (W2) | Redis key `paths.launchCodeRedisKeyPrefix:{jti}` when `ZAOLY_REDIS_URL` set (`GETDEL` consume); else in-process Map · `specs/domain/auth-hardening-w2.md` |
 
 ## Mint body (optional)
 ```ts
@@ -49,8 +49,8 @@ Plexon user → creation-v3 NextAuth session → opaque launchCode → (later) Z
 - WENN der Nutzer den Editor öffnet und eine Session (oder Auth-Bypass) vorliegt, DANN MUSS die Shell einen Launch-Code minten und an `buildEditorLaunchUrl` übergeben dürfen.
 - WENN Plexon-Auth konfiguriert ist und keine Session vorliegt, DANN MUSS Mint mit 401 antworten.
 - WENN ein Launch-Code abgelaufen oder bereits eingelöst ist, DANN MUSS Redeem fehlschlagen (nicht raten).
-- WENN `CREATION_REDIS_URL` gesetzt ist, DANN MUSS der Launch-Code-Store Redis nutzen (mint `SET`+TTL, redeem `GETDEL`); WENN Redis unerreichbar ist, DANN DARF nicht still auf Prozess-Memory zurückgefallen werden.
-- WENN `NODE_ENV=production`, DANN MUSS `CREATION_AUTH_BYPASS` wirkungslos bleiben (`specs/domain/auth-hardening-w2.md`).
+- WENN `ZAOLY_REDIS_URL` gesetzt ist, DANN MUSS der Launch-Code-Store Redis nutzen (mint `SET`+TTL, redeem `GETDEL`); WENN Redis unerreichbar ist, DANN DARF nicht still auf Prozess-Memory zurückgefallen werden.
+- WENN `NODE_ENV=production`, DANN MUSS `ZAOLY_AUTH_BYPASS` wirkungslos bleiben (`specs/domain/auth-hardening-w2.md`).
 - Host-Redeem MUSS denselben Federation-Contract + Service-Secret wie Provisioning nutzen.
 
 ## Non-goals

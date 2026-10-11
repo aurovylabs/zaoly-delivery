@@ -108,7 +108,7 @@ describe('storyblok preview paths', () => {
 
   it('builds staging preview href with optional Collection', () => {
     expect(storyblokPreviewHref('imported-page')).toBe(
-      `${paths.ecosystemStagingCreation}/preview/storyblok/imported-page`,
+      `${paths.ecosystemStagingZaoly}/preview/storyblok/imported-page`,
     )
     expect(
       storyblokPreviewHref('imported-page', {

@@ -80,7 +80,7 @@ const actorFields = {
   actorLabel: z
     .string()
     .optional()
-    .describe('Optional audit label forwarded as X-Creation-Actor-Label.'),
+    .describe('Optional audit label forwarded as X-Actor-Label.'),
 }
 
 async function textResult(path: string, options?: ZaolyRequestInit) {

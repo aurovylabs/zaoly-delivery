@@ -40,7 +40,7 @@ Query on compositions (optional):
 When Plexon auth is configured:
 - `/api/library/catalog` stays public (GET).
 - `/api/compositions` is **not** public — session gate; machine callers use service secret via `isMachineScenePath` (same pattern as `/api/scenes`).
-- `/api/projects*` allow through when `X-Service-Secret` + `X-Plexon-Contract-Version` match, else session gate.
+- `/api/projects*` allow through when `X-Service-Secret` + `X-Federation-Contract-Version` match, else session gate.
 
 ## Non-goals
 

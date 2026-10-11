@@ -129,7 +129,7 @@ function joinTextFragments(parts: string[]): string {
   return out
 }
 
-/** Merge adjacent short SiteText siblings ("3"+"+", "MSQ"+"DX") into one node. */
+/** Merge adjacent short SiteText siblings ("3"+"+", "ZA"+"OLY") into one node. */
 function coalesceSplitTextNodes(mapped: SceneNode[]): SceneNode[] {
   const out: SceneNode[] = []
   let i = 0

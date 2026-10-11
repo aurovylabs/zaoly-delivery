@@ -63,8 +63,6 @@ export const paths = {
   defaultAccent: 'blue' as const,
   /** When true (default), editor boots standalone; retired suite adapters optional. */
   standaloneMode: true as const,
-  /** Prefer ZAOLY_*; CREATION_* accepted as legacy aliases in runtime-config. */
-  envLegacyCreationPrefix: 'CREATION_' as const,
   devPort: 3009,
   /** Local Compose host port → container 5432. Avoids suite clash with Echon on 5433. */
   localPostgresHostPort: 5434,
@@ -93,13 +91,13 @@ export const paths = {
   federationMode: 'dummy' as const,
   envFederationBase: 'NEXT_ZAOLY_FEDERATION_BASE_URL',
   /** Staging Zaoly/CREATION origin for Storyblok preview + export copy links. */
-  ecosystemStagingCreation: 'https://creation-v3.projects-a.plygrnd.tech',
+  ecosystemStagingZaoly: 'https://creation-v3.projects-a.plygrnd.tech',
   // Retired suite launcher staging (Audion/…): see knowledge/paths.md § Retired suite env.
   envAudionPublicUrl: 'NEXT_PUBLIC_AUDION_URL',
   envCheckionPublicUrl: 'NEXT_PUBLIC_CHECKION_URL',
   envEchonPublicUrl: 'NEXT_PUBLIC_ECHON_URL',
   federationProductsPath: '/products',
-  envCreationPublicUrl: 'NEXT_PUBLIC_ZAOLY_URL',
+  envPublicUrl: 'NEXT_PUBLIC_ZAOLY_URL',
   /** Optional public inbox for website product and enterprise enquiries. */
   envPublicSiteContactEmail: 'NEXT_PUBLIC_ZAOLY_CONTACT_EMAIL',
   publicSiteContactEmailDefault: 'hello@example.com',
@@ -110,7 +108,7 @@ export const paths = {
   hostedBootstrapAdminEmail: 'admin@example.com',
   /** Public product site. Traefik on the weddy VPS. Ops: knowledge/deploy-weddy-server.md */
   publicSiteOrigin: 'http://localhost:3009',
-  envCreationEditorUrl: 'ZAOLY_EDITOR_URL',
+  envEditorUrl: 'ZAOLY_EDITOR_URL',
   /** In-repo DS marker (`packages/ui`). Default `in-repo`. Spec: zaoly-ui-in-repo.md */
   envZaolyUiSource: 'ZAOLY_UI_SOURCE',
   zaolyUiSourceDefault: 'in-repo',
@@ -201,18 +199,18 @@ export const paths = {
   /** Default branch for GitHub blob links (Kit atom source SK-V19). */
   creationGithubDefaultBranch: 'main',
   /** Prefer in-app `/editor` when truthy (default on outside production). */
-  envCreationEditorInApp: 'ZAOLY_EDITOR_INAPP',
+  envEditorInApp: 'ZAOLY_EDITOR_INAPP',
   /**
    * Smart Canvas HUD (W1). Client-readable.
    * Truthy / unset → smart lanes; `0`/`false`/`off` → legacy Insert+structure strip.
    * Spec: `specs/domain/canvas-smart-hud.md`
    */
-  envCreationSmartHud: 'NEXT_PUBLIC_ZAOLY_SMART_HUD',
+  envSmartHud: 'NEXT_PUBLIC_ZAOLY_SMART_HUD',
   /**
    * Opt-in Smart HUD telemetry CustomEvents (no PII).
    * `1`/`true`/`on` → dispatch `paths.hudTelemetryEvent`; default off.
    */
-  envCreationHudTelemetry: 'NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY',
+  envHudTelemetry: 'NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY',
   /** Window event name for HUD telemetry payloads. */
   hudTelemetryEvent: 'zaoly:hud-telemetry',
   /**
@@ -224,7 +222,7 @@ export const paths = {
    * Window event: canvas inline text edit active flag for HUD mutate gate.
    * Detail: `{ active: boolean }`. Knowledge: `knowledge/canvas-inline-text-edit.md`.
    */
-  inlineEditActiveEvent: 'creation:inline-edit-active',
+  inlineEditActiveEvent: 'zaoly:inline-edit-active',
   /** Absolute or cwd-relative JSON file for durable scene persistence. */
   envSceneStorePath: 'ZAOLY_SCENE_STORE_PATH',
   envTokenPackStorePath: 'ZAOLY_TOKEN_PACK_PATH',
@@ -245,21 +243,21 @@ export const paths = {
   /** Absolute or cwd-relative JSON for MagazineTemplate publish store (Phase 4). */
   envMagazineTemplateStorePath: 'ZAOLY_MAGAZINE_TEMPLATE_STORE_PATH',
   /** Postgres URL — when set, `/api/scenes*` uses PG (P18). Runtime-only; blank at Docker build. */
-  envCreationDatabaseUrl: 'ZAOLY_DATABASE_URL',
+  envDatabaseUrl: 'ZAOLY_DATABASE_URL',
   /**
    * Redis URL for cross-replica Scene SSE + presence store (Wave D) and launch codes (W2).
    * Unset → in-process bus + memory presence + memory launch codes (valid while swarm_replicas=1).
    * REQUIRED before Coolify replicas > 1.
    */
-  envCreationRedisUrl: 'ZAOLY_REDIS_URL',
+  envRedisUrl: 'ZAOLY_REDIS_URL',
   /** Pub/Sub channel for scene-updated + presence-updated fan-out. */
-  sceneEventsRedisChannel: 'creation:v3:scene-bus',
+  sceneEventsRedisChannel: 'zaoly:scene-bus',
   /** Redis hash key prefix for scene presence (`{prefix}:{sceneId}`). */
-  presenceRedisKeyPrefix: 'creation:v3:presence',
+  presenceRedisKeyPrefix: 'zaoly:presence',
   /** Soft TTL refresh on presence hash keys (seconds). */
   presenceRedisKeyTtlSec: 20,
   /** Redis string key prefix for single-use editor launch codes (`{prefix}:{jti}`). */
-  launchCodeRedisKeyPrefix: 'creation:v3:launch',
+  launchCodeRedisKeyPrefix: 'zaoly:launch',
   /** Default relative to process.cwd() (usually `apps/web` under Next). */
   sceneStoreRelPath: '.data/scenes.json',
   /** Client Page Share durable JSON (when Postgres unset). Spec: client-page-share.md */
@@ -280,15 +278,15 @@ export const paths = {
   clientPageShareTokenPrefix: 'crs_',
   /** Scene.comments id prefix for pins projected from client share guests. */
   clientShareSceneCommentIdPrefix: 'cmt_crs_',
-  clientPageShareUnlockCookie: 'creation_crs_unlock',
+  clientPageShareUnlockCookie: 'zaoly_crs_unlock',
   clientPageShareDefaultTtlDays: 14,
   clientPageShareMaxTtlDaysDefault: 30,
   /** Editor copy/paste JSON envelope kind (`knowledge/editor-clipboard.md`). */
-  editorClipboardKind: 'creation-v3.scene-nodes',
+  editorClipboardKind: 'zaoly.scene-nodes',
   /** FS fallback for version checkpoints when Postgres unset (W3). */
   sceneVersionsStoreRelPath: '.data/scene-versions',
   /** Optional absolute/relative root for FS version checkpoints. */
-  envCreationVersionStorePath: 'ZAOLY_VERSION_STORE_PATH',
+  envVersionStorePath: 'ZAOLY_VERSION_STORE_PATH',
   /** Default relative MagazineTemplate JSON store. */
   magazineTemplateStoreRelPath: '.data/magazine-templates.json',
   /** Wire compat for published MagazineTemplate. */
@@ -328,7 +326,7 @@ export const paths = {
   /** macOS Resources twin of `googleFontFamiliesJsonRelPath` (byte-identical after sync). */
   macosGoogleFontFamiliesJsonRelPath:
     'apps/macos/Resources/google-font-families.json',
-  /** Local Zaoly Vite editor when CREATION_EDITOR_URL unset (non-production only). */
+  /** Local Zaoly Vite editor when ZAOLY_EDITOR_URL unset (non-production only). */
   editorDevFallbackHttp: 'http://127.0.0.1:5174',
   envServiceSecret: 'ZAOLY_SERVICE_SECRET',
   // Retired upstream pack env keys — Zaoly uses local pack only.
@@ -340,14 +338,6 @@ export const paths = {
   envMetronPublicUrl: 'NEXT_PUBLIC_METRON_URL',
   /** Server-side CHECKION origin for Collection scan distillate. */
   envCheckionApiUrl: 'CHECKION_API_URL',
-  /** Server-side Magcloud Universe origin for slide publish handoff. */
-  envMagcloudUniverseApiUrl: 'MAGCLOUD_UNIVERSE_URL',
-  envMagcloudUniversePublicUrl: 'NEXT_PUBLIC_MAGCLOUD_UNIVERSE_URL',
-  /** Magcloud shell origin for Collection board catalog (list/create). */
-  envMagcloudApiUrl: 'MAGCLOUD_API_URL',
-  envMagcloudPublicUrl: 'NEXT_PUBLIC_MAGCLOUD_URL',
-  /** Optional Magcloud write secret; falls back to envServiceSecret. */
-  envMagcloudWriteSecret: 'MAGCLOUD_WRITE_SECRET',
   /** Upstream VIDEON media list (project-scoped). */
   videonMediaListPath: '/api/media',
   /** Upstream VIDEON frame still. */
@@ -381,12 +371,12 @@ export const paths = {
   dsDepositComponentSemanticMapLibPath: 'apps/web/lib/ds-deposit/component-semantic-map.ts',
   envFederationAuthUrl: 'ZAOLY_FEDERATION_AUTH_URL',
   envAuthSecret: 'AUTH_SECRET',
-  authDevFallbackSecret: 'creation-v3-local-dev-auth-secret-min-32chars',
+  authDevFallbackSecret: 'zaoly-local-dev-auth-secret-min-32chars',
   /**
    * Dev-only single-actor bypass (`dev-local`). Production must never set this.
    * Default off when Postgres user-store is active (`zaoly-user-management.md`).
    */
-  envCreationAuthBypass: 'ZAOLY_AUTH_BYPASS',
+  envAuthBypass: 'ZAOLY_AUTH_BYPASS',
   /** Bootstrap first admin when `users` is empty (requires ZAOLY_DATABASE_URL). */
   envZaolyBootstrapAdminEmail: 'ZAOLY_BOOTSTRAP_ADMIN_EMAIL',
   envZaolyBootstrapAdminPassword: 'ZAOLY_BOOTSTRAP_ADMIN_PASSWORD',
@@ -469,16 +459,16 @@ export const paths = {
   /** `0`/`false` disables default standalone open. */
   envZaolyStandalone: 'ZAOLY_STANDALONE',
   /** Optional error webhook (server) — W4 `reportError`. */
-  envCreationErrorWebhookUrl: 'ZAOLY_ERROR_WEBHOOK_URL',
+  envErrorWebhookUrl: 'ZAOLY_ERROR_WEBHOOK_URL',
   /** Optional error webhook (browser / error.tsx) — W4. */
-  envCreationErrorWebhookUrlPublic: 'NEXT_PUBLIC_ZAOLY_ERROR_WEBHOOK_URL',
+  envErrorWebhookUrlPublic: 'NEXT_PUBLIC_ZAOLY_ERROR_WEBHOOK_URL',
   /** Optional Sentry DSN (server) — W9 `reportError`. */
-  envCreationSentryDsn: 'ZAOLY_SENTRY_DSN',
+  envSentryDsn: 'ZAOLY_SENTRY_DSN',
   /** Optional Sentry DSN (browser / error boundaries) — W9. */
-  envCreationSentryDsnPublic: 'NEXT_PUBLIC_ZAOLY_SENTRY_DSN',
-  /** Legacy env aliases (envGet): CREATION_SENTRY_DSN / NEXT_PUBLIC_CREATION_SENTRY_DSN */
+  envSentryDsnPublic: 'NEXT_PUBLIC_ZAOLY_SENTRY_DSN',
+  /** Legacy env aliases (envGet): ZAOLY_SENTRY_DSN / NEXT_PUBLIC_ZAOLY_SENTRY_DSN */
   /** Optional: enable Session Replay (error-only) when browser DSN set — W10. */
-  envCreationSentryReplay: 'NEXT_PUBLIC_ZAOLY_SENTRY_REPLAY',
+  envSentryReplay: 'NEXT_PUBLIC_ZAOLY_SENTRY_REPLAY',
   /** Build-time Sentry org slug for source map upload — W10. */
   envSentryOrg: 'SENTRY_ORG',
   /** Build-time Sentry project slug — W10. */
@@ -494,8 +484,8 @@ export const paths = {
   /** Site Kit Storybook Live view token (HMAC). Spec: site-kit-collection-scope.md SK-S1. */
   /** Optional Coolify Storybook hydrate secret (SK-S1 Pattern CSF bake). */
   envSiteKitHydrateSecret: 'ZAOLY_SITE_KIT_HYDRATE_SECRET',
-  siteKitViewTokenHeader: 'X-Creation-Site-Kit-View',
-  siteKitViewTokenQueryParam: 'creationViewToken',
+  siteKitViewTokenHeader: 'X-Zaoly-Site-Kit-View',
+  siteKitViewTokenQueryParam: 'zaolyViewToken',
   /** Reusable until expiry — Live poll (~4s). */
   siteKitViewTokenTtlSeconds: 8 * 60 * 60,
   /** Provisioning: CREATION-first Collection origin (Wave 3). */
@@ -536,9 +526,9 @@ export const paths = {
   /** Optional editor UX tip (`save-pattern` = Pattern workflow banner). Spec: editor-launch.md SK-V7 */
   editorHintQueryParam: 'hint',
   editorHintSavePattern: 'save-pattern',
-  editorHintSavePatternStorageKey: 'creation.editor.hint.save-pattern.dismissed.v1',
+  editorHintSavePatternStorageKey: 'zaoly.editor.hint.save-pattern.dismissed.v1',
   /** Chart studio FloatingPanel dock (edge + offset). Spec: chart-studio-panel.md */
-  chartStudioDockStorageKey: 'creation.editor.chart-studio.dock.v1',
+  chartStudioDockStorageKey: 'zaoly.editor.chart-studio.dock.v1',
   /** Breakpoint Compare board on/off (device). Spec: responsive-breakpoint-closeout.md */
   breakpointCompareStorageKey: 'zaoly.editor.breakpoint-compare.v1',
   editorLaunchCodeTtlSeconds: 120,
@@ -651,10 +641,12 @@ export const paths = {
     apiScenePdf: (id: string) => `/api/scenes/${encodeURIComponent(id)}/pdf`,
     /** WYSIWYG artboard PNG/PDF — specs/api/scene-surface-export.md */
     apiSceneExport: (id: string) => `/api/scenes/${encodeURIComponent(id)}/export`,
-    /** Publish active artboard PNG to Magcloud — specs/api/magcloud-slide-handoff.md */
+    /**
+     * Retired Magcloud routes — thin 410 stubs only
+     * (`print-out-of-scope-for-zaoly.md`). No product client.
+     */
     apiScenePublishMagcloud: (id: string) =>
       `/api/scenes/${encodeURIComponent(id)}/publish-magcloud`,
-    /** Magcloud board catalog for a Collection (CREATION BFF). */
     apiMagcloudBoards: '/api/magcloud/boards',
     apiSceneShareInvite: (id: string) =>
       `/api/scenes/${encodeURIComponent(id)}/share-invite`,
@@ -764,7 +756,7 @@ export function storyblokPreviewHref(
   slug = '',
   options?: { origin?: string; platformProjectId?: string },
 ): string {
-  const origin = (options?.origin || paths.ecosystemStagingCreation).replace(/\/$/, '')
+  const origin = (options?.origin || paths.ecosystemStagingZaoly).replace(/\/$/, '')
   const base = `${origin}${paths.routes.storyblokPreview}`
   const clean = slug.replace(/^\/+|\/+$/g, '')
   const path = clean ? `${base}/${clean}` : `${base}/`

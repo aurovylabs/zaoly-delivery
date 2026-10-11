@@ -22,7 +22,7 @@ export function parseStorybookRedeployResult(
 }
 
 async function fireDeploy(reason: string): Promise<boolean> {
-  const hook = process.env.CREATION_SITE_KIT_STORYBOOK_DEPLOY_HOOK?.trim()
+  const hook = process.env.ZAOLY_SITE_KIT_STORYBOOK_DEPLOY_HOOK?.trim()
   if (hook) {
     const res = await fetch(hook, { method: 'POST' })
     if (!res.ok) {
@@ -38,13 +38,13 @@ async function fireDeploy(reason: string): Promise<boolean> {
   const token = process.env.COOLIFY_TOKEN?.trim()
   if (!token) {
     console.warn(
-      `[site-kit] Storybook redeploy skipped (${reason}): set COOLIFY_TOKEN or CREATION_SITE_KIT_STORYBOOK_DEPLOY_HOOK`,
+      `[site-kit] Storybook redeploy skipped (${reason}): set COOLIFY_TOKEN or ZAOLY_SITE_KIT_STORYBOOK_DEPLOY_HOOK`,
     )
     return false
   }
 
   const uuid =
-    process.env.CREATION_SITE_KIT_STORYBOOK_UUID?.trim() ||
+    process.env.ZAOLY_SITE_KIT_STORYBOOK_UUID?.trim() ||
     paths.coolifySiteKitStorybookUuid
 
   const res = await fetch(`${paths.coolifyApiBase}/deploy`, {
@@ -72,11 +72,11 @@ export async function requestSiteKitStorybookRebuild(
   reason: string,
 ): Promise<StorybookRedeployResult> {
   const configured =
-    !!process.env.CREATION_SITE_KIT_STORYBOOK_DEPLOY_HOOK?.trim() ||
+    !!process.env.ZAOLY_SITE_KIT_STORYBOOK_DEPLOY_HOOK?.trim() ||
     !!process.env.COOLIFY_TOKEN?.trim()
   if (!configured) {
     console.warn(
-      `[site-kit] Storybook redeploy skipped (${reason}): set COOLIFY_TOKEN or CREATION_SITE_KIT_STORYBOOK_DEPLOY_HOOK`,
+      `[site-kit] Storybook redeploy skipped (${reason}): set COOLIFY_TOKEN or ZAOLY_SITE_KIT_STORYBOOK_DEPLOY_HOOK`,
     )
     return { status: 'skipped', reason: 'missing-coolify-credentials' }
   }

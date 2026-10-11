@@ -19,8 +19,8 @@ export function federationBaseUrlNormalized(): string | null {
   return base ? base.replace(/\/$/, '') : null
 }
 
-export function creationPublicUrl(): string {
-  return envGet(paths.envCreationPublicUrl)?.trim() || `http://localhost:${paths.devPort}`
+export function zaolyPublicUrl(): string {
+  return envGet(paths.envPublicUrl)?.trim() || `http://localhost:${paths.devPort}`
 }
 
 /** Optional contact mailbox for the public Zaoly website. */
@@ -59,13 +59,13 @@ export function clientPageShareUnlockSecret(): string {
 }
 
 export function absoluteClientPageShareUrl(token: string): string {
-  const base = creationPublicUrl().replace(/\/$/, '')
+  const base = zaolyPublicUrl().replace(/\/$/, '')
   return `${base}${paths.routes.clientPageShare(token)}`
 }
 
 /** Optional external editor origin. Local fallback outside production when unset. */
-export function creationEditorUrl(): string | null {
-  const raw = envGet(paths.envCreationEditorUrl)?.trim()
+export function editorDeepLinkUrl(): string | null {
+  const raw = envGet(paths.envEditorUrl)?.trim()
   if (raw) return raw.replace(/\/$/, '')
   if (process.env.NODE_ENV !== 'production') return paths.editorDevFallbackHttp
   return null
@@ -80,11 +80,11 @@ function envTruthy(raw: string | undefined): boolean | null {
 }
 
 /**
- * Prefer in-app `/editor` when `ZAOLY_EDITOR_INAPP` (or legacy `CREATION_EDITOR_INAPP`) is truthy.
+ * Prefer in-app `/editor` when `ZAOLY_EDITOR_INAPP` (or legacy `ZAOLY_EDITOR_INAPP`) is truthy.
  * Default: on outside production; off in production until explicitly enabled.
  */
-export function creationEditorInAppEnabled(): boolean {
-  const parsed = envTruthy(envGet(paths.envCreationEditorInApp))
+export function editorInAppEnabled(): boolean {
+  const parsed = envTruthy(envGet(paths.envEditorInApp))
   if (parsed != null) return parsed
   return process.env.NODE_ENV !== 'production'
 }
@@ -94,10 +94,8 @@ export function creationEditorInAppEnabled(): boolean {
  * set `NEXT_PUBLIC_ZAOLY_SMART_HUD=0` for legacy Insert strip.
  * Spec: `specs/domain/canvas-smart-hud.md`
  */
-export function creationSmartHudEnabled(): boolean {
-  const parsed = envTruthy(
-    process.env.NEXT_PUBLIC_ZAOLY_SMART_HUD ?? process.env.NEXT_PUBLIC_CREATION_SMART_HUD,
-  )
+export function smartHudEnabled(): boolean {
+  const parsed = envTruthy(process.env.NEXT_PUBLIC_ZAOLY_SMART_HUD)
   if (parsed != null) return parsed
   return true
 }
@@ -106,10 +104,8 @@ export function creationSmartHudEnabled(): boolean {
  * Opt-in Smart HUD telemetry. Default **off**.
  * Set `NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY=1` to dispatch `paths.hudTelemetryEvent`.
  */
-export function creationHudTelemetryEnabled(): boolean {
-  const parsed = envTruthy(
-    process.env.NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY ?? process.env.NEXT_PUBLIC_CREATION_HUD_TELEMETRY,
-  )
+export function hudTelemetryEnabled(): boolean {
+  const parsed = envTruthy(process.env.NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY)
   return parsed === true
 }
 
@@ -144,24 +140,6 @@ export function checkionApiUrl(): string | null {
   return null
 }
 
-/** Magcloud Universe origin for CREATION → Magcloud slide publish. Prefer `MAGCLOUD_UNIVERSE_URL`. */
-export function magcloudUniverseApiUrl(): string | null {
-  const explicit = process.env[paths.envMagcloudUniverseApiUrl]?.trim()
-  if (explicit) return explicit.replace(/\/$/, '')
-  const pub = process.env[paths.envMagcloudUniversePublicUrl]?.trim()
-  if (pub) return pub.replace(/\/$/, '')
-  return null
-}
-
-/** Magcloud shell origin for board catalog. Prefer `MAGCLOUD_API_URL`. */
-export function magcloudApiUrl(): string | null {
-  const explicit = process.env[paths.envMagcloudApiUrl]?.trim()
-  if (explicit) return explicit.replace(/\/$/, '')
-  const pub = process.env[paths.envMagcloudPublicUrl]?.trim()
-  if (pub) return pub.replace(/\/$/, '')
-  return null
-}
-
 export function getExternalAuthUrl(): string {
   return (
     envGet(paths.envFederationAuthUrl)?.trim() || ''
@@ -174,7 +152,7 @@ export function isServiceAuthConfigured(): boolean {
 
 /** True when Zaoly Postgres is configured (local user store + durable scenes). */
 export function isZaolyDatabaseConfigured(): boolean {
-  return Boolean(envGet(paths.envCreationDatabaseUrl)?.trim())
+  return Boolean(envGet(paths.envDatabaseUrl)?.trim())
 }
 
 /**
@@ -206,14 +184,14 @@ export function isStoryblokHandoffEnabled(): boolean {
 /**
  * Single-actor DX bypass (`dev-local`).
  * - Always off in production.
- * - Explicit `ZAOLY_AUTH_BYPASS` / legacy `CREATION_AUTH_BYPASS` wins when set.
+ * - Explicit `ZAOLY_AUTH_BYPASS` / legacy `ZAOLY_AUTH_BYPASS` wins when set.
  * - When Postgres is configured, default **off** (real local users).
  * - Without Postgres, default **on** outside production for JSON-store DX.
  * Spec: zaoly-user-management.md
  */
-export function isCreationAuthBypassEnabled(): boolean {
+export function isAuthBypassEnabled(): boolean {
   if (process.env.NODE_ENV === 'production') return false
-  const parsed = envTruthy(envGet(paths.envCreationAuthBypass))
+  const parsed = envTruthy(envGet(paths.envAuthBypass))
   if (parsed != null) return parsed
   if (isZaolyDatabaseConfigured()) return false
   if (!paths.standaloneMode) return false
@@ -253,13 +231,13 @@ export function resolveZaolyUiSource(): string {
 }
 
 /** Redis URL for cross-replica SSE + presence (Wave D). Unset → in-process. */
-export function getCreationRedisUrl(): string | null {
-  const raw = envGet(paths.envCreationRedisUrl)?.trim()
+export function getZaolyRedisUrl(): string | null {
+  const raw = envGet(paths.envRedisUrl)?.trim()
   return raw || null
 }
 
-export function isCreationRedisConfigured(): boolean {
-  return Boolean(getCreationRedisUrl())
+export function isRedisConfigured(): boolean {
+  return Boolean(getZaolyRedisUrl())
 }
 
 /** Optional Storybook catalog origin — unset means settings shows in-repo only. */

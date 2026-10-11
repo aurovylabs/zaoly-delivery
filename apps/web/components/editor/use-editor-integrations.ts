@@ -2,7 +2,7 @@
 
 /**
  * Site Kit publish/pull and surface export.
- * Magazin PDF / Magcloud — retired (`print-out-of-scope-for-zaoly.md`).
+ * Magazin PDF — retired (`print-out-of-scope-for-zaoly.md`). Magcloud removed.
  */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CompositionScene } from '@zaoly/contracts'
@@ -61,12 +61,8 @@ export function useEditorIntegrations(args: {
   const [pullResetConfirmOpen, setPullResetConfirmOpen] = useState(false)
   const publishBusyRef = useRef(publishBusy)
   publishBusyRef.current = publishBusy
-  /** Compat stubs — Magazin/Magcloud removed from Zaoly product surface. */
+  /** Magazin PDF retired — stub only. */
   const pdfBusy = false
-  const magcloudBusy = false
-  const magcloudPublishOpen = false
-  const magcloudPublishError = null as string | null
-  const setMagcloudPublishOpen = (_open: boolean) => undefined
 
   const publishableMasterCount = useMemo(
     () => collectPublishableMasters(scene.masters ?? []).length,
@@ -130,18 +126,6 @@ export function useEditorIntegrations(args: {
     } finally {
       setExportBusy(false)
     }
-  }
-
-  function onPublishToMagcloud() {
-    setError(t('editor.magcloudPublishFailed'))
-  }
-
-  async function confirmMagcloudPublish(_input: {
-    platformProjectId: string
-    boardName: string
-    boardLabel: string
-  }) {
-    setError(t('editor.magcloudPublishFailed'))
   }
 
   async function onPublishToStorybook() {
@@ -297,10 +281,6 @@ export function useEditorIntegrations(args: {
   return {
     pdfBusy,
     exportBusy,
-    magcloudBusy,
-    magcloudPublishOpen,
-    setMagcloudPublishOpen,
-    magcloudPublishError,
     publishBusy,
     publishStatus,
     setPublishStatus,
@@ -310,8 +290,6 @@ export function useEditorIntegrations(args: {
     pullableMasterCount,
     onDownloadPdf,
     onSurfaceExport,
-    onPublishToMagcloud,
-    confirmMagcloudPublish,
     onPublishToStorybook,
     onPullFromSiteKit,
     runSiteKitPull,

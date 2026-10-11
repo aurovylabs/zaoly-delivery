@@ -39,7 +39,7 @@ describe('library-composition-roundtrip knowledge', () => {
     expect(text).toContain('ChatBlockPanel')
     expect(text).toContain('/api/library/promote/dry-run')
     expect(text).toContain('extend-unrepresentable')
-    expect(text).toContain('URL_CREATION_V3')
+    expect(text).toContain('URL_ZAOLY_STAGING')
     expect(text).toContain('generic catalog copy')
     expect(text).toContain('color.action.accent')
     expect(text).toContain('var(--accent)')

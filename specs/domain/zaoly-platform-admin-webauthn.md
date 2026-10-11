@@ -13,7 +13,7 @@ Let `platform_admin` register discoverable/platform authenticators (passkeys) an
 |----|-----|
 | Register / list / delete passkeys under `/admin/security` | Auth.js experimental Passkey provider + Prisma adapter |
 | Passwordless login via WebAuthn assertion → short-lived ticket → credentials session | Attestation trust stores / enterprise MDM |
-| RP ID / origin from `creationPublicUrl()` | Conditional UI mediation only |
+| RP ID / origin from `zaolyPublicUrl()` | Conditional UI mediation only |
 
 ## EARS
 

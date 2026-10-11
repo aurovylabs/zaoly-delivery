@@ -54,7 +54,7 @@ describe('library-composition-roundtrip spec', () => {
     const workflow = readFileSync(path.join(root, '.github/workflows/pin-bump-creation.yml'), 'utf8')
     expect(workflow).toContain('chbrdk/creation-v3')
     expect(workflow).toContain('pin/zaoly-ui-')
-    expect(workflow).toContain('CREATION_GITHUB_TOKEN')
+    expect(workflow).toContain('ZAOLY_GITHUB_TOKEN')
     expect(workflow).toContain('peter-evans/create-pull-request@v8')
     expect(workflow).toContain('Never auto-merge')
     expect(workflow).not.toContain('gh pr merge')

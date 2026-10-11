@@ -11,7 +11,7 @@ describe('Wave 2 auth guards', () => {
   beforeEach(() => {
     vi.unstubAllEnvs()
     authMock.mockReset()
-    vi.stubEnv(paths.envCreationAuthBypass, '0')
+    vi.stubEnv(paths.envAuthBypass, '0')
     delete process.env[paths.envFederationAuthUrl]
     delete process.env[paths.envServiceSecret]
   })
@@ -113,22 +113,22 @@ describe('Wave 2 auth guards', () => {
     expect(project.ownerUserId).toBe('session-owner')
   })
 
-  it('isCreationAuthBypassEnabled respects ZAOLY_AUTH_BYPASS outside production', async () => {
+  it('isAuthBypassEnabled respects ZAOLY_AUTH_BYPASS outside production', async () => {
     vi.stubEnv('NODE_ENV', 'test')
     vi.resetModules()
-    const { isCreationAuthBypassEnabled } = await import('../lib/runtime-config')
-    vi.stubEnv(paths.envCreationAuthBypass, '1')
-    expect(isCreationAuthBypassEnabled()).toBe(true)
-    vi.stubEnv(paths.envCreationAuthBypass, '0')
-    expect(isCreationAuthBypassEnabled()).toBe(false)
+    const { isAuthBypassEnabled } = await import('../lib/runtime-config')
+    vi.stubEnv(paths.envAuthBypass, '1')
+    expect(isAuthBypassEnabled()).toBe(true)
+    vi.stubEnv(paths.envAuthBypass, '0')
+    expect(isAuthBypassEnabled()).toBe(false)
   })
 
-  it('isCreationAuthBypassEnabled is false in production even when set', async () => {
+  it('isAuthBypassEnabled is false in production even when set', async () => {
     vi.stubEnv('NODE_ENV', 'production')
-    vi.stubEnv(paths.envCreationAuthBypass, '1')
+    vi.stubEnv(paths.envAuthBypass, '1')
     vi.resetModules()
-    const { isCreationAuthBypassEnabled } = await import('../lib/runtime-config')
-    expect(isCreationAuthBypassEnabled()).toBe(false)
+    const { isAuthBypassEnabled } = await import('../lib/runtime-config')
+    expect(isAuthBypassEnabled()).toBe(false)
   })
 
   it('getAuthSecret throws in production without AUTH_SECRET', async () => {

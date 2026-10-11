@@ -2,11 +2,11 @@
 
 **Status:** Accepted (Wave E5+ / P13; **P18**) — 2026-08-12 · **Auth hardened** 2026-08-22 · **Collection ACL** 2026-08-29 · **Zaoly ownership** 2026-10-03  
 **Store:** JSON file when `ZAOLY_DATABASE_URL` unset (`lib/scene/scene-store.ts`); Postgres when set (`lib/scene/pg-store.ts`). Default JSON `paths.sceneStoreRelPath` / env `ZAOLY_SCENE_STORE_PATH`.  
-**Postgres:** local Compose or dedicated Coolify `zaoly-postgres` · env `ZAOLY_DATABASE_URL` (`paths.envCreationDatabaseUrl`) runtime-only. See `knowledge/zaoly-postgres.md` · `specs/domain/zaoly-composition-persistence.md`.
+**Postgres:** local Compose or dedicated Coolify `zaoly-postgres` · env `ZAOLY_DATABASE_URL` (`paths.envDatabaseUrl`) runtime-only. See `knowledge/zaoly-postgres.md` · `specs/domain/zaoly-composition-persistence.md`.
 
 ## Auth
 
-WENN Plexon-Auth konfiguriert ist (`PLEXON_AUTH_URL` + `PLEXON_SERVICE_SECRET`), DANN MUSS jede Route unter `/api/scenes*` eine gültige Session (oder Federation-Service-Auth mit `X-Plexon-User-Id`) haben.
+WENN Plexon-Auth konfiguriert ist (`ZAOLY_FEDERATION_AUTH_URL` + `ZAOLY_SERVICE_SECRET`), DANN MUSS jede Route unter `/api/scenes*` eine gültige Session (oder Federation-Service-Auth mit `X-Actor-User-Id`) haben.
 
 | Method | Path | Auth |
 |--------|------|------|
@@ -79,4 +79,4 @@ Contract shapes: `@zaoly/contracts` · Spec `composition-scene.md` · Agent edit
 
 ## Phase B (P18)
 
-Postgres is attached. Keep the same HTTP contract and `CompositionScene` JSON shape; `scene-store` swaps backend when `CREATION_DATABASE_URL` is set. Optional one-shot import from `.data/scenes.json` when the table is empty. JSON remains the local/test fallback.
+Postgres is attached. Keep the same HTTP contract and `CompositionScene` JSON shape; `scene-store` swaps backend when `ZAOLY_DATABASE_URL` is set. Optional one-shot import from `.data/scenes.json` when the table is empty. JSON remains the local/test fallback.

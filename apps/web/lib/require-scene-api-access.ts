@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
 import { auth } from '../auth'
 import { isProvisioningAuthorized } from './federation-contract'
-import { getServiceSecret, isCreationAuthBypassEnabled } from './runtime-config'
+import { getServiceSecret, isAuthBypassEnabled } from './runtime-config'
 
 export const ACTOR_USER_ID_HEADER = 'X-Actor-User-Id'
-export const CREATION_ACTOR_LABEL_HEADER = 'X-Creation-Actor-Label'
+export const ACTOR_LABEL_HEADER = 'X-Actor-Label'
 
 export type SceneApiAccess =
   | { ok: true; mode: 'session'; userId: string }
@@ -16,11 +16,11 @@ export function isSceneApiAccess(
   return 'ok' in value && value.ok === true
 }
 
-/** Session (local Zaoly users) or optional legacy service caller. */
+/** Session (local Zaoly users) or optional service caller. */
 export async function requireSceneApiAccess(
   req: Request,
 ): Promise<SceneApiAccess | NextResponse> {
-  if (isCreationAuthBypassEnabled()) {
+  if (isAuthBypassEnabled()) {
     return { ok: true, mode: 'session', userId: 'dev-local' }
   }
 
@@ -35,7 +35,7 @@ export async function requireSceneApiAccess(
     if (!userId) {
       return NextResponse.json({ error: 'actor-required' }, { status: 401 })
     }
-    const actorLabel = req.headers.get(CREATION_ACTOR_LABEL_HEADER)?.trim() || undefined
+    const actorLabel = req.headers.get(ACTOR_LABEL_HEADER)?.trim() || undefined
     return { ok: true, mode: 'service', userId, actorLabel }
   }
 

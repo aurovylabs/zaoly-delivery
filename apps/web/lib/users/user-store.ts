@@ -7,7 +7,7 @@ import {
 } from '../scene/pg-store'
 import { paths } from '../paths'
 import { envGet } from '../env-resolve'
-import { creationPublicUrl } from '../runtime-config'
+import { zaolyPublicUrl } from '../runtime-config'
 import {
   assertPasswordPolicy,
   hashPassword,
@@ -701,7 +701,7 @@ export async function createEmailVerification(input: {
      VALUES ($1, $2, $3, $4)`,
     [id, row.id, tokenHash, expiresAt.toISOString()],
   )
-  const verifyUrl = `${creationPublicUrl().replace(/\/$/, '')}${paths.routes.verifyEmail}?token=${encodeURIComponent(token)}`
+  const verifyUrl = `${zaolyPublicUrl().replace(/\/$/, '')}${paths.routes.verifyEmail}?token=${encodeURIComponent(token)}`
   return { email: row.email, verifyUrl, expiresAt: expiresAt.toISOString() }
 }
 
@@ -767,7 +767,7 @@ export async function createPasswordReset(input: {
      VALUES ($1, $2, $3, $4)`,
     [id, user.id, tokenHash, expiresAt.toISOString()],
   )
-  const resetUrl = `${creationPublicUrl().replace(/\/$/, '')}${paths.routes.resetPassword}?token=${encodeURIComponent(token)}`
+  const resetUrl = `${zaolyPublicUrl().replace(/\/$/, '')}${paths.routes.resetPassword}?token=${encodeURIComponent(token)}`
   return { email: user.email, resetUrl, expiresAt: expiresAt.toISOString() }
 }
 
@@ -838,7 +838,7 @@ export async function createInvite(input: {
      VALUES ($1, $2, $3, $4, $5, $6)`,
     [inviteId, email, input.role, tokenHash, expiresAt.toISOString(), invitedBy],
   )
-  const inviteUrl = `${creationPublicUrl().replace(/\/$/, '')}${paths.routes.inviteAccept(token)}`
+  const inviteUrl = `${zaolyPublicUrl().replace(/\/$/, '')}${paths.routes.inviteAccept(token)}`
   return {
     inviteId,
     email,

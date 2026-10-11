@@ -136,7 +136,7 @@ export function ProjectDetailPanel({
             </Link>
           ) : (
             <Text role="meta" as="p">
-              {t('pages.compositions.inAppOffHint', { env: paths.envCreationEditorInApp })}
+              {t('pages.compositions.inAppOffHint', { env: paths.envEditorInApp })}
             </Text>
           )}
         </div>

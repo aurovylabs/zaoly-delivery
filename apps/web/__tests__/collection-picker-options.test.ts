@@ -5,26 +5,26 @@ import {
   mapCollectionsToPickerOptions,
 } from '../lib/collection-picker-options'
 
-const MSQ = paths.zaolyDepositPlatformProjectId
+const DEPOSIT = paths.zaolyDepositPlatformProjectId
 
 describe('collection picker options', () => {
   it('maps federation collections and pins Zaoly using the Plexon label', () => {
     const options = mapCollectionsToPickerOptions(
       [
         { id: 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', name: 'Other Co' },
-        { id: MSQ, name: 'Zaoly Studio' },
+        { id: DEPOSIT, name: 'Zaoly Studio' },
         { id: 'bbbbbbbb-cccc-4ddd-8eee-ffffffffffff', name: 'Beta' },
       ],
-      MSQ,
+      DEPOSIT,
       'pinned',
     )
     expect(options[0]).toEqual({
-      value: MSQ,
+      value: DEPOSIT,
       label: 'Zaoly Studio · pinned',
       pinned: true,
     })
     expect(options.map((o) => o.value)).toEqual([
-      MSQ,
+      DEPOSIT,
       'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
       'bbbbbbbb-cccc-4ddd-8eee-ffffffffffff',
     ])
@@ -34,7 +34,7 @@ describe('collection picker options', () => {
   it('skips blank ids and does not invent a name-only Zaoly row', () => {
     const options = mapCollectionsToPickerOptions(
       [{ id: ' ', name: 'Ghost' }, { id: 'cccccccc-dddd-4eee-8fff-000000000000', name: 'Gamma' }],
-      MSQ,
+      DEPOSIT,
       'pinned',
     )
     expect(options).toHaveLength(1)

@@ -4,8 +4,8 @@ import {
   ensureRedisConnected,
   getRedisPublisher,
   presenceRedisKey,
-} from '../redis/creation-redis'
-import { isCreationRedisConfigured } from '../runtime-config'
+} from '../redis/zaoly-redis'
+import { isRedisConfigured } from '../runtime-config'
 import {
   PRESENCE_SSE_COALESCE_MS,
   publishPresenceSnapshot,
@@ -138,7 +138,7 @@ export async function flushPresenceCoalesce(sceneId: string): Promise<void> {
   if (upserts.length === 0 && removedUserIds.length === 0) return
 
   let activeUsersCount = 0
-  if (isCreationRedisConfigured()) {
+  if (isRedisConfigured()) {
     const userMap = await loadRedisUserMap(sceneId)
     pruneUserMap(userMap)
     activeUsersCount = userMap.size
@@ -164,7 +164,7 @@ export async function recordPresenceHeartbeat(
     lastSeenAt: user.lastSeenAt || new Date().toISOString(),
   }
 
-  if (isCreationRedisConfigured()) {
+  if (isRedisConfigured()) {
     const userMap = await loadRedisUserMap(sceneId)
     const prunedIds = pruneUserMap(userMap)
     for (const id of prunedIds) enqueueRemove(sceneId, id)
@@ -182,7 +182,7 @@ export async function recordPresenceHeartbeat(
 }
 
 export async function getScenePresence(sceneId: string): Promise<ScenePresenceState> {
-  if (isCreationRedisConfigured()) {
+  if (isRedisConfigured()) {
     const userMap = await loadRedisUserMap(sceneId)
     pruneUserMap(userMap)
     return snapshot(sceneId, userMap)
@@ -192,7 +192,7 @@ export async function getScenePresence(sceneId: string): Promise<ScenePresenceSt
 }
 
 export async function removePresenceUser(sceneId: string, userId: string): Promise<void> {
-  if (isCreationRedisConfigured()) {
+  if (isRedisConfigured()) {
     const userMap = await loadRedisUserMap(sceneId)
     if (!userMap.has(userId)) return
     userMap.delete(userId)

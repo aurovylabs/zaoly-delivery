@@ -63,7 +63,7 @@ Reuse P39/P42 vocabulary (`knowledge/token-layers.md`). Prefer print channel CSS
 | `color.brand.green` | `accent` (DS-DEPOSIT) |
 | `color.action.secondary` | `muted` |
 
-Typography family/size from Brandion is resolved via `magFontFromBrandPack` (P81b / **P82c**): known aliases (Geist/Inter/Noto/system) map onto the **registered** Mag face (`NotoSans`). When a typography leaf sets optional Brandion `source` to a fetchable TTF/OTF/WOFF URL or path, Mag `registerMagazinePdfFontFromSrc` registers that family; on failure keep Noto. Brandion **font-bytes MIME upload** remains deferred. Headers: `X-Creation-Mag-Font` / `X-Creation-Mag-Font-Fallback` / `X-Creation-Mag-Font-Embedded`.
+Typography family/size from Brandion is resolved via `magFontFromBrandPack` (P81b / **P82c**): known aliases (Geist/Inter/Noto/system) map onto the **registered** Mag face (`NotoSans`). When a typography leaf sets optional Brandion `source` to a fetchable TTF/OTF/WOFF URL or path, Mag `registerMagazinePdfFontFromSrc` registers that family; on failure keep Noto. Brandion **font-bytes MIME upload** remains deferred. Headers: `X-Zaoly-Mag-Font` / `X-Zaoly-Mag-Font-Fallback` / `X-Zaoly-Mag-Font-Embedded`.
 
 ## Acceptances (EARS)
 

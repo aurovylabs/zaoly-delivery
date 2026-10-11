@@ -22,7 +22,7 @@ Lightweight presence heartbeat + SSE fan-out for collaborators on the same `Comp
 | `DELETE` | `/api/scenes/:id/presence` | Session / Service | Leave; publishes SSE `presence-updated` |
 | `GET` | `/api/scenes/:id/events` | Session / Service | SSE: `scene-updated`, `presence-updated`, `heartbeat` |
 
-Constants: `paths.routes.apiScenePresence`, `apiScenePresenceHeartbeat`, `apiSceneEvents` (Web). macOS: `CreationAPIPaths` mirroring the same relative paths against the configured creation base URL (`knowledge/paths.md` → `URL_CREATION_V3`).
+Constants: `paths.routes.apiScenePresence`, `apiScenePresenceHeartbeat`, `apiSceneEvents` (Web). macOS: `ZaolyAPIPaths` mirroring the same relative paths against the configured creation base URL (`knowledge/paths.md` → `URL_ZAOLY_STAGING`).
 
 ---
 
@@ -84,6 +84,6 @@ Structural **and** leaf/property ops rejected locally when a peer's `selectedIds
 
 ## 6. Replica gate (Wave D)
 
-- **Without** `CREATION_REDIS_URL`: in-process SSE bus + memory presence store. Valid while Coolify `swarm_replicas=1`.
-- **With** `CREATION_REDIS_URL`: Redis Pub/Sub on channel `creation:v3:scene-bus` fans out `scene-updated` and `presence-updated` across replicas; presence users live in Redis hashes `creation:v3:presence:{sceneId}` (TTL refresh).
-- Coolify MUST set `CREATION_REDIS_URL` **before** raising `swarm_replicas` above 1. Staging remains 1 replica until ops attach Redis.
+- **Without** `ZAOLY_REDIS_URL`: in-process SSE bus + memory presence store. Valid while Coolify `swarm_replicas=1`.
+- **With** `ZAOLY_REDIS_URL`: Redis Pub/Sub on channel `zaoly:scene-bus` fans out `scene-updated` and `presence-updated` across replicas; presence users live in Redis hashes `zaoly:presence:{sceneId}` (TTL refresh).
+- Coolify MUST set `ZAOLY_REDIS_URL` **before** raising `swarm_replicas` above 1. Staging remains 1 replica until ops attach Redis.

@@ -52,8 +52,8 @@ function envTruthy(name: string): boolean {
 
 /** Wrap only when operators opted into Sentry DSN and/or source-map upload (W10). */
 const sentryBuildEnabled =
-  envTruthy(paths.envCreationSentryDsn) ||
-  envTruthy(paths.envCreationSentryDsnPublic) ||
+  envTruthy(paths.envSentryDsn) ||
+  envTruthy(paths.envSentryDsnPublic) ||
   envTruthy(paths.envSentryAuthToken)
 
 const sentrySourceMapsEnabled =

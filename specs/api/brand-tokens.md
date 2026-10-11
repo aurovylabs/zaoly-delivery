@@ -33,7 +33,7 @@ Session auth (same gate as `/api/scenes`). Public unauthenticated access MUST be
 
 - `source: 'brandion'` — live active pack.
 - `source: 'fixture'` — Brandion unset, 404, or error; CREATION applies local catalog. MUST NOT leak upstream error bodies to the client.
-- `localPromotePreview?: true` — **dev only** when `CREATION_AUTH_BYPASS` is on and the pack is fixture. Client MAY show promote UX as a **session overlay** (bind + catalog merge in memory). MUST NOT call `PATCH /api/brand-tokens` / Brandion. Staging/prod MUST omit the flag.
+- `localPromotePreview?: true` — **dev only** when `ZAOLY_AUTH_BYPASS` is on and the pack is fixture. Client MAY show promote UX as a **session overlay** (bind + catalog merge in memory). MUST NOT call `PATCH /api/brand-tokens` / Brandion. Staging/prod MUST omit the flag.
 
 ## Response `204` / empty
 
@@ -88,7 +88,7 @@ MUST NOT persist leaves in CREATION Postgres. MUST NOT invent paths/types.
 | Base | `BRANDION_API_URL` or `NEXT_PUBLIC_BRANDION_URL` (`paths` / runtime-config) |
 | Read path | Brandion active-pack (document in `knowledge/paths.md`) |
 | Write path | Brandion `/api/guidelines/:id/tokens` |
-| Auth | `X-Service-Secret: PLEXON_SERVICE_SECRET` + federation contract headers |
+| Auth | `X-Service-Secret: ZAOLY_SERVICE_SECRET` + federation contract headers |
 | Never | Secret in `NEXT_PUBLIC_*` or browser fetch to Brandion |
 
 ## DS-DEPOSIT D4 smoke (Zaoly Collection)

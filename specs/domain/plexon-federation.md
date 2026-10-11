@@ -17,21 +17,21 @@
 
 ## Mode
 - Default `paths.federationMode = dummy` — shell + fixtures, no live upsert/origin outbound
-- Override with `CREATION_FEDERATION_MODE=live` + `PLEXON_SERVICE_SECRET` (+ `NEXT_PLEXON_BASE_URL` or `PLEXON_AUTH_URL`)
+- Override with `ZAOLY_FEDERATION_MODE=live` + `ZAOLY_SERVICE_SECRET` (+ `NEXT_ZAOLY_FEDERATION_BASE_URL` or `ZAOLY_FEDERATION_AUTH_URL`)
 - Staging Coolify MUST use `live` once Plexon registry + shared secret are set (otherwise Sync CTAs return `503 federation_mode_dummy`)
 - `/api/federation/health` reports configuration; live probe of plexon `/api/health` when secret + base set
 - Inbound provisioning (PUT/GET) is authorized by service secret + contract header regardless of dummy/live (machine path)
 - Bulk pull: `POST /api/projects/sync-from-plexon` → Plexon `POST /api/platform/provisioning/sync-capability-mirrors` with `productIds: ['creation']`
-- **P71 list:** `GET /api/projects/collections` → Plexon `GET /api/platform/provisioning/accessible-collections` (same directory as Sync; service + `X-Plexon-User-Id`)
+- **P71 list:** `GET /api/projects/collections` → Plexon `GET /api/platform/provisioning/accessible-collections` (same directory as Sync; service + `X-Actor-User-Id`)
 
 ## Provisioning (Wave 3)
 - **PUT** upsert: `name`, `platformCompanyId`, `ownerUserId`, `contractVersion` required; optional `domain`, `status`
 - Response: `{ status: 'applied', externalProjectId, projectId, platformProjectId }`
-- **GET** summary: requires `X-Plexon-User-Id`; returns `{ externalProjectId, platformProjectId, compositionCount }` (counts stubbed until domain hubs)
+- **GET** summary: requires `X-Actor-User-Id`; returns `{ externalProjectId, platformProjectId, compositionCount }` (counts stubbed until domain hubs)
 - Public via middleware: `/api/platform/provisioning/*`
 
 ## Origin (Wave 3)
-- Outbound when `CREATION_FEDERATION_MODE=live` and federation configured
+- Outbound when `ZAOLY_FEDERATION_MODE=live` and federation configured
 - Body: `{ creationProjectId, name, domain?, ownerPlexonUserId?, platformCompanyId? }`
 - Local placeholders (`plx-local-*`, non-UUID) trigger origin; real Collection UUIDs bind without re-origin
 
@@ -39,11 +39,11 @@
 - Host: `PlatformAssistantHost` in AppShell → iframe `{plexonBase}/assistant/embed`
 - Embed product query: `product=creation`
 - Spec: `plexon-v3/specs/domain/central-assistant-flyout.md` · `plexon-v3/specs/api/assistant-embed.md`
-- Public Plexon origin for iframe: `NEXT_PUBLIC_PLEXON_URL` / `NEXT_PLEXON_BASE_URL` / `PLEXON_AUTH_URL` — see `knowledge/paths.md`
+- Public Plexon origin for iframe: `NEXT_PUBLIC_ZAOLY_FEDERATION_URL` / `NEXT_ZAOLY_FEDERATION_BASE_URL` / `ZAOLY_FEDERATION_AUTH_URL` — see `knowledge/paths.md`
 
 ## Auth (NextAuth + Plexon)
 - NextAuth credentials provider validates against plexon `POST /api/auth/validate-credentials`
-- Env: `PLEXON_AUTH_URL`, `PLEXON_SERVICE_SECRET`, `AUTH_SECRET` (≥32), optional `NEXT_PUBLIC_PLEXON_REGISTER_URL`
+- Env: `ZAOLY_FEDERATION_AUTH_URL`, `ZAOLY_SERVICE_SECRET`, `AUTH_SECRET` (≥32), optional `NEXT_PUBLIC_ZAOLY_FEDERATION_REGISTER_URL`
 - Middleware requires login when Plexon auth is configured; public: `/login`, `/api/auth/*`, `/api/health`, `/api/federation/health`, `/api/platform/provisioning/*`
 - Local bypass (“Continue to app”) only when Plexon auth unset
 

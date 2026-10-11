@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ---- Builder ----
 FROM base AS builder
 ENV NODE_ENV=development
-COPY . /workspace/creation-v3
-WORKDIR /workspace/creation-v3
+COPY . /workspace/zaoly
+WORKDIR /workspace/zaoly
 
 # In-repo DS smoke (no external design-system checkout).
 RUN test -d packages/ui/src \
@@ -67,15 +67,15 @@ ENV NODE_ENV=production
 ENV NODE_OPTIONS=--max-old-space-size=4096
 # Coolify runtime secrets must not leak into image layers; blank env vars only for this RUN.
 # Next.js collects route modules at build time — auth.ts needs min-32-char placeholders here.
-RUN PLEXON_SERVICE_SECRET=creation-v3-docker-build-service-secret-min32 \
-    PLEXON_AUTH_URL= \
-    AUTH_SECRET=creation-v3-docker-build-auth-secret-min-32-chars \
-    CREATION_DATABASE_URL= \
+RUN ZAOLY_SERVICE_SECRET=zaoly-docker-build-service-secret-min32 \
+    ZAOLY_FEDERATION_AUTH_URL= \
+    AUTH_SECRET=zaoly-docker-build-auth-secret-min-32-chars \
+    ZAOLY_DATABASE_URL= \
     npm run build
 
 # ---- Runner ----
 FROM ${NODE_IMAGE} AS runner
-WORKDIR /workspace/creation-v3
+WORKDIR /workspace/zaoly
 
 # GHCR / delivery: links package to this repo (paths.creationGithubRepo).
 LABEL org.opencontainers.image.source="https://github.com/chbrdk/zaoly"
@@ -86,14 +86,14 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3009
 ENV HOSTNAME=0.0.0.0
-ENV CREATION_FEDERATION_MODE=dummy
+ENV ZAOLY_FEDERATION_MODE=dummy
 ENV ZAOLY_UI_SOURCE=in-repo
 # Scene preview (Welle 2) — Playwright Chromium cache. Landing deploy sets INSTALL_PLAYWRIGHT=0.
 ARG INSTALL_PLAYWRIGHT=1
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
 EXPOSE 3009
 
-# Chromium OS deps for creation.scene_preview (Playwright). Default stays on for Coolify.
+# Chromium OS deps for zaoly.scene_preview (Playwright). Default stays on for Coolify.
 RUN if [ "$INSTALL_PLAYWRIGHT" = "1" ]; then \
       apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -127,25 +127,25 @@ RUN if [ "$INSTALL_PLAYWRIGHT" = "1" ]; then \
       && rm -rf /var/lib/apt/lists/*; \
     fi
 
-COPY --from=builder /workspace/creation-v3/package.json ./package.json
-COPY --from=builder /workspace/creation-v3/package-lock.json ./package-lock.json
-COPY --from=builder /workspace/creation-v3/node_modules ./node_modules
-COPY --from=builder /workspace/creation-v3/packages ./packages
-COPY --from=builder /workspace/creation-v3/apps/web/package.json ./apps/web/package.json
-COPY --from=builder /workspace/creation-v3/apps/web/.next ./apps/web/.next
-COPY --from=builder /workspace/creation-v3/apps/web/next.config.ts ./apps/web/next.config.ts
-COPY --from=builder /workspace/creation-v3/apps/web/tsconfig.json ./apps/web/tsconfig.json
+COPY --from=builder /workspace/zaoly/package.json ./package.json
+COPY --from=builder /workspace/zaoly/package-lock.json ./package-lock.json
+COPY --from=builder /workspace/zaoly/node_modules ./node_modules
+COPY --from=builder /workspace/zaoly/packages ./packages
+COPY --from=builder /workspace/zaoly/apps/web/package.json ./apps/web/package.json
+COPY --from=builder /workspace/zaoly/apps/web/.next ./apps/web/.next
+COPY --from=builder /workspace/zaoly/apps/web/next.config.ts ./apps/web/next.config.ts
+COPY --from=builder /workspace/zaoly/apps/web/tsconfig.json ./apps/web/tsconfig.json
 # next start re-transpiles next.config.ts → needs `./lib/paths` (and public assets).
-COPY --from=builder /workspace/creation-v3/apps/web/lib/paths.ts ./apps/web/lib/paths.ts
-COPY --from=builder /workspace/creation-v3/apps/web/public ./apps/web/public
-COPY --from=builder /workspace/creation-v3/scripts ./scripts
+COPY --from=builder /workspace/zaoly/apps/web/lib/paths.ts ./apps/web/lib/paths.ts
+COPY --from=builder /workspace/zaoly/apps/web/public ./apps/web/public
+COPY --from=builder /workspace/zaoly/scripts ./scripts
 
 RUN chmod +x ./scripts/docker-entrypoint.sh \
     && if [ "$INSTALL_PLAYWRIGHT" = "1" ]; then \
          mkdir -p /opt/playwright \
-         && cd /workspace/creation-v3/apps/web \
+         && cd /workspace/zaoly/apps/web \
          && npx playwright install chromium; \
     fi
 
-WORKDIR /workspace/creation-v3
+WORKDIR /workspace/zaoly
 ENTRYPOINT ["./scripts/docker-entrypoint.sh"]
