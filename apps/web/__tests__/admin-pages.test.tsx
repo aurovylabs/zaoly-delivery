@@ -100,6 +100,17 @@ describe('platform admin phase-1 UI', () => {
     expect(src).toContain('paths.routes.login')
   })
 
+  it('AdminOpsShell streams staff gate under Suspense for Instant', () => {
+    const src = readFileSync(
+      path.join(__dirname, '../components/admin-ops-shell.tsx'),
+      'utf8',
+    )
+    expect(src).toContain('Suspense')
+    expect(src).toMatch(/export function AdminOpsShell/)
+    expect(src).not.toMatch(/export async function AdminOpsShell/)
+    expect(src).toContain('requireAdminUser')
+  })
+
   it('overview shows break-glass bootstrap note', async () => {
     render(
       <AppProviders>

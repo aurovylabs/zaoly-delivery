@@ -79,8 +79,15 @@ describe('cache components adoption', () => {
       'app/projects/page.tsx',
       'app/editor/page.tsx',
       'app/admin/layout.tsx',
+      'app/admin/security/page.tsx',
+      'app/admin/users/page.tsx',
     ]) {
       const src = readFileSync(path.join(webRoot, rel), 'utf8')
+      // Users page streams via AdminOpsShell Suspense (sync page export).
+      if (rel === 'app/admin/users/page.tsx') {
+        expect(src, rel).toContain('AdminOpsShell')
+        continue
+      }
       expect(src, rel).toContain('Suspense')
     }
     expect(readFileSync(path.join(webRoot, 'app/library/page.tsx'), 'utf8')).toContain('auth()')
@@ -88,5 +95,11 @@ describe('cache components adoption', () => {
     expect(readFileSync(path.join(webRoot, 'app/admin/layout.tsx'), 'utf8')).toContain(
       'requireAdminUser()',
     )
+    const opsShell = readFileSync(
+      path.join(webRoot, 'components/admin-ops-shell.tsx'),
+      'utf8',
+    )
+    expect(opsShell).toContain('Suspense')
+    expect(opsShell).toMatch(/export function AdminOpsShell/)
   })
 })
