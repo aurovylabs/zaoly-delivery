@@ -31,10 +31,14 @@ docker compose pull
 ./scripts/up.sh
 ```
 
-If the GHCR package is still private:
+**One-time (owner):** make the package public so anonymous `docker pull` works —  
+https://github.com/users/chbrdk/packages/container/package/zaoly → Package settings → Change visibility → Public.
+
+Until then (private package):
 
 ```bash
 echo "$GHCR_TOKEN" | docker login ghcr.io -u YOUR_GITHUB_USER --password-stdin
+# token needs read:packages
 ```
 
 App: `http://localhost:3000` (or `ZAOLY_HOST_PORT`). Health: `GET /api/health`.
