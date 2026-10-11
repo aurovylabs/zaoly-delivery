@@ -6,7 +6,7 @@ Zaoly is an open-source **enterprise web design** editor: compose responsive pag
 
 Try the hosted product at [zaoly.app](https://zaoly.app), or clone this repo to develop and self-host (AGPL).
 
-**Latest release:** [`v0.1.0`](https://github.com/chbrdk/zaoly-delivery/releases/tag/v0.1.0) · Image: `ghcr.io/chbrdk/zaoly:0.1.0`
+**Latest release:** [`v0.1.0`](https://github.com/chbrdk/zaoly-delivery/releases/tag/v0.1.0) · Image: `ghcr.io/chbrdk/zaoly-delivery:0.1.0`
 
 <p align="center">
   <img src="docs/images/zaoly-editor.png" alt="Zaoly editor — canvas, Site Kit library, and design inspector" width="920" />
@@ -95,12 +95,12 @@ Public signup defaults **on** when Postgres is configured (`ZAOLY_PUBLIC_SIGNUP=
 
 ### Prebuilt image (GHCR)
 
-Tagged releases publish `ghcr.io/chbrdk/zaoly`:
+Tagged releases publish `ghcr.io/chbrdk/zaoly-delivery`:
 
 ```bash
-docker pull ghcr.io/chbrdk/zaoly:0.1.0
+docker pull ghcr.io/chbrdk/zaoly-delivery:0.1.0
 # or
-docker pull ghcr.io/chbrdk/zaoly:latest
+docker pull ghcr.io/chbrdk/zaoly-delivery:latest
 ```
 
 See [Releases](https://github.com/chbrdk/zaoly-delivery/releases) and [CHANGELOG.md](CHANGELOG.md).

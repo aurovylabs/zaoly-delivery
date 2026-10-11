@@ -1,6 +1,6 @@
-# Build the production app image and publish to GHCR for the delivery pack.
-# Delivery compose pulls ghcr.io/chbrdk/zaoly (paths.deliveryContainerImage).
-# Knowledge: knowledge/zaoly-delivery-repo.md
+# Build the production app image and publish to GHCR.
+# Image: paths.deliveryContainerImage → ghcr.io/chbrdk/zaoly-delivery
+# Knowledge: knowledge/zaoly-delivery-repo.md · zaoly-community-distribution.md
 
 name: Publish delivery image
 
@@ -12,7 +12,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: chbrdk/zaoly
+  # Must match github.repository so GITHUB_TOKEN can create/push the package.
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push:
@@ -38,7 +39,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=sha-,format=short
@@ -62,16 +63,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          echo "Listing container packages for actor ${{ github.actor }}…"
-          gh api "/user/packages?package_type=container" --jq '.[].name' || true
-          # Package name is the image name after the owner (zaoly), URL-encoded if needed.
+          pkg="${IMAGE_NAME#*/}"
+          echo "Package name: $pkg (from $IMAGE_NAME)"
           for path in \
-            "/user/packages/container/zaoly/visibility" \
-            "/users/chbrdk/packages/container/zaoly/visibility"
+            "/user/packages/container/${pkg}/visibility" \
+            "/users/chbrdk/packages/container/${pkg}/visibility"
           do
             if gh api --method PATCH -H "Accept: application/vnd.github+json" "$path" -f visibility=public; then
               echo "Set public via $path"
               exit 0
             fi
           done
-          echo "::warning::Could not set GHCR package public via API. Set visibility manually: https://github.com/users/chbrdk/packages/container/package/zaoly"
+          echo "::warning::Could not set GHCR package public via API. Set visibility manually: https://github.com/users/chbrdk/packages/container/package/${pkg}"

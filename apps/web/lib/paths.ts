@@ -195,7 +195,7 @@ export const paths = {
    * consumed by `delivery/docker-compose.yml` (no source tree).
    * Knowledge: `zaoly-delivery-repo.md`
    */
-  deliveryContainerImage: 'ghcr.io/chbrdk/zaoly',
+  deliveryContainerImage: 'ghcr.io/chbrdk/zaoly-delivery',
   /** Default branch for GitHub blob links (Kit atom source SK-V19). */
   creationGithubDefaultBranch: 'main',
   /** Prefer in-app `/editor` when truthy (default on outside production). */

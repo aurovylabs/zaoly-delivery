@@ -9,5 +9,5 @@ First public open-source release.
 - Editor-first enterprise web design surface (`/editor`)
 - Site Kit atoms, masters/variants, Token Studio, Kit Playground
 - Local develop (`npm run dev`) and Docker self-host Compose
-- Prebuilt image: `ghcr.io/chbrdk/zaoly:0.1.0` (also `:latest` from this tag)
+- Prebuilt image: `ghcr.io/chbrdk/zaoly-delivery:0.1.0` (also `:latest` from this tag)
 - AGPL-3.0-only
