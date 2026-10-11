@@ -1,54 +1,34 @@
-# Zaoly delivery — runs the published web app image (no product source tree).
-# App binary: paths.deliveryContainerImage → ghcr.io/chbrdk/zaoly
-# SSOT: product repo delivery/ · export: npm run export:delivery
-# Ops: knowledge/zaoly-delivery-repo.md · knowledge/self-host.md
-#
-#   cp .env.example .env   # fill secrets
-#   docker compose --env-file .env pull
-#   docker compose --env-file .env up -d
-
-name: zaoly-delivery
-
+# Local durable SoT for Zaoly compositions (and sibling PG tables).
+# Spec: specs/domain/zaoly-composition-persistence.md · knowledge/zaoly-postgres.md
+# Mailpit: knowledge/local-dev.md · catch-all SMTP UI http://localhost:8025
 services:
-  zaoly:
-    # The web app itself — prebuilt Next.js image from the product repo CI.
-    image: ${ZAOLY_IMAGE:-ghcr.io/chbrdk/zaoly:${ZAOLY_IMAGE_TAG:-latest}}
-    container_name: zaoly
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      NODE_ENV: production
-      HOSTNAME: 0.0.0.0
-      PORT: "3000"
-      ZAOLY_STANDALONE: "1"
-    ports:
-      - "${ZAOLY_HOST_PORT:-3000}:3000"
-    depends_on:
-      zaoly-postgres:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 8
-      start_period: 40s
-
-  zaoly-postgres:
+  postgres:
     image: postgres:17-alpine
     container_name: zaoly-postgres
-    restart: unless-stopped
     environment:
       POSTGRES_USER: zaoly
-      POSTGRES_PASSWORD: ${ZAOLY_POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: zaoly
       POSTGRES_DB: zaoly
+    ports:
+      - '5434:5432'
     volumes:
-      - zaoly-pg:/var/lib/postgresql/data
+      - zaoly_pg:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U zaoly -d zaoly"]
+      test: ['CMD-SHELL', 'pg_isready -U zaoly -d zaoly']
       interval: 5s
       timeout: 5s
       retries: 10
 
+  mailpit:
+    image: axllent/mailpit:v1.31.5
+    container_name: zaoly-mailpit
+    restart: unless-stopped
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: '1'
+      MP_SMTP_AUTH_ALLOW_INSECURE: '1'
+
 volumes:
-  zaoly-pg:
+  zaoly_pg:

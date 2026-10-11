@@ -1,44 +1,37 @@
-# Zaoly delivery
+# Zaoly (community)
 
-Operator pack: **run** Zaoly without cloning the product source tree.
+Open AGPL source for the Zaoly design editor. Clone this repo to **develop, fork, and self-host from zero**.
 
-| You want to… | Go here |
-|--------------|---------|
-| **Develop / fork / change the app** | [chbrdk/zaoly](https://github.com/chbrdk/zaoly) · [CONTRIBUTING.md](https://github.com/chbrdk/zaoly/blob/main/CONTRIBUTING.md) |
-| **Just run an instance** | This repo |
+This distribution is **not** the hosted [zaoly.app](https://zaoly.app) operations tree. It has no internal knowledge base and no weddy/zaoly.app deploy wiring.
 
-The web app binary is **`ghcr.io/chbrdk/zaoly`**. This repo is Compose + env + `up.sh` only.
-
-| | |
-|--|--|
-| Delivery | [chbrdk/zaoly-delivery](https://github.com/chbrdk/zaoly-delivery) |
-| Product (source, public) | [chbrdk/zaoly](https://github.com/chbrdk/zaoly) |
-| Image | `ghcr.io/chbrdk/zaoly:<tag>` |
-
-## Install (run)
+## Quick start (local)
 
 ```bash
-cp .env.example .env
-chmod 600 .env
-# fill AUTH_SECRET, ZAOLY_POSTGRES_PASSWORD, ZAOLY_DATABASE_URL, bootstrap admin, public URLs
-
-docker compose pull
-./scripts/up.sh
+npm install
+npm run dev
 ```
 
-**Owner once:** set GHCR package **Public** —  
-https://github.com/users/chbrdk/packages/container/package/zaoly → Package settings → Change visibility → Public  
-(until then: `docker login ghcr.io` with `read:packages`).
+Open `http://localhost:3009/editor`.
 
-App: `http://localhost:3000` (or `ZAOLY_HOST_PORT`). Health: `GET /api/health`.
+Optional Postgres (multi-user): see root `docker-compose.yml` / `npm run bootstrap:local-pg` if present, or self-host Compose below.
 
-## Update
+## Self-host (Docker)
 
 ```bash
-docker compose pull
-docker compose up -d
+cp deploy/.env.example deploy/.env
+# set AUTH_SECRET, ZAOLY_POSTGRES_PASSWORD, ZAOLY_DATABASE_URL,
+# ZAOLY_BOOTSTRAP_ADMIN_EMAIL / PASSWORD, NEXT_PUBLIC_ZAOLY_URL, AUTH_URL
+docker compose -f deploy/docker-compose.self-host.yml --env-file deploy/.env up -d --build
 ```
 
-## Source offer (AGPL)
+Bootstrap admin is whatever you put in `.env` — there is no seeded `admin@zaoly.app`.
 
-Corresponding source: [chbrdk/zaoly](https://github.com/chbrdk/zaoly) (same commit/tag as the image).
+## License
+
+[AGPL-3.0-only](LICENSE). Network use of a modified version requires offering corresponding source (§13).
+
+## What is intentionally missing
+
+- Internal `knowledge/` and team task notes
+- Hosted deploy (weddy Traefik, `mail.zaoly.app` MTA, VPS scripts)
+- Desktop / macOS app trees (web-first community pack)
