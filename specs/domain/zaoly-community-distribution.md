@@ -19,6 +19,9 @@ Maintain **two surfaces**:
 4. Community README MUST explain local `npm run dev` and self-host Compose from zero, describe the product and main features, and use an **editor** screenshot as the primary hero under \`docs/images/\` (sourced from internal \`community/docs/images/\` at export).
 5. Export MUST be reproducible via a script in the internal repo (`npm run export:community`).
 6. Public README and delivery commits MUST present Zaoly as the product (open-source / self-hostable) — MUST NOT frame the tree as a lesser “community-only” edition.
+7. Public tree MUST ship a root \`version\`, \`CHANGELOG.md\`, and clean root scripts (no internal export/weddy tooling). First public release is \`0.1.0\` (\`v0.1.0\` git tag + GitHub Release).
+8. Tag \`v*\` on the public remote MUST publish \`ghcr.io/chbrdk/zaoly\` via \`.github/workflows/publish-delivery-image.yml\`.
+9. Public Vitest MUST skip knowledge-gated / hosted-default inventory tests when \`knowledge/\` is absent (\`apps/web/lib/test/public-tree.ts\`).
 
 ## MUST NOT
 

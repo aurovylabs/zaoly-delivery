@@ -34,6 +34,11 @@ export function macosCatalogPath(repoRoot = REPO_ROOT) {
   return join(repoRoot, MACOS_GOOGLE_FONT_FAMILIES_REL)
 }
 
+/** False in the public web-first tree (apps/macos is not shipped). */
+export function macosAppPresent(repoRoot = REPO_ROOT) {
+  return existsSync(join(repoRoot, 'apps/macos'))
+}
+
 /**
  * @param {unknown} value
  * @returns {asserts value is string[]}
@@ -67,6 +72,14 @@ export function readWebCatalog(repoRoot = REPO_ROOT) {
 
 export function catalogsMatch(repoRoot = REPO_ROOT) {
   const web = readWebCatalog(repoRoot)
+  if (!macosAppPresent(repoRoot)) {
+    return {
+      match: true,
+      webPath: web.path,
+      macosPath: null,
+      reason: 'web_only_tree',
+    }
+  }
   const macosPath = macosCatalogPath(repoRoot)
   if (!existsSync(macosPath)) {
     return { match: false, webPath: web.path, macosPath, reason: 'missing_macos' }
@@ -80,6 +93,14 @@ export function catalogsMatch(repoRoot = REPO_ROOT) {
 
 export function syncGoogleFontFamilies(repoRoot = REPO_ROOT) {
   const web = readWebCatalog(repoRoot)
+  if (!macosAppPresent(repoRoot)) {
+    return {
+      webPath: web.path,
+      macosPath: null,
+      familyCount: web.families.length,
+      skipped: 'no_macos',
+    }
+  }
   const target = macosCatalogPath(repoRoot)
   mkdirSync(dirname(target), { recursive: true })
   copyFileSync(web.path, target)
@@ -100,11 +121,23 @@ function main(argv = process.argv.slice(2)) {
       )
       process.exit(1)
     }
+    if (result.reason === 'web_only_tree') {
+      console.log(
+        `OK: Web Google font catalog present (${WEB_GOOGLE_FONT_FAMILIES_REL}; no apps/macos in this tree)`,
+      )
+      return
+    }
     console.log(`OK: Google font catalogs match (${WEB_GOOGLE_FONT_FAMILIES_REL})`)
     return
   }
 
   const result = syncGoogleFontFamilies()
+  if (result.skipped === 'no_macos') {
+    console.log(
+      `Skipped macOS sync (${result.familyCount} web families; no apps/macos in this tree)`,
+    )
+    return
+  }
   console.log(
     `Synced ${result.familyCount} families → ${MACOS_GOOGLE_FONT_FAMILIES_REL}`,
   )

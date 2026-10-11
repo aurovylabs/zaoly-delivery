@@ -1,5 +1,6 @@
 {
   "name": "zaoly",
+  "version": "0.1.0",
   "private": true,
   "license": "AGPL-3.0-only",
   "workspaces": [
@@ -12,19 +13,9 @@
   },
   "scripts": {
     "build": "npm run build -w @zaoly/contracts && npm run build -w @zaoly/ui-tokens && npm run build -w @zaoly/ui && npm run build -w web",
-    "test": "npm run test -w web && npm run test -w @zaoly/site-kit && npm --prefix mcp-server test && npm run test:deploy-weddy && npm run test:community",
-    "test:deploy-weddy": "node --test scripts/deploy-weddy.test.mjs",
-    "test:community": "node --test scripts/export-community-pack.test.mjs",
-    "export:community": "node scripts/export-community-pack.mjs",
-    "check:community": "node scripts/export-community-pack.mjs --check",
-    "push:community": "npm run export:community && node scripts/push-community-pack.mjs",
-    "push:remotes": "git push origin HEAD",
+    "test": "npm run test -w web && npm run test -w @zaoly/site-kit && npm --prefix mcp-server test",
     "typecheck": "npm run typecheck -w web",
     "dev": "npm run dev -w web",
-    "dev:desktop": "npm run tauri:dev -w @zaoly/desktop",
-    "build:desktop": "npm run tauri:build -w @zaoly/desktop",
-    "storybook:site-kit": "npm run storybook -w @zaoly/site-kit",
-    "build-storybook:site-kit": "npm run build-storybook -w @zaoly/site-kit",
     "sync:google-fonts": "node scripts/sync-google-font-families.mjs",
     "check:google-fonts": "node scripts/sync-google-font-families.mjs --check",
     "test:google-fonts-sync": "node --test scripts/sync-google-font-families.test.mjs",

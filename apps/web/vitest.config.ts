@@ -1,5 +1,12 @@
 import { defineConfig } from 'vitest/config'
 import path from 'node:path'
+import {
+  isPublicTree,
+  PUBLIC_TREE_EXCLUDED_TESTS,
+  repoRootFromWebLib,
+} from './lib/test/public-tree'
+
+const publicTree = isPublicTree(repoRootFromWebLib)
 
 export default defineConfig({
   resolve: {
@@ -72,6 +79,18 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./test.setup.ts'],
+    ...(publicTree
+      ? {
+          exclude: [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/cypress/**',
+            '**/.{idea,git,cache,output,temp}/**',
+            '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
+            ...PUBLIC_TREE_EXCLUDED_TESTS,
+          ],
+        }
+      : {}),
     server: {
       deps: {
         inline: ['react-driftkit', 'next-auth', /@auth\/core/, /zaoly/],

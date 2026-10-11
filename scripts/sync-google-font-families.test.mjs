@@ -14,6 +14,7 @@ import {
   WEB_GOOGLE_FONT_FAMILIES_REL,
   assertValidGoogleFontCatalog,
   catalogsMatch,
+  macosAppPresent,
   macosCatalogPath,
   syncGoogleFontFamilies,
   webCatalogPath,
@@ -45,6 +46,7 @@ test('syncGoogleFontFamilies copies Web catalog byte-identically', () => {
   try {
     const webDir = join(root, 'apps/web/lib/fonts')
     mkdirSync(webDir, { recursive: true })
+    mkdirSync(join(root, 'apps/macos'), { recursive: true })
     const payload = '[\n  "Inter",\n  "Roboto"\n]\n'
     writeFileSync(join(webDir, 'google-font-families.json'), payload, 'utf8')
 
@@ -66,6 +68,23 @@ test('syncGoogleFontFamilies copies Web catalog byte-identically', () => {
   }
 })
 
+test('web-only tree skips macOS catalog requirement', () => {
+  const root = mkdtempSync(join(tmpdir(), 'gf-web-only-'))
+  try {
+    const webDir = join(root, 'apps/web/lib/fonts')
+    mkdirSync(webDir, { recursive: true })
+    writeFileSync(join(webDir, 'google-font-families.json'), '["Inter"]\n', 'utf8')
+    assert.equal(macosAppPresent(root), false)
+    const result = catalogsMatch(root)
+    assert.equal(result.match, true)
+    assert.equal(result.reason, 'web_only_tree')
+    const synced = syncGoogleFontFamilies(root)
+    assert.equal(synced.skipped, 'no_macos')
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
 test('repo Web and macOS catalogs match after sync helpers', () => {
   const result = catalogsMatch()
   assert.equal(
@@ -73,4 +92,9 @@ test('repo Web and macOS catalogs match after sync helpers', () => {
     true,
     `catalogs out of sync (${result.reason ?? 'diff'}); run npm run sync:google-fonts`,
   )
+  if (macosAppPresent()) {
+    assert.notEqual(result.reason, 'web_only_tree')
+  } else {
+    assert.equal(result.reason, 'web_only_tree')
+  }
 })
