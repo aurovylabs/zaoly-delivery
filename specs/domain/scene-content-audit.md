@@ -3,7 +3,7 @@
 **Status:** Accepted — 2026-08-24  
 **Depends:** `scene-agent-editing.md` · `composition-scene.md` · `composition-masters.md`  
 **API:** `GET /api/scenes/:id/content-audit`  
-**MCP:** `creation.scene_content_audit`
+**MCP:** `zaoly.scene_content_audit`
 
 ## Purpose
 

@@ -3,7 +3,7 @@
 **Status:** Accepted — 2026-08-24  
 **Depends:** `scene-content-audit.md` · `scene-agent-editing.md` · `mcp-server.md`  
 **API:** `GET|POST /api/scenes/:id/preview` · `GET /api/scenes/:id/preview-html`  
-**MCP:** `creation.scene_preview`  
+**MCP:** `zaoly.scene_preview`  
 **Plexon:** multimodal tool result in assistant loop (Anthropic image content)
 
 ## Purpose
@@ -67,7 +67,7 @@ Auth: same as `GET /api/scenes/:id/tree`.
 
 ## MCP
 
-`creation.scene_preview` — maps to preview API; call after `creation.scene_content_audit` ok (or after polish). Description tells agents to Vision-check the returned image.
+`zaoly.scene_preview` — maps to preview API; call after `zaoly.scene_content_audit` ok (or after polish). Description tells agents to Vision-check the returned image.
 
 ## Plexon Vision loop
 

@@ -1,42 +1,42 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 import {
-  buildCreationHeaders,
-  creationFetch,
-  isCreationError,
-  CREATION_ACTOR_LABEL_HEADER,
-  PLEXON_CONTRACT_VERSION_HEADER,
-  PLEXON_SERVICE_SECRET_HEADER,
-  PLEXON_USER_ID_HEADER,
-} from './creation-client.js'
-import { CREATION_TOOL_NAMES, CREATION_V1_TOOL_NAMES } from './tools.js'
-import { CREATION_V2_TOOL_NAMES, SCENE_OP_NAMES, compactCraftDebugPayload, compactPageSavePayload } from './tools-v2.js'
+  buildZaolyHeaders,
+  zaolyFetch,
+  isZaolyError,
+  ZAOLY_ACTOR_LABEL_HEADER,
+  ACTOR_USER_ID_HEADER,
+  SERVICE_SECRET_HEADER,
+  CONTRACT_VERSION_HEADER,
+} from './zaoly-client.js'
+import { ZAOLY_TOOL_NAMES, ZAOLY_V1_TOOL_NAMES } from './tools.js'
+import { ZAOLY_V2_TOOL_NAMES, SCENE_OP_NAMES, compactCraftDebugPayload, compactPageSavePayload } from './tools-v2.js'
 
-describe('creation MCP tool inventory', () => {
-  it('exports a unique tool list with creation. prefix', () => {
-    assert.ok(CREATION_TOOL_NAMES.length >= 12)
-    const set = new Set(CREATION_TOOL_NAMES)
-    assert.equal(set.size, CREATION_TOOL_NAMES.length)
-    for (const name of CREATION_TOOL_NAMES) {
-      assert.ok(name.startsWith('creation.'), name)
+describe('Zaoly MCP tool inventory', () => {
+  it('exports a unique tool list with zaoly. prefix', () => {
+    assert.ok(ZAOLY_TOOL_NAMES.length >= 12)
+    const set = new Set(ZAOLY_TOOL_NAMES)
+    assert.equal(set.size, ZAOLY_TOOL_NAMES.length)
+    for (const name of ZAOLY_TOOL_NAMES) {
+      assert.ok(name.startsWith('zaoly.'), name)
     }
   })
 
   it('includes health, library, compositions, and projects tools', () => {
-    for (const required of CREATION_V1_TOOL_NAMES) {
-      assert.ok(CREATION_TOOL_NAMES.includes(required), required)
+    for (const required of ZAOLY_V1_TOOL_NAMES) {
+      assert.ok(ZAOLY_TOOL_NAMES.includes(required), required)
     }
   })
 
-  it('includes P90 v2 scene tools', () => {
-    for (const required of CREATION_V2_TOOL_NAMES) {
-      assert.ok(CREATION_TOOL_NAMES.includes(required), required)
+  it('includes P90 v2 scene tools and omits Magcloud', () => {
+    for (const required of ZAOLY_V2_TOOL_NAMES) {
+      assert.ok(ZAOLY_TOOL_NAMES.includes(required), required)
     }
-    assert.ok(CREATION_TOOL_NAMES.includes('creation.scene_apply_ops'))
-    assert.ok(CREATION_TOOL_NAMES.includes('creation.scene_tree_index'))
-    assert.ok(CREATION_TOOL_NAMES.includes('creation.scene_craft_debug'))
-    assert.ok(CREATION_TOOL_NAMES.includes('creation.site_kit_page_save'))
-    assert.ok(CREATION_TOOL_NAMES.includes('creation.scene_publish_magcloud'))
+    assert.ok(ZAOLY_TOOL_NAMES.includes('zaoly.scene_apply_ops'))
+    assert.ok(ZAOLY_TOOL_NAMES.includes('zaoly.scene_tree_index'))
+    assert.ok(ZAOLY_TOOL_NAMES.includes('zaoly.scene_craft_debug'))
+    assert.ok(ZAOLY_TOOL_NAMES.includes('zaoly.site_kit_page_save'))
+    assert.ok(!ZAOLY_TOOL_NAMES.some((n) => n.includes('magcloud')))
   })
 
   it('allows page artboard ops on scene_apply_ops', () => {
@@ -56,7 +56,6 @@ describe('creation MCP tool inventory', () => {
 
   it('coerces stringified ops JSON for scene_apply_ops schema', async () => {
     const { z } = await import('zod')
-    // Mirror tools-v2 preprocess: string → array
     const coerce = (value: unknown): unknown => {
       if (Array.isArray(value)) return value
       if (typeof value !== 'string') return value
@@ -111,30 +110,30 @@ describe('compact MCP payloads', () => {
   })
 })
 
-describe('creationFetch headers', () => {
-  const prevSecret = process.env.PLEXON_SERVICE_SECRET
+describe('zaolyFetch headers', () => {
+  const prevSecret = process.env.ZAOLY_SERVICE_SECRET
 
-  it('forwards federation and actor headers when secret is set', () => {
-    process.env.PLEXON_SERVICE_SECRET = 'test-secret'
-    const headers = buildCreationHeaders({
+  it('forwards service secret and X-Actor-User-Id', () => {
+    process.env.ZAOLY_SERVICE_SECRET = 'test-secret'
+    const headers = buildZaolyHeaders({
       actorUserId: 'user-42',
-      actorLabel: 'plexon-assistant',
+      actorLabel: 'zaoly-assistant',
     })
-    assert.equal(headers[PLEXON_SERVICE_SECRET_HEADER], 'test-secret')
-    assert.equal(headers[PLEXON_CONTRACT_VERSION_HEADER], '2026-05-plexon-federation-v3')
-    assert.equal(headers[PLEXON_USER_ID_HEADER], 'user-42')
-    assert.equal(headers[CREATION_ACTOR_LABEL_HEADER], 'plexon-assistant')
-    if (prevSecret === undefined) delete process.env.PLEXON_SERVICE_SECRET
-    else process.env.PLEXON_SERVICE_SECRET = prevSecret
+    assert.equal(headers[SERVICE_SECRET_HEADER], 'test-secret')
+    assert.equal(headers[CONTRACT_VERSION_HEADER], '2026-05-zaoly-federation-v3')
+    assert.equal(headers[ACTOR_USER_ID_HEADER], 'user-42')
+    assert.equal(headers[ZAOLY_ACTOR_LABEL_HEADER], 'zaoly-assistant')
+    if (prevSecret === undefined) delete process.env.ZAOLY_SERVICE_SECRET
+    else process.env.ZAOLY_SERVICE_SECRET = prevSecret
   })
 })
 
-describe('creationFetch error passthrough', () => {
-  const prevUrl = process.env.CREATION_API_URL
+describe('zaolyFetch error passthrough', () => {
+  const prevUrl = process.env.ZAOLY_API_URL
   const prevFetch = globalThis.fetch
 
   it('keeps BFF reason, failedIndex, and scene.updatedAt on 409', async () => {
-    process.env.CREATION_API_URL = 'https://creation.test'
+    process.env.ZAOLY_API_URL = 'https://zaoly.test'
     globalThis.fetch = (async () =>
       new Response(
         JSON.stringify({
@@ -146,9 +145,9 @@ describe('creationFetch error passthrough', () => {
         { status: 409, headers: { 'Content-Type': 'application/json' } },
       )) as typeof fetch
 
-    const res = await creationFetch('/api/scenes/scene-1/ops', { method: 'POST', body: '{}' })
-    assert.equal(isCreationError(res), true)
-    if (isCreationError(res)) {
+    const res = await zaolyFetch('/api/scenes/scene-1/ops', { method: 'POST', body: '{}' })
+    assert.equal(isZaolyError(res), true)
+    if (isZaolyError(res)) {
       assert.equal(res.status, 409)
       assert.equal(res.code, 'stale-scene')
       assert.equal(res.reason, 'baseUpdatedAt mismatch')
@@ -157,7 +156,7 @@ describe('creationFetch error passthrough', () => {
     }
 
     globalThis.fetch = prevFetch
-    if (prevUrl === undefined) delete process.env.CREATION_API_URL
-    else process.env.CREATION_API_URL = prevUrl
+    if (prevUrl === undefined) delete process.env.ZAOLY_API_URL
+    else process.env.ZAOLY_API_URL = prevUrl
   })
 })

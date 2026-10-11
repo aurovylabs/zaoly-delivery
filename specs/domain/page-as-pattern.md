@@ -5,7 +5,7 @@
 **Parent:** `specs/domain/site-kit-compositions.md` · `specs/domain/scene-pages.md`  
 **Knowledge:** `knowledge/page-as-pattern.md` · Paths: `knowledge/paths.md`  
 **API:** `POST /api/site-kit/compositions/from-page`  
-**MCP:** `creation.site_kit_page_save` (`mcp-server.md` § v2)
+**MCP:** `zaoly.site_kit_page_save` (`mcp-server.md` § v2)
 
 ## Purpose
 
@@ -29,7 +29,7 @@ Let designers save an **entire scene page** (artboard root) as a Collection **Si
 5. The write MUST reuse `saveSiteKitComposition` / validate/expand helpers — MUST NOT invent a second SSOT store.
 6. WHEN the page/Master tree contains editor layout aliases (`Stack`, `Grid`, …) — including after nested Instance expand — the system MUST coerce them to Site Kit catalog types before validation.
 7. WHEN save succeeds, the system MUST persist the bound scene (`upsertScene`) and return `updatedAt` (same as `scene.updatedAt`) so MCP/service callers do not depend on a browser autosave. Publish `scene-updated` after persist.
-8. MCP tool `creation.site_kit_page_save` MUST proxy this route and MUST include `bind_master_composition` in the curated `SCENE_OP_NAMES` allowlist for follow-up polish.
+8. MCP tool `zaoly.site_kit_page_save` MUST proxy this route and MUST include `bind_master_composition` in the curated `SCENE_OP_NAMES` allowlist for follow-up polish.
 9. WHEN Web **Save page as Pattern** (or **Save all pages**) succeeds, the editor MUST open Kit Playground for the primary returned `componentId` via `kitPlaygroundHref({ componentId, platformProjectId })` in a **new tab** (`noopener`) so Design can hand off without leaving the canvas — toast MAY still echo the href. MCP/API callers MUST NOT be forced to open a browser.
 
 ## Non-goals

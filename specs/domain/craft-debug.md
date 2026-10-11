@@ -32,7 +32,7 @@ Persisted on `ScenePage.craftDebug` (+ `craftDebugAt`) when `import-html` succee
 
 - Auth: same as `preview-html` (`requireSceneApiAccess`; machine path for GET).
 - Response: live recomputed stats merged over stored `craftDebug`, plus `importSourceHtmlPreview` (first ~2k chars) when present — never require full HTML in Cursor chat.
-- MCP: `creation.scene_craft_debug` — compact JSON for the Plexon assistant (flags / stats / designSystem / spirion; no full HTML). Agents MUST call this before finishing a landing/PDP turn and treat `craft-thin` as a must-fix, not a soft skip.
+- MCP: `zaoly.scene_craft_debug` — compact JSON for the Plexon assistant (flags / stats / designSystem / spirion; no full HTML). Agents MUST call this before finishing a landing/PDP turn and treat `craft-thin` as a must-fix, not a soft skip.
 
 ## Editor
 

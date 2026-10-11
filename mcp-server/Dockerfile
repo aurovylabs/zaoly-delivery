@@ -1,5 +1,6 @@
-# CREATION v3 MCP Server – Node 20, Streamable HTTP
+# Zaoly MCP Server – Node 20, Streamable HTTP
 # Coolify: Dockerfile path = mcp-server/Dockerfile, Build context = mcp-server
+# Env: ZAOLY_API_URL (alias CREATION_API_URL), ZAOLY_SERVICE_SECRET
 FROM node:20-alpine AS builder
 
 WORKDIR /app

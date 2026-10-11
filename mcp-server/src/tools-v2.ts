@@ -1,9 +1,9 @@
 /**
- * CREATION v3 MCP tools — P90 scene/layout v2 (HTTP proxy only).
+ * Zaoly MCP tools — scene/layout v2 (HTTP proxy only).
  * Spec: specs/domain/mcp-server.md § Tool surface v2
  */
 import { z } from 'zod'
-import { type CreationRequestInit, creationFetch, isCreationError } from './creation-client.js'
+import { type ZaolyRequestInit, zaolyFetch, isZaolyError } from './zaoly-client.js'
 
 function toTextContent(value: unknown): string {
   if (value === null || value === undefined) return ''
@@ -76,15 +76,15 @@ const actorFields = {
   actorUserId: z
     .string()
     .min(1)
-    .describe('Plexon user id for X-Plexon-User-Id (required for service writes/reads).'),
+    .describe('Actor user id for X-Actor-User-Id (required for service writes/reads).'),
   actorLabel: z
     .string()
     .optional()
     .describe('Optional audit label forwarded as X-Creation-Actor-Label.'),
 }
 
-async function textResult(path: string, options?: CreationRequestInit) {
-  const res = await creationFetch(path, options)
+async function textResult(path: string, options?: ZaolyRequestInit) {
+  const res = await zaolyFetch(path, options)
   return { content: [{ type: 'text' as const, text: toTextContent(res) }] }
 }
 
@@ -159,29 +159,28 @@ const sceneOpsField = z.preprocess(
   z.array(sceneOpSchema).min(1).max(64),
 )
 
-export const CREATION_V2_TOOL_NAMES = [
-  'creation.scene_get',
-  'creation.scene_list',
-  'creation.scene_tree_index',
-  'creation.scene_content_audit',
-  'creation.scene_preview',
-  'creation.scene_craft_debug',
-  'creation.scene_import_html',
-  'creation.scene_apply_ops',
-  'creation.editor_palette',
-  'creation.brand_tokens_get',
-  'creation.site_kit_composition_save',
-  'creation.site_kit_page_save',
-  'creation.scene_publish_magcloud',
+export const ZAOLY_V2_TOOL_NAMES = [
+  'zaoly.scene_get',
+  'zaoly.scene_list',
+  'zaoly.scene_tree_index',
+  'zaoly.scene_content_audit',
+  'zaoly.scene_preview',
+  'zaoly.scene_craft_debug',
+  'zaoly.scene_import_html',
+  'zaoly.scene_apply_ops',
+  'zaoly.editor_palette',
+  'zaoly.brand_tokens_get',
+  'zaoly.site_kit_composition_save',
+  'zaoly.site_kit_page_save',
 ] as const
 
-export function registerCreationV2Tools(server: ToolServer) {
+export function registerZaolyV2Tools(server: ToolServer) {
   server.registerTool(
-    'creation.scene_get',
+    'zaoly.scene_get',
     {
       title: 'Get scene',
       description:
-        'GET /api/scenes/:id — full CompositionScene. Prefer creation.scene_tree_index for large scenes.',
+        'GET /api/scenes/:id — full CompositionScene. Prefer zaoly.scene_tree_index for large scenes.',
       inputSchema: z.object({
         sceneId: z.string().min(1),
         ...actorFields,
@@ -195,13 +194,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       }
       if (!actorUserId?.trim()) return missingActorResult()
       return textResult(`/api/scenes/${encodeURIComponent(sceneId.trim())}`, {
-        creation: { actorUserId, actorLabel },
+        zaoly: { actorUserId, actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.scene_list',
+    'zaoly.scene_list',
     {
       title: 'List scenes',
       description: 'GET /api/scenes?platformProjectId= — scenes for a Collection.',
@@ -223,13 +222,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       }
       const qs = params.toString()
       return textResult(`/api/scenes${qs ? `?${qs}` : ''}`, {
-        creation: { actorUserId, actorLabel },
+        zaoly: { actorUserId, actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.scene_tree_index',
+    'zaoly.scene_tree_index',
     {
       title: 'Scene tree index',
       description:
@@ -247,13 +246,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       }
       if (!actorUserId?.trim()) return missingActorResult()
       return textResult(`/api/scenes/${encodeURIComponent(sceneId.trim())}/tree`, {
-        creation: { actorUserId, actorLabel },
+        zaoly: { actorUserId, actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.scene_content_audit',
+    'zaoly.scene_content_audit',
     {
       title: 'Scene content audit',
       description:
@@ -271,13 +270,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       }
       if (!actorUserId?.trim()) return missingActorResult()
       return textResult(`/api/scenes/${encodeURIComponent(sceneId.trim())}/content-audit`, {
-        creation: { actorUserId, actorLabel },
+        zaoly: { actorUserId, actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.scene_preview',
+    'zaoly.scene_preview',
     {
       title: 'Scene preview WebP',
       description:
@@ -307,13 +306,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       const qs = params.toString()
       return textResult(
         `/api/scenes/${encodeURIComponent(sceneId.trim())}/preview${qs ? `?${qs}` : ''}`,
-        { creation: { actorUserId, actorLabel } },
+        { zaoly: { actorUserId, actorLabel } },
       )
     },
   )
 
   server.registerTool(
-    'creation.scene_craft_debug',
+    'zaoly.scene_craft_debug',
     {
       title: 'Scene craft debug',
       description:
@@ -335,16 +334,16 @@ export function registerCreationV2Tools(server: ToolServer) {
       const params = new URLSearchParams()
       if (pageId?.trim()) params.set('pageId', pageId.trim())
       const qs = params.toString()
-      const res = await creationFetch(
+      const res = await zaolyFetch(
         `/api/scenes/${encodeURIComponent(sceneId.trim())}/craft-debug${qs ? `?${qs}` : ''}`,
-        { creation: { actorUserId, actorLabel } },
+        { zaoly: { actorUserId, actorLabel } },
       )
       return { content: [{ type: 'text' as const, text: toTextContent(compactCraftDebugPayload(res)) }] }
     },
   )
 
   server.registerTool(
-    'creation.scene_import_html',
+    'zaoly.scene_import_html',
     {
       title: 'Import HTML page',
       description:
@@ -406,17 +405,17 @@ export function registerCreationV2Tools(server: ToolServer) {
       return textResult(`/api/scenes/${encodeURIComponent(input.sceneId.trim())}/import-html`, {
         method: 'POST',
         body: JSON.stringify(body),
-        creation: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
+        zaoly: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.scene_apply_ops',
+    'zaoly.scene_apply_ops',
     {
       title: 'Apply scene ops',
       description:
-        'POST /api/scenes/:id/ops — atomic SceneOp[] batch. Requires baseUpdatedAt. Pass `ops` as a native JSON array of objects (not a stringified JSON string). New page/artboard: add_page {name?} (activates new page) → read response scene.root.id / tree → then insert_child/insert_instance. Also: set_active_page, rename_page, duplicate_page, delete_page, move_node_to_page, bind_master_composition {masterId,exportName}. Insert: insert_child {parentId, child:{id,type,name?,props?}} or insert_instance {masterId,parentId,index?}. Forbidden aliases: insert_node, add_instance, append_child. After 409 stale-scene refresh tree/updatedAt. After 400 op-rejected use `reason` — do not invent new op names. For greenfield landings prefer creation.scene_import_html first. Page as Pattern: prefer creation.site_kit_page_save.',
+        'POST /api/scenes/:id/ops — atomic SceneOp[] batch. Requires baseUpdatedAt. Pass `ops` as a native JSON array of objects (not a stringified JSON string). New page/artboard: add_page {name?} (activates new page) → read response scene.root.id / tree → then insert_child/insert_instance. Also: set_active_page, rename_page, duplicate_page, delete_page, move_node_to_page, bind_master_composition {masterId,exportName}. Insert: insert_child {parentId, child:{id,type,name?,props?}} or insert_instance {masterId,parentId,index?}. Forbidden aliases: insert_node, add_instance, append_child. After 409 stale-scene refresh tree/updatedAt. After 400 op-rejected use `reason` — do not invent new op names. For greenfield landings prefer zaoly.scene_import_html first. Page as Pattern: prefer zaoly.site_kit_page_save.',
       inputSchema: z.object({
         sceneId: z.string().min(1),
         baseUpdatedAt: z.string().min(1).describe('Must match scene.updatedAt at load time'),
@@ -447,13 +446,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       return textResult(`/api/scenes/${encodeURIComponent(input.sceneId.trim())}/ops`, {
         method: 'POST',
         body: JSON.stringify(body),
-        creation: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
+        zaoly: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.editor_palette',
+    'zaoly.editor_palette',
     {
       title: 'Editor palette',
       description:
@@ -469,13 +468,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       }
       if (!actorUserId?.trim()) return missingActorResult()
       return textResult('/api/editor/palette', {
-        creation: { actorUserId, actorLabel },
+        zaoly: { actorUserId, actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.brand_tokens_get',
+    'zaoly.brand_tokens_get',
     {
       title: 'Brand tokens',
       description:
@@ -498,13 +497,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       }
       const qs = params.toString()
       return textResult(`/api/brand-tokens${qs ? `?${qs}` : ''}`, {
-        creation: { actorUserId, actorLabel },
+        zaoly: { actorUserId, actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.site_kit_composition_save',
+    'zaoly.site_kit_composition_save',
     {
       title: 'Save Site Kit composition',
       description:
@@ -556,7 +555,7 @@ export function registerCreationV2Tools(server: ToolServer) {
         return textResult('/api/site-kit/compositions/from-scene', {
           method: 'POST',
           body: JSON.stringify(body),
-          creation: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
+          zaoly: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
         })
       }
       if (!input.root || typeof input.root !== 'object') {
@@ -583,13 +582,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       return textResult('/api/site-kit/compositions', {
         method: 'POST',
         body: JSON.stringify(body),
-        creation: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
+        zaoly: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
       })
     },
   )
 
   server.registerTool(
-    'creation.site_kit_page_save',
+    'zaoly.site_kit_page_save',
     {
       title: 'Save page as Pattern',
       description:
@@ -622,82 +621,13 @@ export function registerCreationV2Tools(server: ToolServer) {
       if (input.name?.trim()) body.name = input.name.trim()
       if (input.allPages === true) body.allPages = true
       if (input.breakpoint) body.breakpoint = input.breakpoint
-      const res = await creationFetch('/api/site-kit/compositions/from-page', {
+      const res = await zaolyFetch('/api/site-kit/compositions/from-page', {
         method: 'POST',
         body: JSON.stringify(body),
-        creation: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
+        zaoly: { actorUserId: input.actorUserId, actorLabel: input.actorLabel },
       })
       return { content: [{ type: 'text' as const, text: toTextContent(compactPageSavePayload(res)) }] }
     },
   )
 
-  server.registerTool(
-    'creation.scene_publish_magcloud',
-    {
-      title: 'Publish scene page to Magcloud',
-      description:
-        'Load scene + POST /api/scenes/:id/publish-magcloud — export active (or pageId) artboard as PNG to Magcloud board. Requires boardName and scene.platformProjectId. Use after a finished 16:9 slide when the user asks to send/publish to Magcloud. Do not invent board content. Confirm may be required in Plexon.',
-      inputSchema: z.object({
-        sceneId: z.string().min(1),
-        boardName: z
-          .string()
-          .min(1)
-          .describe('Target Magcloud board slug / name (create-or-merge inside Collection)'),
-        title: z.string().optional().describe('Optional slide/note title'),
-        pageId: z.string().optional().describe('Defaults to active page'),
-        intent: z.enum(['publish', 'autosync']).optional().describe('Default publish'),
-        ...actorFields,
-      }),
-    },
-    async (args) => {
-      const input = args as {
-        sceneId: string
-        boardName: string
-        title?: string
-        pageId?: string
-        intent?: 'publish' | 'autosync'
-        actorUserId?: string
-        actorLabel?: string
-      }
-      if (!input.actorUserId?.trim()) return missingActorResult()
-      const sceneId = input.sceneId.trim()
-      const actor = { actorUserId: input.actorUserId, actorLabel: input.actorLabel }
-      const sceneRes = await creationFetch(`/api/scenes/${encodeURIComponent(sceneId)}`, {
-        creation: actor,
-      })
-      if (isCreationError(sceneRes)) {
-        return { content: [{ type: 'text' as const, text: toTextContent(sceneRes) }] }
-      }
-      const wrapped =
-        sceneRes && typeof sceneRes === 'object' && !Array.isArray(sceneRes)
-          ? (sceneRes as Record<string, unknown>)
-          : null
-      const sceneCandidate =
-        wrapped?.scene && typeof wrapped.scene === 'object' && !Array.isArray(wrapped.scene)
-          ? (wrapped.scene as Record<string, unknown>)
-          : wrapped
-      if (!sceneCandidate || typeof sceneCandidate.id !== 'string') {
-        return {
-          content: [
-            {
-              type: 'text' as const,
-              text: toTextContent({ error: true, message: 'scene_payload_invalid' }),
-            },
-          ],
-        }
-      }
-      const body: Record<string, unknown> = {
-        scene: sceneCandidate,
-        boardName: input.boardName.trim(),
-        intent: input.intent === 'autosync' ? 'autosync' : 'publish',
-      }
-      if (input.title?.trim()) body.title = input.title.trim()
-      if (input.pageId?.trim()) body.pageId = input.pageId.trim()
-      return textResult(`/api/scenes/${encodeURIComponent(sceneId)}/publish-magcloud`, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        creation: actor,
-      })
-    },
-  )
 }

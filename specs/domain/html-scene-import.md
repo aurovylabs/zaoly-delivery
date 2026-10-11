@@ -4,7 +4,7 @@
 
 **Depends:** `composition-scene.md` · `scene-pages.md` · `scene-agent-editing.md` · `site-kit.md` · `editor-inspect.md` · `html-scene-import` API · **`html-scene-import-p2-fidelity.md`**  
 **API:** `specs/api/scene-html-import.md`  
-**MCP:** `creation.scene_import_html` (maps to API)  
+**MCP:** `zaoly.scene_import_html` (maps to API)  
 **Plexon:** `assistant-creation-mcp.md` § HTML first-draft  
 **Knowledge:** `knowledge/html-scene-import.md`
 
@@ -31,7 +31,7 @@ The multi-round `insert_child` / `set_prop` loop is slow, hangs mid-stream, and 
 
 ```mermaid
 flowchart LR
-  Agent[Agent / human] -->|HTML + CSS string| MCP["creation.scene_import_html"]
+  Agent[Agent / human] -->|HTML + CSS string| MCP["zaoly.scene_import_html"]
   MCP --> API["POST /api/scenes/:id/import-html"]
   API --> Parse[Sanitize + parse DOM]
   Parse --> Map[Map to Site Kit tree]

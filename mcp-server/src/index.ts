@@ -1,25 +1,29 @@
 /**
- * CREATION v3 MCP Server – Streamable HTTP (default) or stdio.
+ * Zaoly MCP Server – Streamable HTTP (default) or stdio.
  *
  * Env:
  * - MCP_TRANSPORT=stdio  → stdio
  * - MCP_TRANSPORT=http   → Streamable HTTP on MCP_PORT (default 3102)
  * - MCP_STATELESS=true   → one transport + McpServer per request
- * Always: CREATION_API_URL; PLEXON_SERVICE_SECRET for projects tools
+ * Always: ZAOLY_API_URL (alias CREATION_API_URL); ZAOLY_SERVICE_SECRET for service tools
  */
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
 import { randomUUID } from 'node:crypto'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
-import { registerCreationTools } from './tools.js'
+import { registerZaolyTools } from './tools.js'
 
 const USE_STDIO = process.env.MCP_TRANSPORT === 'stdio'
 const PORT = Number(process.env.MCP_PORT) || 3102
 const STATELESS = process.env.MCP_STATELESS === 'true' || process.env.MCP_STATELESS === '1'
 
+function apiUrlConfigured(): boolean {
+  return Boolean(process.env.ZAOLY_API_URL?.trim() || process.env.CREATION_API_URL?.trim())
+}
+
 function log(msg: string): void {
-  ;(USE_STDIO ? process.stderr : process.stdout).write(`[CREATION MCP] ${msg}\n`)
+  ;(USE_STDIO ? process.stderr : process.stdout).write(`[Zaoly MCP] ${msg}\n`)
 }
 
 async function parseBody(req: IncomingMessage): Promise<unknown> {
@@ -44,10 +48,10 @@ async function parseBody(req: IncomingMessage): Promise<unknown> {
 
 function createMcpServer(): McpServer {
   const server = new McpServer(
-    { name: 'creation-mcp', version: '0.1.0' },
+    { name: 'zaoly-mcp', version: '0.2.0' },
     { capabilities: {} },
   )
-  registerCreationTools(server)
+  registerZaolyTools(server)
   return server
 }
 
@@ -82,8 +86,8 @@ async function main() {
   if (USE_STDIO) {
     const transport = new StdioServerTransport(process.stdin, process.stdout)
     await mcpServer.connect(transport)
-    if (!process.env.CREATION_API_URL) {
-      log('CREATION_API_URL not set – tools will return configuration errors.')
+    if (!apiUrlConfigured()) {
+      log('ZAOLY_API_URL not set – tools will return configuration errors.')
     }
     log('Running in stdio mode.')
     return
@@ -154,8 +158,8 @@ async function main() {
 
   server.listen(PORT, () => {
     log(`Server listening on port ${PORT} (stateless=${STATELESS})`)
-    if (!process.env.CREATION_API_URL) {
-      log('CREATION_API_URL not set – tools will return configuration errors.')
+    if (!apiUrlConfigured()) {
+      log('ZAOLY_API_URL not set – tools will return configuration errors.')
     }
   })
 
@@ -169,6 +173,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  process.stderr.write('[CREATION MCP] Fatal: ' + String(err) + '\n')
+  process.stderr.write('[Zaoly MCP] Fatal: ' + String(err) + '\n')
   process.exit(1)
 })

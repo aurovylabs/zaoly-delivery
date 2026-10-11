@@ -1,10 +1,10 @@
 /**
- * CREATION v3 MCP tools — proxy to creation-v3 BFF.
+ * Zaoly MCP tools — proxy to the Zaoly web BFF.
  * Spec: specs/domain/mcp-server.md
  */
 import { z } from 'zod'
-import { type CreationRequestInit, creationFetch } from './creation-client.js'
-import { CREATION_V2_TOOL_NAMES, registerCreationV2Tools } from './tools-v2.js'
+import { type ZaolyRequestInit, zaolyFetch } from './zaoly-client.js'
+import { ZAOLY_V2_TOOL_NAMES, registerZaolyV2Tools } from './tools-v2.js'
 
 function toTextContent(value: unknown): string {
   if (value === null || value === undefined) return ''
@@ -20,37 +20,39 @@ type ToolServer = {
   ) => void
 }
 
-async function textResult(path: string, options?: CreationRequestInit) {
-  const res = await creationFetch(path, options)
+async function textResult(path: string, options?: ZaolyRequestInit) {
+  const res = await zaolyFetch(path, options)
   return { content: [{ type: 'text' as const, text: toTextContent(res) }] }
 }
 
-export const CREATION_V1_TOOL_NAMES = [
-  'creation.health',
-  'creation.library_catalog',
-  'creation.compositions_list',
-  'creation.projects_list',
-  'creation.project_get',
+export const ZAOLY_V1_TOOL_NAMES = [
+  'zaoly.health',
+  'zaoly.library_catalog',
+  'zaoly.compositions_list',
+  'zaoly.projects_list',
+  'zaoly.project_get',
 ] as const
 
-export const CREATION_TOOL_NAMES = [
-  ...CREATION_V1_TOOL_NAMES,
-  ...CREATION_V2_TOOL_NAMES,
-] as const
+export const ZAOLY_TOOL_NAMES = [...ZAOLY_V1_TOOL_NAMES, ...ZAOLY_V2_TOOL_NAMES] as const
 
-export function registerCreationTools(server: ToolServer) {
+/** @deprecated use ZAOLY_TOOL_NAMES */
+export const CREATION_TOOL_NAMES = ZAOLY_TOOL_NAMES
+/** @deprecated use ZAOLY_V1_TOOL_NAMES */
+export const CREATION_V1_TOOL_NAMES = ZAOLY_V1_TOOL_NAMES
+
+export function registerZaolyTools(server: ToolServer) {
   server.registerTool(
-    'creation.health',
+    'zaoly.health',
     {
       title: 'Health',
-      description: 'GET /api/health — creation-v3 liveness.',
+      description: 'GET /api/health — Zaoly liveness.',
       inputSchema: z.object({}),
     },
     async () => textResult('/api/health'),
   )
 
   server.registerTool(
-    'creation.library_catalog',
+    'zaoly.library_catalog',
     {
       title: 'Library catalog',
       description:
@@ -71,11 +73,11 @@ export function registerCreationTools(server: ToolServer) {
   )
 
   server.registerTool(
-    'creation.compositions_list',
+    'zaoly.compositions_list',
     {
       title: 'List compositions',
       description:
-        'GET /api/compositions — CompositionSummary[] from scene-store (Collection ACL). Optional platformProjectId. Requires session or service secret + X-Plexon-User-Id when auth is on.',
+        'GET /api/compositions — CompositionSummary[] from scene-store. Optional platformProjectId. Requires session or service secret + X-Actor-User-Id when auth is on.',
       inputSchema: z.object({
         platformProjectId: z
           .string()
@@ -84,7 +86,7 @@ export function registerCreationTools(server: ToolServer) {
         actorUserId: z
           .string()
           .optional()
-          .describe('Required with service secret when Plexon auth is configured'),
+          .describe('Required with service secret when auth is configured'),
       }),
     },
     async (args) => {
@@ -96,31 +98,31 @@ export function registerCreationTools(server: ToolServer) {
       if (platformProjectId?.trim()) params.set('platformProjectId', platformProjectId.trim())
       const qs = params.toString()
       return textResult(`/api/compositions${qs ? `?${qs}` : ''}`, {
-        creation: actorUserId?.trim() ? { actorUserId: actorUserId.trim() } : undefined,
+        zaoly: actorUserId?.trim() ? { actorUserId: actorUserId.trim() } : undefined,
       })
     },
   )
 
   server.registerTool(
-    'creation.projects_list',
+    'zaoly.projects_list',
     {
       title: 'List projects',
       description:
-        'GET /api/projects — Collection capability mirrors in CREATION. Requires service secret when auth is on.',
+        'GET /api/projects — project list. Requires service secret when auth is on.',
       inputSchema: z.object({}),
     },
     async () => textResult('/api/projects'),
   )
 
   server.registerTool(
-    'creation.project_get',
+    'zaoly.project_get',
     {
       title: 'Get project',
       description:
-        'GET /api/projects/:id or ?platformProjectId= — project detail by local id or Plexon Collection id.',
+        'GET /api/projects/:id or ?platformProjectId= — project detail by local id or Collection id.',
       inputSchema: z.object({
-        id: z.string().optional().describe('Local CREATION project id'),
-        platformProjectId: z.string().optional().describe('Plexon Collection id'),
+        id: z.string().optional().describe('Local project id'),
+        platformProjectId: z.string().optional().describe('Collection / platform project id'),
       }),
     },
     async (args) => {
@@ -150,5 +152,8 @@ export function registerCreationTools(server: ToolServer) {
     },
   )
 
-  registerCreationV2Tools(server)
+  registerZaolyV2Tools(server)
 }
+
+/** @deprecated use registerZaolyTools */
+export const registerCreationTools = registerZaolyTools

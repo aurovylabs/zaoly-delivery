@@ -542,13 +542,14 @@ describe('specs inventory', () => {
     expect(pkg.exports?.['./c/*/*']).toContain('compositions/c')
   })
 
-  it('mcp-server documents creation tools and port 3102', () => {
+  it('mcp-server documents zaoly tools and port 3102', () => {
     const spec = readFileSync(path.join(repoRoot, 'specs/domain/mcp-server.md'), 'utf8')
-    expect(spec).toContain('creation.library_catalog')
-    expect(spec).toContain('creation.scene_apply_ops')
-    expect(spec).toContain('creation.scene_craft_debug')
-    expect(spec).toContain('creation.site_kit_page_save')
+    expect(spec).toContain('zaoly.library_catalog')
+    expect(spec).toContain('zaoly.scene_apply_ops')
+    expect(spec).toContain('zaoly.scene_craft_debug')
+    expect(spec).toContain('zaoly.site_kit_page_save')
     expect(spec).toContain('3102')
+    expect(spec).toContain('ZAOLY_API_URL')
     expect(spec).toContain('CREATION_API_URL')
   })
 

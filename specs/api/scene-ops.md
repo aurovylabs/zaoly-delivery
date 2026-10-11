@@ -289,16 +289,16 @@ See `specs/domain/mcp-server.md` § Tool surface v2.
 
 | MCP tool | HTTP |
 |----------|------|
-| `creation.scene_get` | `GET /api/scenes/:id` |
-| `creation.scene_list` | `GET /api/scenes?platformProjectId=` |
-| `creation.scene_tree_index` | `GET /api/scenes/:id/tree` |
-| `creation.scene_apply_ops` | `POST /api/scenes/:id/ops` |
-| `creation.scene_import_html` | `POST /api/scenes/:id/import-html` |
-| `creation.scene_content_audit` | `POST /api/scenes/:id/content-audit` (or documented audit route) |
-| `creation.scene_preview` | preview HTML / raster for agent QA |
-| `creation.editor_palette` | `GET /api/editor/palette` |
-| `creation.brand_tokens_get` | `GET /api/brand-tokens?platformProjectId=` |
-| `creation.site_kit_composition_save` | `POST /api/site-kit/compositions` |
+| `zaoly.scene_get` | `GET /api/scenes/:id` |
+| `zaoly.scene_list` | `GET /api/scenes?platformProjectId=` |
+| `zaoly.scene_tree_index` | `GET /api/scenes/:id/tree` |
+| `zaoly.scene_apply_ops` | `POST /api/scenes/:id/ops` |
+| `zaoly.scene_import_html` | `POST /api/scenes/:id/import-html` |
+| `zaoly.scene_content_audit` | `POST /api/scenes/:id/content-audit` (or documented audit route) |
+| `zaoly.scene_preview` | preview HTML / raster for agent QA |
+| `zaoly.editor_palette` | `GET /api/editor/palette` |
+| `zaoly.brand_tokens_get` | `GET /api/brand-tokens?platformProjectId=` |
+| `zaoly.site_kit_composition_save` | `POST /api/site-kit/compositions` |
 
 Editor live sync uses `GET /api/scenes/:id/events` (SSE) — **not** an MCP tool (process-local bus; single web replica preferred).
 

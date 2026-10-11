@@ -20,7 +20,7 @@ The editor UI remains the primary human surface. Agent editing MUST NOT invent a
 3. **Concurrency safety:** Concurrent human + agent writers MUST detect lost updates via `updatedAt` optimistic locking.
 4. **Federation-ready auth:** Browser sessions AND Plexon service-secret callers (MCP) MUST be supported with explicit actor attribution for audit.
 5. **Agent ergonomics:** Lightweight tree index + palette catalog reads MUST exist so agents can plan ops without loading full scene JSON on every turn.
-6. **Page artboards:** Agents MUST be able to create and switch pages via the same ops as the editor (`add_page`, `set_active_page`, …) through MCP `creation.scene_apply_ops` — see `scene-pages.md`. New-page intents (PDP, Pricing, Contact, …) MUST NOT be satisfied by inserting only into the current page when the user asked for a separate page.
+6. **Page artboards:** Agents MUST be able to create and switch pages via the same ops as the editor (`add_page`, `set_active_page`, …) through MCP `zaoly.scene_apply_ops` — see `scene-pages.md`. New-page intents (PDP, Pricing, Contact, …) MUST NOT be satisfied by inserting only into the current page when the user asked for a separate page.
 
 ## Non-goals (P90)
 
@@ -149,19 +149,19 @@ Marketing-/PDP-Seiten: **Site Kit** bevorzugen; für Copy/CTAs/Selects **`insert
 
 ### Content audit (Welle 1 self-check)
 
-`GET /api/scenes/:id/content-audit` · MCP `creation.scene_content_audit` — see `scene-content-audit.md`. Agents MUST run this before finishing PDP/landing builds and fix `error` findings.
+`GET /api/scenes/:id/content-audit` · MCP `zaoly.scene_content_audit` — see `scene-content-audit.md`. Agents MUST run this before finishing PDP/landing builds and fix `error` findings.
 
 ### Craft debug (Welle 1.5 density)
 
-`GET /api/scenes/:id/craft-debug` · MCP `creation.scene_craft_debug` — see `craft-debug.md`. Agents MUST read `craftFlags` / `sceneStats` after import (or before finish) and fix `craft-thin` before claiming done.
+`GET /api/scenes/:id/craft-debug` · MCP `zaoly.scene_craft_debug` — see `craft-debug.md`. Agents MUST read `craftFlags` / `sceneStats` after import (or before finish) and fix `craft-thin` before claiming done.
 
 ### Scene preview (Welle 2 pixel self-check)
 
-`GET|POST /api/scenes/:id/preview` · MCP `creation.scene_preview` — see `scene-preview.md`. After audit ok, agents MUST request a WebP and Vision-check (max 2 preview rounds).
+`GET|POST /api/scenes/:id/preview` · MCP `zaoly.scene_preview` — see `scene-preview.md`. After audit ok, agents MUST request a WebP and Vision-check (max 2 preview rounds).
 
 ### HTML first-draft import (Proposed)
 
-`POST /api/scenes/:id/import-html` · MCP `creation.scene_import_html` — see `html-scene-import.md`. Greenfield landings SHOULD prefer one HTML import over multi-round inserts. Ops remain for polish.
+`POST /api/scenes/:id/import-html` · MCP `zaoly.scene_import_html` — see `html-scene-import.md`. Greenfield landings SHOULD prefer one HTML import over multi-round inserts. Ops remain for polish.
 
 ### Freies Styling vs Brand tokens
 
@@ -194,9 +194,9 @@ Stable codes MUST be listed in `scene-ops.md` and covered by contract tests.
 
 Agent layout editing targets **`CompositionScene`** (editor model: `Stack`, `SiteStack` palette types, Masters, Instances).
 
-Publishing to Storybook remains **`POST /api/site-kit/compositions`** after the scene (or a Master subtree) is valid. MCP tool `creation.site_kit_composition_save` wraps that route; it is NOT a `SceneOp`.
+Publishing to Storybook remains **`POST /api/site-kit/compositions`** after the scene (or a Master subtree) is valid. MCP tool `zaoly.site_kit_composition_save` wraps that route; it is NOT a `SceneOp`.
 
-Saving an **entire page** as a Collection Pattern uses **`POST /api/site-kit/compositions/from-page`** · MCP `creation.site_kit_page_save` (`page-as-pattern.md`). The route MUST persist the bound scene. Follow-up polish may use `bind_master_composition` via `creation.scene_apply_ops`.
+Saving an **entire page** as a Collection Pattern uses **`POST /api/site-kit/compositions/from-page`** · MCP `zaoly.site_kit_page_save` (`page-as-pattern.md`). The route MUST persist the bound scene. Follow-up polish may use `bind_master_composition` via `zaoly.scene_apply_ops`.
 
 Serialize path: expand Instances → `serializeSiteKitComposition` → validate composition tree (`site-kit-compositions.md`).
 
@@ -226,7 +226,7 @@ WENN `entityUpdatedAt` / Scene-Lock nach Save oder Live-Sync wechselt, DANN DARF
 3. **R3:** WENN `baseUpdatedAt` nicht mit der gespeicherten Scene übereinstimmt, DANN MUSS der Server `409 stale-scene` antworten.
 4. **R4:** WENN `op: 'select'` gesendet wird, DANN MUSS der Server `400 op-not-persisted` antworten.
 5. **R5:** WENN Plexon-Auth aktiv ist und der Caller kein Session-Cookie hat, DANN MUSS ein gültiger Service-Secret **und** `X-Plexon-User-Id` vorliegen, sonst `401`.
-6. **R6:** WENN ein MCP-Tool `creation.scene_apply_ops` aufruft, DANN MUSS es ausschließlich `POST /api/scenes/:id/ops` verwenden (kein paralleles Apply im MCP-Prozess).
+6. **R6:** WENN ein MCP-Tool `zaoly.scene_apply_ops` aufruft, DANN MUSS es ausschließlich `POST /api/scenes/:id/ops` verwenden (kein paralleles Apply im MCP-Prozess).
 6a. **R6a:** WENN der Nutzer eine neue Page/Zeichenfläche verlangt (z. B. PDP, Pricing), DANN MUSS der Agent `add_page` (mit `name` wenn genannt) vor Inhalts-Inserts nutzen; nach Erfolg MUSS er `updatedAt` + neuen Page-Root aus Response oder `scene_tree_index` lesen bevor `insert_child` / `insert_instance` folgt.
 7. **R7:** `GET /api/scenes/:id/tree` MUSS für jede Scene-Knoten id, type, name, parentId, index (sibling order), childCount, instanceOf, hidden, locked liefern — ohne vollständige props.
 8. **R8:** Jede neue Op-Variante in `@zaoly/contracts` MUSS zuerst in `composition-scene.md` dokumentiert werden, bevor die Server-Route sie akzeptiert.
