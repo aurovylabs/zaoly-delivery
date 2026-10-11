@@ -4,6 +4,14 @@ vi.mock('../auth', () => ({
   auth: vi.fn(async () => ({ user: { id: 'test-user' } })),
 }))
 
+vi.mock('next/server', async () => {
+  const actual = await vi.importActual<typeof import('next/server')>('next/server')
+  return {
+    ...actual,
+    connection: vi.fn(async () => undefined),
+  }
+})
+
 import type { CompositionScene, SceneNode } from '@zaoly/contracts'
 import { POST as promotePost } from '../app/api/library/promote/route'
 import { POST as dryRunPost } from '../app/api/library/promote/dry-run/route'

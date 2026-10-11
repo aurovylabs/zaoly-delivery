@@ -40,7 +40,7 @@ describe('EditorStorybookDialog (Item 4: Site Kit Storybook Promotion & Export U
     id: 'scene-test',
     name: 'Test Scene',
     version: 1,
-    platformProjectId: 'proj-12345',
+    platformProjectId: '32498667-471e-4b21-b920-5eff5c338300',
     activeBreakpoint: 'desktop',
     root: {
       id: 'root-1',
@@ -103,7 +103,7 @@ describe('EditorStorybookDialog (Item 4: Site Kit Storybook Promotion & Export U
                   name: 'MarketingHero',
                   exportName: 'MarketingHero',
                   title: 'Compositions/MarketingHero',
-                  platformProjectId: 'proj-12345',
+                  platformProjectId: '32498667-471e-4b21-b920-5eff5c338300',
                 },
               ],
             }),
@@ -137,7 +137,7 @@ describe('EditorStorybookDialog (Item 4: Site Kit Storybook Promotion & Export U
         scene={sampleScene}
         selectedNode={null}
         activeBreakpoint="desktop"
-        platformProjectId="proj-12345"
+        platformProjectId="32498667-471e-4b21-b920-5eff5c338300"
         t={dummyTranslate}
       />,
     )
@@ -160,7 +160,7 @@ describe('EditorStorybookDialog (Item 4: Site Kit Storybook Promotion & Export U
         scene={sampleScene}
         selectedNode={null}
         activeBreakpoint="desktop"
-        platformProjectId="proj-12345"
+        platformProjectId="32498667-471e-4b21-b920-5eff5c338300"
         t={dummyTranslate}
         onSiteKitStatus={onSiteKitStatus}
       />,
@@ -170,7 +170,7 @@ describe('EditorStorybookDialog (Item 4: Site Kit Storybook Promotion & Export U
     expect(screen.getByText('2 variants')).toBeTruthy()
 
     const publishBtn = screen.getByTestId('storybook-publish-all-btn')
-    expect(publishBtn).toBeTruthy()
+    expect(publishBtn).toBeEnabled()
     fireEvent.click(publishBtn)
 
     await waitFor(() => {
@@ -188,7 +188,7 @@ describe('EditorStorybookDialog (Item 4: Site Kit Storybook Promotion & Export U
         selectedNode={sampleScene.masters![0].variants![0].root}
         masterEditId="master-1"
         activeBreakpoint="desktop"
-        platformProjectId="proj-12345"
+        platformProjectId="32498667-471e-4b21-b920-5eff5c338300"
         t={dummyTranslate}
         onCompositionSaved={onCompositionSaved}
       />,
@@ -221,7 +221,7 @@ describe('EditorStorybookDialog (Item 4: Site Kit Storybook Promotion & Export U
         scene={sampleScene}
         selectedNode={null}
         activeBreakpoint="desktop"
-        platformProjectId="proj-12345"
+        platformProjectId="32498667-471e-4b21-b920-5eff5c338300"
         siteKitStorybookUrl="https://storybook.creation.plygrnd.tech"
         t={dummyTranslate}
       />,

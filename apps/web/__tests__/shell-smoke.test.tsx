@@ -36,9 +36,7 @@ describe('shell smoke', () => {
         <LibraryHub projects={[]} />
       </AppProviders>,
     )
-    expect(
-      await screen.findByText(/Browse and try Site Kit in the Kit Playground/i),
-    ).toBeInTheDocument()
+    expect(await screen.findByTestId('library-open-kit-playground')).toBeInTheDocument()
     expect(screen.getByTestId('library-site-kit-atoms')).toBeInTheDocument()
   })
 })

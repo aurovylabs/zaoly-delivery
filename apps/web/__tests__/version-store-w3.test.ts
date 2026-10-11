@@ -1,4 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+vi.mock('next/server', async () => {
+  const actual = await vi.importActual<typeof import('next/server')>('next/server')
+  return {
+    ...actual,
+    connection: vi.fn(async () => undefined),
+  }
+})
+
 import type { CompositionScene, SceneVersionCheckpoint } from '@zaoly/contracts'
 import { paths } from '../lib/paths'
 import { checkpointFromPgRow, versionStoreBackend } from '../lib/scene/pg-version-store'

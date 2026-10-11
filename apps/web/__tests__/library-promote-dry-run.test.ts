@@ -4,6 +4,14 @@ vi.mock('../auth', () => ({
   auth: vi.fn(async () => ({ user: { id: 'test-user' } })),
 }))
 
+vi.mock('next/server', async () => {
+  const actual = await vi.importActual<typeof import('next/server')>('next/server')
+  return {
+    ...actual,
+    connection: vi.fn(async () => undefined),
+  }
+})
+
 import { EDITOR_PALETTE_GROUP_TYPES, type CompositionScene, type SceneNode } from '@zaoly/contracts'
 import { dryRunLibraryPromote } from '../lib/library/promote-dry-run'
 import { POST as promotePost } from '../app/api/library/promote/dry-run/route'
