@@ -1,5 +1,7 @@
-import { describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+/** @vitest-environment jsdom */
+import '@testing-library/jest-dom/vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import type { SceneHistory } from '../lib/scene/history'
 import {
   EditorTopbarChrome,
@@ -18,8 +20,6 @@ function baseProps(overrides: Partial<EditorToolbarProps> = {}): EditorToolbarPr
   return {
     t: (key) => key,
     history: historyStub(),
-    handTool: false,
-    onHandToolToggle: vi.fn(),
     saveState: 'idle',
     dirty: false,
     onUndo: vi.fn(),
@@ -66,14 +66,19 @@ function baseProps(overrides: Partial<EditorToolbarProps> = {}): EditorToolbarPr
 }
 
 describe('EditorTopbarChrome P101 thematic menus', () => {
+  afterEach(() => {
+    cleanup()
+  })
+
   it('keeps primary edit + view visible and packs secondary into menus', () => {
     render(<EditorTopbarChrome {...baseProps()} />)
 
     expect(screen.getByTestId('editor-undo')).toBeInTheDocument()
     expect(screen.getByTestId('editor-save')).toBeInTheDocument()
-    expect(screen.getByTestId('editor-hand-tool')).toBeInTheDocument()
+    expect(screen.queryByTestId('editor-hand-tool')).toBeNull()
     expect(screen.queryByTestId('editor-back')).toBeNull()
     expect(screen.queryByTestId('editor-collection-switcher')).toBeNull()
+    expect(screen.getByTestId('editor-topbar-zoom')).toBeInTheDocument()
     expect(screen.getByTestId('editor-zoom-in')).toBeInTheDocument()
     expect(screen.getByTestId('editor-fit-view')).toBeInTheDocument()
 
@@ -83,6 +88,22 @@ describe('EditorTopbarChrome P101 thematic menus', () => {
 
     expect(screen.queryByTestId('editor-download-pdf')).toBeNull()
     expect(screen.queryByTestId('editor-open-storybook')).toBeNull()
+  })
+
+  it('places Site Kit in tools (start) and Review in actions (end), zoom centered', () => {
+    render(<EditorTopbarChrome {...baseProps()} />)
+    const tools = screen.getByTestId('editor-topbar-tools')
+    const actions = screen.getByTestId('editor-topbar-actions')
+    const zoom = screen.getByTestId('editor-topbar-zoom')
+    expect(within(tools).getByTestId('editor-topbar-menu-site-kit')).toBeTruthy()
+    expect(within(tools).queryByTestId('editor-topbar-menu-review')).toBeNull()
+    expect(within(actions).getByTestId('editor-topbar-menu-review')).toBeTruthy()
+    expect(within(actions).queryByTestId('editor-topbar-menu-site-kit')).toBeNull()
+    expect(within(zoom).getByTestId('editor-zoom-in')).toBeTruthy()
+    const row = tools.parentElement
+    expect(row?.children[0]).toBe(tools)
+    expect(row?.children[1]).toBe(zoom)
+    expect(row?.children[2]).toBe(actions)
   })
 
   it('opens Export menu items with stable test ids', () => {
@@ -138,7 +159,7 @@ describe('EditorTopbarChrome P101 thematic menus', () => {
     expect(screen.getByTestId('editor-save-page-as-pattern')).toBeDisabled()
   })
 
-  it('opens Site Kit menu with Pull / Reset / Storybook', async () => {
+  it('opens Site Kit menu with Share / Pull / Reset / Storybook when Collection bound', async () => {
     const onPullFromSiteKit = vi.fn()
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
@@ -157,12 +178,14 @@ describe('EditorTopbarChrome P101 thematic menus', () => {
         {...baseProps({
           onPullFromSiteKit,
           platformProjectId: 'plx-test',
+          collectionBound: true,
         })}
       />,
     )
 
     fireEvent.click(screen.getByTestId('editor-topbar-menu-site-kit'))
     expect(screen.getByTestId('editor-share-menu')).toBeInTheDocument()
+    expect(screen.getByTestId('editor-share-menu')).toHaveTextContent('editor.shareMenuTitle')
     expect(screen.getByTestId('editor-site-kit-pull')).toBeInTheDocument()
     expect(screen.getByTestId('editor-site-kit-reset')).toBeInTheDocument()
     expect(screen.getByTestId('editor-open-kit-playground')).toBeInTheDocument()
@@ -183,6 +206,23 @@ describe('EditorTopbarChrome P101 thematic menus', () => {
     expect(openSpy.mock.calls[0]?.[1]).toBe('_blank')
     openSpy.mockRestore()
     fetchSpy.mockRestore()
+  })
+
+  it('omits Share and disables Publish when Collection is unbound', () => {
+    render(
+      <EditorTopbarChrome
+        {...baseProps({
+          collectionBound: false,
+          publishableMasterCount: 2,
+        })}
+      />,
+    )
+    fireEvent.click(screen.getByTestId('editor-topbar-menu-site-kit'))
+    expect(screen.queryByTestId('editor-share-menu')).toBeNull()
+    expect(screen.queryByText('editor.shareInviteNeedCollection')).toBeNull()
+    expect(screen.getByTestId('editor-site-kit-publish')).toBeDisabled()
+    expect(screen.getByTestId('editor-site-kit-pull')).toBeInTheDocument()
+    expect(screen.getByTestId('editor-open-kit-playground')).toBeInTheDocument()
   })
 
   it('marks Review menu active when linter is open', () => {

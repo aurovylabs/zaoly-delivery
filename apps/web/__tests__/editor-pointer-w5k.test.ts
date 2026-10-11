@@ -35,7 +35,6 @@ describe('useEditorPointer (W5k)', () => {
         frameDragSession,
         zoom: 1,
         spaceDown: false,
-        handTool: false,
         activeBreakpoint: 'desktop',
         activePrintPreset: 'a4-portrait',
         artboardHeight: 640,
@@ -56,7 +55,7 @@ describe('useEditorPointer (W5k)', () => {
     expect(result.current.frameDraggingPageId).toBeNull()
   })
 
-  it('beginPan via hand-tool pointer down sets panning', () => {
+  it('beginPan via Space-held pointer down sets panning', () => {
     const present = scene()
     const panOrigin = { current: null as { x: number; y: number; panX: number; panY: number } | null }
     const setPanning = vi.fn()
@@ -72,8 +71,7 @@ describe('useEditorPointer (W5k)', () => {
         marqueeSession: { current: null },
         frameDragSession: { current: null },
         zoom: 1,
-        spaceDown: false,
-        handTool: true,
+        spaceDown: true,
         activeBreakpoint: 'desktop',
         activePrintPreset: 'a4-portrait',
         artboardHeight: 640,

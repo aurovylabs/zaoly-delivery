@@ -94,7 +94,8 @@ export function editorInAppEnabled(): boolean {
  * set `NEXT_PUBLIC_ZAOLY_SMART_HUD=0` for legacy Insert strip.
  * Spec: `specs/domain/canvas-smart-hud.md`
  */
-export function smartHudEnabled(): boolean {
+/** Smart Canvas HUD flag — named `is*` so it does not collide with prop locals. */
+export function isSmartHudEnabled(): boolean {
   const parsed = envTruthy(process.env.NEXT_PUBLIC_ZAOLY_SMART_HUD)
   if (parsed != null) return parsed
   return true
@@ -104,7 +105,7 @@ export function smartHudEnabled(): boolean {
  * Opt-in Smart HUD telemetry. Default **off**.
  * Set `NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY=1` to dispatch `paths.hudTelemetryEvent`.
  */
-export function hudTelemetryEnabled(): boolean {
+export function isHudTelemetryEnabled(): boolean {
   const parsed = envTruthy(process.env.NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY)
   return parsed === true
 }

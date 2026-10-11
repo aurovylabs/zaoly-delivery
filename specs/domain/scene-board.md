@@ -140,7 +140,7 @@ Frame wrapper / board ids MUST NOT accept tree ops (`rejectIfBoardChrome`).
 | Click inside **inactive** frame | `set_active_page` for that page **then** select clicked node (Figma-like focus switch) |
 | Double-click inactive frame background | Activate page only; selection = page root |
 | Drag frame chrome | `move_page_frame` (undoable); **label bar** is primary grab target (`cursor: grab`); **Alt+drag** on empty page background moves frame; live preview while dragging; snap to **8px** grid on drop. Blocked while Space/Hand pan. Snap/align neighbors optional P81.1 |
-| Hand tool | Pans board (unchanged) |
+| Space / middle-click pan | Pans board (unchanged; no Hand-tool button) |
 | Breakpoint switch | Resizes **derived** frame width when `frame.width` omitted; does not move `x`/`y` |
 
 ### Page navigation (replaces P80 tabs)

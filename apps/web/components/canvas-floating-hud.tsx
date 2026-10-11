@@ -23,7 +23,7 @@ import {
   type SpatialAlignment,
   type SpatialDistribution,
 } from './multi-align-toolbar'
-import { smartHudEnabled } from '../lib/runtime-config'
+import { isSmartHudEnabled } from '../lib/runtime-config'
 import { trackHudEvent } from '../lib/inspect/hud-telemetry'
 import type { HudQuickSlot } from '../lib/inspect/hud-quick-slots'
 import { filterHudStripSlots } from '../lib/inspect/hud-quick-slots'
@@ -512,7 +512,7 @@ export function CanvasFloatingHud({
   onHudHostAction,
 }: CanvasFloatingHudProps) {
   const t = useT()
-  const smartHudEnabled = smartHudEnabledProp ?? smartHudEnabled()
+  const smartHudEnabled = smartHudEnabledProp ?? isSmartHudEnabled()
   const inlineEditing = useInlineEditingFlag()
   const ids = selectedIds ?? (selectedNode ? [selectedNode.id] : [])
   const nodes = selectedNodes ?? (selectedNode ? [selectedNode] : [])

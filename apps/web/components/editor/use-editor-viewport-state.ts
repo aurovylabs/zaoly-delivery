@@ -30,7 +30,6 @@ export type EditorViewportState = {
   panning: boolean
   marquee: import('../../lib/scene/selection').Bounds | null
   spaceDown: boolean
-  handTool: boolean
   panMode: boolean
   setZoom: Dispatch<SetStateAction<number>>
   setPanX: Dispatch<SetStateAction<number>>
@@ -38,7 +37,6 @@ export type EditorViewportState = {
   setPanning: Dispatch<SetStateAction<boolean>>
   setMarquee: Dispatch<SetStateAction<import('../../lib/scene/selection').Bounds | null>>
   setSpaceDown: Dispatch<SetStateAction<boolean>>
-  setHandTool: Dispatch<SetStateAction<boolean>>
   zoomPanRef: RefObject<ViewportTransform>
   commitViewport: ViewportCommit
   commitViewportImmediate: (next: Partial<ViewportTransform>) => void
@@ -57,7 +55,6 @@ export function useEditorViewportState(
   const [panX, setPanX] = useState(0)
   const [panY, setPanY] = useState(0)
   const [spaceDown, setSpaceDown] = useState(false)
-  const [handTool, setHandTool] = useState(false)
   const [panning, setPanning] = useState(false)
   const [marquee, setMarquee] = useState<import('../../lib/scene/selection').Bounds | null>(null)
   const onViewportGestureRef = useRef(opts?.onViewportGesture)
@@ -154,7 +151,7 @@ export function useEditorViewportState(
     return () => canvasShell.removeEventListener('wheel', onWheel)
   }, [commitViewport, viewportRef])
 
-  const panMode = spaceDown || handTool || panning
+  const panMode = spaceDown || panning
 
   return {
     zoom,
@@ -163,7 +160,6 @@ export function useEditorViewportState(
     panning,
     marquee,
     spaceDown,
-    handTool,
     panMode,
     setZoom,
     setPanX,
@@ -171,7 +167,6 @@ export function useEditorViewportState(
     setPanning,
     setMarquee,
     setSpaceDown,
-    setHandTool,
     zoomPanRef,
     commitViewport,
     commitViewportImmediate,

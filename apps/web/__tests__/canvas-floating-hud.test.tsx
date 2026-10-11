@@ -40,6 +40,23 @@ describe('CanvasFloatingHud (Part A)', () => {
     expect(screen.queryByText('100%')).toBeNull()
   })
 
+  it('resolves Smart HUD flag from runtime when prop is omitted (no TDZ)', () => {
+    expect(() =>
+      render(
+        <CanvasFloatingHud
+          selectedNode={null}
+          isMasterInstance={false}
+          onAddPrimitive={vi.fn()}
+          onWrapStack={vi.fn()}
+          onWrapGrid={vi.fn()}
+          onDuplicate={vi.fn()}
+          onDelete={vi.fn()}
+          onMoveLayer={vi.fn()}
+        />,
+      ),
+    ).not.toThrow()
+  })
+
   const dummyNode: SceneNode = {
     id: 'test-node-1',
     type: 'Stack',

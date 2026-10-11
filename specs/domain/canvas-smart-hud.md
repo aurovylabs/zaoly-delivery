@@ -91,7 +91,7 @@ HUD MUST NOT invent a third override layer.
 | Situation | HUD behavior |
 |-----------|----------------|
 | Canvas **inline text edit** open | Smart lane + structure mutations MUST be disabled until commit/cancel |
-| **Hand tool** / Space-pan | HUD stays interactive |
+| Space-pan / middle-click pan | HUD stays interactive |
 | **Marquee** in progress | No lane switch until marquee commits |
 | **Comments** / Assistant drawer open | HUD stays; no AI slots |
 | **Read-only** share / viewer | Mutating slots + structure disabled; viewport zoom via minimap / shortcuts only |

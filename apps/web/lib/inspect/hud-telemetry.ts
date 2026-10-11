@@ -3,7 +3,7 @@
  * Spec: `specs/domain/canvas-smart-hud.md` · Knowledge: `knowledge/canvas-smart-hud.md`
  */
 import { paths } from '../paths'
-import { hudTelemetryEnabled } from '../runtime-config'
+import { isHudTelemetryEnabled } from '../runtime-config'
 
 export type HudTelemetryEvent =
   | {
@@ -30,7 +30,7 @@ export type HudTelemetryEvent =
 /** Fire-and-forget; no-ops unless `NEXT_PUBLIC_ZAOLY_HUD_TELEMETRY` is on. */
 export function trackHudEvent(event: HudTelemetryEvent): void {
   if (typeof window === 'undefined') return
-  if (!hudTelemetryEnabled()) return
+  if (!isHudTelemetryEnabled()) return
   try {
     window.dispatchEvent(
       new CustomEvent(paths.hudTelemetryEvent, {

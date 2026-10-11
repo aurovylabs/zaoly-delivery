@@ -36,6 +36,7 @@ import {
 import { compositionComponentId } from '@zaoly/site-kit/composition-codegen'
 import { shouldShowSiteKitSaveComposition } from '../../lib/site-kit/save-composition-visibility'
 import { paths, kitPlaygroundHref } from '../../lib/paths'
+import { isRealPlatformProjectId } from '../../lib/platform-project-id'
 import type { Translator } from '../../lib/i18n'
 import type { useInspectTokenCatalog } from '../../lib/inspect/token-catalog-context'
 
@@ -211,6 +212,13 @@ export function EditorStorybookDialog({
 
   const handlePublishAll = async () => {
     if (publishBusy || !publishableMasters.length) return
+    if (!isRealPlatformProjectId(platformProjectId)) {
+      const msg = t('editor.siteKitPublishNeedCollection')
+      setPublishMessage(msg)
+      onSiteKitStatus?.(msg)
+      setPublishRedeployStatus('failed')
+      return
+    }
     setPublishBusy(true)
     setPublishMessage(null)
     try {
@@ -225,10 +233,18 @@ export function EditorStorybookDialog({
             : 'desktop',
         tokenCatalog,
         platformProjectId,
+        publishLane: 'fork',
       })
       if (!result.ok) {
-        setPublishMessage(`Publish failed: ${result.error}`)
-        onSiteKitStatus?.(`Publish failed: ${result.error}`)
+        const raw = result.error || ''
+        const friendly =
+          raw.includes('SHARED_SEED_WRITE') ||
+          raw.includes('seed-write-forbidden') ||
+          raw.includes('missing-platform-project-id')
+            ? t('editor.siteKitPublishNeedCollection')
+            : `Publish failed: ${raw}`
+        setPublishMessage(friendly)
+        onSiteKitStatus?.(friendly)
         setPublishRedeployStatus('failed')
         return
       }
@@ -593,7 +609,11 @@ export function EditorStorybookDialog({
                   variant="primary"
                   size="sm"
                   onClick={handlePublishAll}
-                  disabled={publishBusy || publishableMasters.length === 0}
+                  disabled={
+                    publishBusy ||
+                    publishableMasters.length === 0 ||
+                    !isRealPlatformProjectId(platformProjectId)
+                  }
                   data-testid="storybook-publish-all-btn"
                   style={{ background: '#1f44ff', borderColor: '#1f44ff' }}
                 >

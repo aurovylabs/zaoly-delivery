@@ -1496,7 +1496,7 @@ describe('editor workspace', { timeout: 20_000 }, () => {
     expect(root.getAttribute('data-drop-label')).toMatch(/Drop /)
   })
 
-  it('P62: toolbar exposes shortcut titles and fit/hand controls', () => {
+  it('P62: toolbar exposes shortcut titles and fit control (no hand-tool button)', () => {
     render(
       <AppProviders>
         <EditorWorkspace initialScene={createLegacyFixtureScene()} />
@@ -1506,9 +1506,7 @@ describe('editor workspace', { timeout: 20_000 }, () => {
     expect(screen.getByTestId('editor-undo')).toHaveAttribute('aria-label', expect.stringMatching(/⌘|Ctrl/))
     expect(screen.getByTestId('editor-save')).toHaveAttribute('aria-label', expect.stringMatching(/⌘|Ctrl/))
     expect(screen.getByTestId('editor-fit-view')).toBeInTheDocument()
-    expect(screen.getByTestId('editor-hand-tool')).toBeInTheDocument()
-    fireEvent.click(screen.getByTestId('editor-hand-tool'))
-    expect(screen.getByTestId('editor-hand-tool')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.queryByTestId('editor-hand-tool')).toBeNull()
   })
 
   it('P62: shows breakpoint override banner on tablet page', () => {

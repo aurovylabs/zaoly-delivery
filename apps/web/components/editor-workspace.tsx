@@ -101,8 +101,6 @@ export function EditorWorkspace({
     activeBreakpoint,
     activePrintPreset,
     zoom,
-    handTool,
-    setHandTool,
     panMode,
     marquee,
     contextMenu,
@@ -385,8 +383,6 @@ export function EditorWorkspace({
   const toolbarProps = {
     t,
     history,
-    handTool,
-    onHandToolToggle: () => setHandTool((v) => !v),
     saveState,
     dirty,
     onUndo: () => {

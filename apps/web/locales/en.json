@@ -1067,7 +1067,6 @@
       "delete": "Delete page",
       "deleteDisabled": "Cannot delete the last page"
     },
-    "handTool": "Hand tool (Space)",
     "leftTabs": "Components, layers, and tokens",
     "leftTabComponents": "Components",
     "leftTabLayers": "Layers",
@@ -1329,6 +1328,7 @@
     "siteKitPublishRebuildSkippedSuffix": "Storybook rebuild not started.",
     "siteKitPublishRebuildFailed": "{count} component(s) saved live, but Storybook rebuild failed: {ids}",
     "siteKitPublishNone": "No Site Kit masters to publish",
+    "siteKitPublishNeedCollection": "Bind a Collection in Inspect to publish (saves a Collection atom fork). Prefer Save as Pattern for custom UI.",
     "siteKitPull": "Pull from Site Kit",
     "siteKitPullBusy": "Pulling…",
     "siteKitPullHint": "Pull missing schema from Site Kit. Use Reset from Kit in the Site Kit menu for a destructive reset.",

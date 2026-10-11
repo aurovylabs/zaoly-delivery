@@ -157,7 +157,10 @@ describe('app shell immersive editor (P69)', () => {
       /\.creation-editor-topbar-chrome\s*\{[^}]*flex-wrap:\s*nowrap/s,
     )
     expect(globals).toMatch(
-      /\.creation-editor-toolbar__tools,\s*\n\.creation-editor-toolbar__actions\s*\{[^}]*flex-wrap:\s*nowrap/s,
+      /\.creation-editor-toolbar__tools,\s*\n\.creation-editor-toolbar__actions,\s*\n\.creation-editor-toolbar__zoom-cluster\s*\{[^}]*flex-wrap:\s*nowrap/s,
+    )
+    expect(globals).not.toMatch(
+      /\.creation-editor-toolbar__tools::after/,
     )
     // Base chrome class still documents pill language; editor mode flattens to full-width bar.
     expect(globals).toMatch(

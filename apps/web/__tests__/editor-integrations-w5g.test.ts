@@ -60,6 +60,39 @@ describe('useEditorIntegrations (W5g)', () => {
     expect(setError).toHaveBeenCalledWith('editor.siteKitPublishNone')
   })
 
+  it('errors when publishing without a bound Collection', async () => {
+    const present: CompositionScene = {
+      ...scene(),
+      masters: [
+        {
+          id: 'm1',
+          name: 'Button',
+          sourceKey: 'SiteButton',
+          root: { id: 'r1', type: 'SiteButton', props: {} },
+        },
+      ],
+    }
+    const setError = vi.fn()
+    const { result } = renderHook(() =>
+      useEditorIntegrations({
+        scene: present,
+        sceneRef: { current: present },
+        activeBreakpoint: 'desktop',
+        tokenCatalog: INSPECT_TOKEN_CATALOG,
+        pushPresent: vi.fn(),
+        mutatePresent: vi.fn(),
+        t: (key) => key,
+        pushToast: vi.fn(),
+        setError,
+      }),
+    )
+    expect(result.current.publishableMasterCount).toBeGreaterThan(0)
+    await act(async () => {
+      await result.current.onPublishToStorybook()
+    })
+    expect(setError).toHaveBeenCalledWith('editor.siteKitPublishNeedCollection')
+  })
+
   it('requires Collection bind for Save page as Pattern', async () => {
     const present = scene()
     const setError = vi.fn()

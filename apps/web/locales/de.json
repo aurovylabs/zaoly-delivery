@@ -1067,7 +1067,6 @@
       "delete": "Seite löschen",
       "deleteDisabled": "Letzte Seite kann nicht gelöscht werden"
     },
-    "handTool": "Hand-Werkzeug (Leertaste)",
     "leftTabs": "Komponenten, Ebenen und Tokens",
     "leftTabComponents": "Komponenten",
     "leftTabLayers": "Ebenen",
@@ -1329,6 +1328,7 @@
     "siteKitPublishRebuildSkippedSuffix": "Storybook-Rebuild nicht gestartet.",
     "siteKitPublishRebuildFailed": "{count} Komponente(n) live gespeichert, Storybook-Rebuild fehlgeschlagen: {ids}",
     "siteKitPublishNone": "Keine Site-Kit-Masters zum Publizieren",
+    "siteKitPublishNeedCollection": "Im Inspect eine Collection binden, um zu publizieren (Collection-Atom-Fork). Für eigene UI lieber als Pattern speichern.",
     "siteKitPull": "Pull from Site Kit",
     "siteKitPullBusy": "Pulling…",
     "siteKitPullHint": "Fehlendes Schema aus Site Kit ergänzen. Reset from Kit im Site-Kit-Menü setzt destruktiv zurück.",

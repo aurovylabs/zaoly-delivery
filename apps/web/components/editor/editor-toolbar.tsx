@@ -12,7 +12,6 @@ import {
   IconColumns,
   IconMaximize,
   IconMessage,
-  IconMove,
   IconRedo,
   IconSave,
   IconScanSearch,
@@ -37,8 +36,6 @@ import { openSiteKitStorybookCatalog } from '../../lib/site-kit/storybook-href'
 export type EditorToolbarProps = {
   t: (key: string, params?: Record<string, string>) => string
   history: SceneHistory
-  handTool: boolean
-  onHandToolToggle: () => void
   saveState: 'idle' | 'saving' | 'saved' | 'error'
   dirty: boolean
   onUndo: () => void
@@ -84,8 +81,6 @@ export type EditorToolbarProps = {
 export function EditorToolbarTools({
   t,
   history,
-  handTool,
-  onHandToolToggle,
   saveState,
   dirty,
   onUndo,
@@ -96,19 +91,22 @@ export function EditorToolbarTools({
   onHtmlPreviewOpen,
   onCodeExportOpen,
   onSavePageAsPattern,
-  onAssetLibraryOpen,
-  linterOpen,
-  onLinterToggle,
-  commentsOpen,
-  onCommentsToggle,
   collectionBound,
   publishBusy,
+  pullableMasterCount,
+  publishableMasterCount,
+  onPullFromSiteKit,
+  onPublishToStorybook,
+  onShareInvite,
+  shareInviteBusy,
+  onOpenClientShare,
+  onOpenStorybookCenter,
+  siteKitStorybook,
+  platformProjectId,
 }: Pick<
   EditorToolbarProps,
   | 't'
   | 'history'
-  | 'handTool'
-  | 'onHandToolToggle'
   | 'saveState'
   | 'dirty'
   | 'onUndo'
@@ -119,13 +117,18 @@ export function EditorToolbarTools({
   | 'onHtmlPreviewOpen'
   | 'onCodeExportOpen'
   | 'onSavePageAsPattern'
-  | 'onAssetLibraryOpen'
-  | 'linterOpen'
-  | 'onLinterToggle'
-  | 'commentsOpen'
-  | 'onCommentsToggle'
   | 'collectionBound'
   | 'publishBusy'
+  | 'pullableMasterCount'
+  | 'publishableMasterCount'
+  | 'onPullFromSiteKit'
+  | 'onPublishToStorybook'
+  | 'onShareInvite'
+  | 'shareInviteBusy'
+  | 'onOpenClientShare'
+  | 'onOpenStorybookCenter'
+  | 'siteKitStorybook'
+  | 'platformProjectId'
 >) {
   const exportItems = useMemo((): ContextMenuItem[] => {
     const exportLocked = exportBusy
@@ -203,151 +206,15 @@ export function EditorToolbarTools({
     t,
   ])
 
-  const reviewItems = useMemo((): ContextMenuItem[] => {
-    const items: ContextMenuItem[] = []
-    if (onAssetLibraryOpen) {
-      items.push({
-        id: 'assets',
-        label: t('editor.assetLibrary'),
-        icon: <IconImage />,
-        testId: 'editor-asset-library-toggle',
-        onSelect: onAssetLibraryOpen,
-      })
-    }
-    items.push(
-      {
-        id: 'linter',
-        label: t('editor.linterToggle'),
-        icon: <IconScanSearch />,
-        testId: 'editor-linter-toggle',
-        onSelect: onLinterToggle,
-      },
-      {
-        id: 'comments',
-        label: t('editor.commentsToggle'),
-        icon: <IconMessage />,
-        testId: 'editor-comments-toggle',
-        onSelect: onCommentsToggle,
-      },
-    )
-    return items
-  }, [onAssetLibraryOpen, onCommentsToggle, onLinterToggle, t])
-
-  return (
-    <div className="creation-editor-toolbar__tools" data-testid="editor-topbar-tools">
-      <ChromeTip tip={t('editor.undoShortcut')}>
-        <Button
-          type="button"
-          size="sm"
-          variant="ghost"
-          disabled={!canUndo(history)}
-          onClick={onUndo}
-          icon={<IconUndo />}
-          data-testid="editor-undo"
-        />
-      </ChromeTip>
-      <ChromeTip tip={t('editor.redoShortcut')}>
-        <Button
-          type="button"
-          size="sm"
-          variant="ghost"
-          disabled={!canRedo(history)}
-          onClick={onRedo}
-          icon={<IconRedo />}
-          data-testid="editor-redo"
-        />
-      </ChromeTip>
-      <ChromeTip tip={t('editor.handTool')}>
-        <Button
-          type="button"
-          size="sm"
-          variant={handTool ? 'subtle' : 'ghost'}
-          icon={<IconMove />}
-          aria-pressed={handTool}
-          data-testid="editor-hand-tool"
-          onClick={onHandToolToggle}
-        />
-      </ChromeTip>
-      <ChromeTip tip={saveState === 'saving' ? t('editor.saving') : t('editor.saveShortcut')}>
-        <Button
-          type="button"
-          size="sm"
-          icon={<IconSave />}
-          onClick={onSave}
-          disabled={saveState === 'saving'}
-          data-testid="editor-save"
-          data-dirty={dirty ? 'true' : 'false'}
-          data-save-state={saveState}
-        />
-      </ChromeTip>
-      <EditorToolbarMenu
-        label={t('editor.menuExport')}
-        icon={<IconDownload />}
-        items={exportItems}
-        testId="editor-topbar-menu-export"
-      />
-      <EditorToolbarMenu
-        label={t('editor.menuReview')}
-        icon={<IconScanSearch />}
-        items={reviewItems}
-        testId="editor-topbar-menu-review"
-        active={linterOpen || commentsOpen}
-      />
-    </div>
-  )
-}
-
-export function EditorToolbarActions({
-  t,
-  publishBusy,
-  pullableMasterCount,
-  publishableMasterCount,
-  onPullFromSiteKit,
-  onPublishToStorybook,
-  onShareInvite,
-  shareInviteBusy,
-  onOpenClientShare,
-  onOpenStorybookCenter,
-  siteKitStorybook,
-  platformProjectId,
-  breakpointCompareMode = false,
-  onBreakpointCompareToggle,
-  zoom,
-  onZoomIn,
-  onZoomOut,
-  onFitCanvas,
-  collectionBound,
-}: Pick<
-  EditorToolbarProps,
-  | 't'
-  | 'publishBusy'
-  | 'pullableMasterCount'
-  | 'publishableMasterCount'
-  | 'onPullFromSiteKit'
-  | 'onPublishToStorybook'
-  | 'onShareInvite'
-  | 'shareInviteBusy'
-  | 'onOpenClientShare'
-  | 'onOpenStorybookCenter'
-  | 'siteKitStorybook'
-  | 'platformProjectId'
-  | 'breakpointCompareMode'
-  | 'onBreakpointCompareToggle'
-  | 'zoom'
-  | 'onZoomIn'
-  | 'onZoomOut'
-  | 'onFitCanvas'
-  | 'collectionBound'
->) {
   const siteKitItems = useMemo((): ContextMenuItem[] => {
     const shareDisabled = !onOpenClientShare && !onShareInvite
     const storybookDisabled = !onOpenStorybookCenter && !siteKitStorybook
-    return [
-      {
+    const items: ContextMenuItem[] = []
+    // Share needs a bound Collection; omit when unbound (bind is Inspect — no stub row).
+    if (collectionBound) {
+      items.push({
         id: 'share',
-        label: !collectionBound
-          ? t('editor.shareInviteNeedCollection')
-          : t('editor.shareMenuTitle'),
+        label: t('editor.shareMenuTitle'),
         icon: <IconLink />,
         disabled: Boolean(shareDisabled),
         testId: 'editor-share-menu',
@@ -358,7 +225,9 @@ export function EditorToolbarActions({
           }
           onShareInvite?.()
         },
-      },
+      })
+    }
+    items.push(
       {
         id: 'pull',
         label: publishBusy ? t('editor.siteKitPullBusy') : t('editor.siteKitPull'),
@@ -384,7 +253,8 @@ export function EditorToolbarActions({
         id: 'publish',
         label: publishBusy ? t('editor.siteKitPublishBusy') : t('editor.siteKitPublish'),
         icon: <IconShare />,
-        disabled: publishBusy || publishableMasterCount === 0,
+        disabled:
+          publishBusy || publishableMasterCount === 0 || !collectionBound,
         testId: 'editor-site-kit-publish',
         onSelect: onPublishToStorybook,
       },
@@ -423,7 +293,8 @@ export function EditorToolbarActions({
           }
         },
       },
-    ]
+    )
+    return items
   }, [
     collectionBound,
     onOpenStorybookCenter,
@@ -441,12 +312,115 @@ export function EditorToolbarActions({
   ])
 
   return (
-    <div className="creation-editor-toolbar__actions" data-testid="editor-topbar-actions">
+    <div className="creation-editor-toolbar__tools" data-testid="editor-topbar-tools">
+      <ChromeTip tip={t('editor.undoShortcut')}>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          disabled={!canUndo(history)}
+          onClick={onUndo}
+          icon={<IconUndo />}
+          data-testid="editor-undo"
+        />
+      </ChromeTip>
+      <ChromeTip tip={t('editor.redoShortcut')}>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          disabled={!canRedo(history)}
+          onClick={onRedo}
+          icon={<IconRedo />}
+          data-testid="editor-redo"
+        />
+      </ChromeTip>
+      <ChromeTip tip={saveState === 'saving' ? t('editor.saving') : t('editor.saveShortcut')}>
+        <Button
+          type="button"
+          size="sm"
+          icon={<IconSave />}
+          onClick={onSave}
+          disabled={saveState === 'saving'}
+          data-testid="editor-save"
+          data-dirty={dirty ? 'true' : 'false'}
+          data-save-state={saveState}
+        />
+      </ChromeTip>
+      <EditorToolbarMenu
+        label={t('editor.menuExport')}
+        icon={<IconDownload />}
+        items={exportItems}
+        testId="editor-topbar-menu-export"
+      />
       <EditorToolbarMenu
         label={t('editor.menuSiteKit')}
-        icon={<IconStorybook size={17} />}
+        icon={<IconShare />}
         items={siteKitItems}
         testId="editor-topbar-menu-site-kit"
+      />
+    </div>
+  )
+}
+
+export function EditorToolbarActions({
+  t,
+  onAssetLibraryOpen,
+  linterOpen,
+  onLinterToggle,
+  commentsOpen,
+  onCommentsToggle,
+  breakpointCompareMode = false,
+  onBreakpointCompareToggle,
+}: Pick<
+  EditorToolbarProps,
+  | 't'
+  | 'onAssetLibraryOpen'
+  | 'linterOpen'
+  | 'onLinterToggle'
+  | 'commentsOpen'
+  | 'onCommentsToggle'
+  | 'breakpointCompareMode'
+  | 'onBreakpointCompareToggle'
+>) {
+  const reviewItems = useMemo((): ContextMenuItem[] => {
+    const items: ContextMenuItem[] = []
+    if (onAssetLibraryOpen) {
+      items.push({
+        id: 'assets',
+        label: t('editor.assetLibrary'),
+        icon: <IconImage />,
+        testId: 'editor-asset-library-toggle',
+        onSelect: onAssetLibraryOpen,
+      })
+    }
+    items.push(
+      {
+        id: 'linter',
+        label: t('editor.linterToggle'),
+        icon: <IconScanSearch />,
+        testId: 'editor-linter-toggle',
+        onSelect: onLinterToggle,
+      },
+      {
+        id: 'comments',
+        label: t('editor.commentsToggle'),
+        icon: <IconMessage />,
+        testId: 'editor-comments-toggle',
+        onSelect: onCommentsToggle,
+      },
+    )
+    return items
+  }, [onAssetLibraryOpen, onCommentsToggle, onLinterToggle, t])
+
+  return (
+    <div className="creation-editor-toolbar__actions" data-testid="editor-topbar-actions">
+      <EditorToolbarMenu
+        label={t('editor.menuReview')}
+        icon={<IconScanSearch />}
+        items={reviewItems}
+        testId="editor-topbar-menu-review"
+        active={linterOpen || commentsOpen}
       />
       {onBreakpointCompareToggle ? (
         <ChromeTip tip={t('editor.breakpointCompareTip')}>
@@ -462,6 +436,19 @@ export function EditorToolbarActions({
           />
         </ChromeTip>
       ) : null}
+    </div>
+  )
+}
+
+export function EditorToolbarZoom({
+  t,
+  zoom,
+  onZoomIn,
+  onZoomOut,
+  onFitCanvas,
+}: Pick<EditorToolbarProps, 't' | 'zoom' | 'onZoomIn' | 'onZoomOut' | 'onFitCanvas'>) {
+  return (
+    <div className="creation-editor-toolbar__zoom-cluster" data-testid="editor-topbar-zoom">
       <ChromeTip tip={t('editor.zoomOutShortcut')}>
         <Button
           type="button"
@@ -508,9 +495,10 @@ export function EditorTopbarChrome(props: EditorToolbarProps) {
       role="toolbar"
       aria-label={t('editor.toolbar')}
     >
-      {/* Inner row scrolls; outer keeps overflow:visible so elevation shadow is not clipped. */}
+      {/* Inner row: tools | centered zoom | review. Outer keeps overflow:visible for elevation. */}
       <div className="creation-editor-topbar-chrome__row">
         <EditorToolbarTools {...props} />
+        <EditorToolbarZoom {...props} />
         <EditorToolbarActions {...props} />
       </div>
     </div>
@@ -523,6 +511,7 @@ export function EditorFallbackToolbar(props: EditorToolbarProps) {
     <div className="creation-editor-toolbar" role="toolbar" aria-label={t('editor.toolbar')}>
       <EditorBrandMark />
       <EditorToolbarTools {...props} />
+      <EditorToolbarZoom {...props} />
       <EditorToolbarActions {...props} />
     </div>
   )

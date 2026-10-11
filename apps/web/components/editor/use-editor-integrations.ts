@@ -136,6 +136,11 @@ export function useEditorIntegrations(args: {
       setError(t('editor.siteKitPublishNone'))
       return
     }
+    // Designer Publish = Collection fork. Unbound scenes hit shared-seed 403 — guide to Inspect bind.
+    if (!isRealPlatformProjectId(sceneRef.current.platformProjectId)) {
+      setError(t('editor.siteKitPublishNeedCollection'))
+      return
+    }
     setPublishBusy(true)
     try {
       const primary =
@@ -150,9 +155,19 @@ export function useEditorIntegrations(args: {
         primaryBreakpoint: primary,
         tokenCatalog,
         platformProjectId: sceneRef.current.platformProjectId,
+        publishLane: 'fork',
       })
       if (!result.ok) {
-        setError(result.error)
+        const raw = result.error || ''
+        if (
+          raw.includes('SHARED_SEED_WRITE') ||
+          raw.includes('seed-write-forbidden') ||
+          raw.includes('missing-platform-project-id')
+        ) {
+          setError(t('editor.siteKitPublishNeedCollection'))
+          return
+        }
+        setError(raw)
         return
       }
       setPublishStatus(formatSiteKitPublishStatusMessage(result, t))

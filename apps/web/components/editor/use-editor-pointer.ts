@@ -37,7 +37,6 @@ export function useEditorPointer(args: {
   frameDragSession: { current: FrameDragSession | null }
   zoom: number
   spaceDown: boolean
-  handTool: boolean
   activeBreakpoint: EditorBreakpoint
   activePrintPreset: PrintPresetId
   artboardHeight: number
@@ -65,7 +64,6 @@ export function useEditorPointer(args: {
     frameDragSession,
     zoom,
     spaceDown,
-    handTool,
     activeBreakpoint,
     activePrintPreset,
     artboardHeight,
@@ -156,14 +154,14 @@ export function useEditorPointer(args: {
   function onCanvasPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     if (resizeSession.current || frameDragSession.current) return
     const middle = e.button === 1
-    if (middle || (e.button === 0 && (spaceDown || handTool))) {
+    if (middle || (e.button === 0 && spaceDown)) {
       e.preventDefault()
       e.currentTarget.setPointerCapture(e.pointerId)
       beginPan(e.clientX, e.clientY)
       return
     }
     // Marquee on empty artboard (button 0, not on a node).
-    if (e.button !== 0 || spaceDown || handTool) return
+    if (e.button !== 0 || spaceDown) return
     const target = e.target
     if (!(target instanceof HTMLElement)) return
     if (target.closest('[data-node-id]')) return
