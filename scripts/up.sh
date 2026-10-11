@@ -14,5 +14,7 @@ fi
 TAG="$(tr -d '[:space:]' < VERSION | grep -v '^#' | head -1 || true)"
 export ZAOLY_IMAGE_TAG="${ZAOLY_IMAGE_TAG:-${TAG:-latest}}"
 
+echo "==> Pull web app image (ghcr.io/chbrdk/zaoly:${ZAOLY_IMAGE_TAG})"
+docker compose --env-file .env pull zaoly
 docker compose --env-file .env up -d
 echo "Health: curl -sS \"\${NEXT_PUBLIC_ZAOLY_URL:-http://127.0.0.1:\${ZAOLY_HOST_PORT:-3000}}/api/health\""

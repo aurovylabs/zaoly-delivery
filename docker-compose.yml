@@ -1,16 +1,18 @@
-# Zaoly delivery — image-based self-host (no product source / build context).
+# Zaoly delivery — runs the published web app image (no product source tree).
+# App binary: paths.deliveryContainerImage → ghcr.io/chbrdk/zaoly
 # SSOT: product repo delivery/ · export: npm run export:delivery
 # Ops: knowledge/zaoly-delivery-repo.md · knowledge/self-host.md
 #
 #   cp .env.example .env   # fill secrets
-#   export ZAOLY_IMAGE=zaoly:latest   # until registry publish
+#   docker compose --env-file .env pull
 #   docker compose --env-file .env up -d
 
 name: zaoly-delivery
 
 services:
   zaoly:
-    image: ${ZAOLY_IMAGE:-zaoly:${ZAOLY_IMAGE_TAG:-latest}}
+    # The web app itself — prebuilt Next.js image from the product repo CI.
+    image: ${ZAOLY_IMAGE:-ghcr.io/chbrdk/zaoly:${ZAOLY_IMAGE_TAG:-latest}}
     container_name: zaoly
     restart: unless-stopped
     env_file:

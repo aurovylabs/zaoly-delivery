@@ -1,34 +1,24 @@
 # Zaoly delivery
 
-Operator pack for running Zaoly **without** the product source tree (`apps/`, `knowledge/`, `specs/`, …).
+Operator pack that **runs the Zaoly web app** without shipping product source (`apps/`, `knowledge/`, `specs/`, …).
+
+The app itself is the container image **`ghcr.io/chbrdk/zaoly`** (built from the product `Dockerfile`). This repo only holds Compose, env, and ops scripts that pull and start that image.
 
 | | |
 |--|--|
+| Web app image | `ghcr.io/chbrdk/zaoly:<tag>` (`paths.deliveryContainerImage`) |
 | Product (AGPL source) | [chbrdk/zaoly](https://github.com/chbrdk/zaoly) |
 | This delivery repo | [chris-bordeck/zaoly-delivery](https://cursor.com/codebase/chris-bordeck/zaoly-delivery) |
 | Pack SSOT in product repo | `delivery/` (export via `npm run export:delivery`) |
-| Ops matrix | Product knowledge: `zaoly-hosted-vs-self-host.md` · `self-host.md` · `zaoly-delivery-repo.md` |
+| Publish image | Product workflow `Publish delivery image` |
 
 ## What this repo contains
 
-- `docker-compose.yml` — app + Postgres (**image pull**, no build context)
+- **`docker-compose.yml`** — pulls + runs the **web app image** + Postgres
 - `.env.example` — required secrets
 - `traefik/zaoly.yml.example` — optional reverse-proxy template
-- `VERSION` — pinned image tag hint
-- `scripts/up.sh` — copy env + compose up
-
-## Prerequisites
-
-- Docker Engine + Compose plugin
-- A Zaoly container image available locally or from a registry
-
-Until a public registry tag is published, build once from the product repo and retag:
-
-```bash
-# in product clone
-docker build -t zaoly:latest .
-export ZAOLY_IMAGE=zaoly:latest
-```
+- `VERSION` — default image tag (`latest`)
+- `scripts/up.sh` — pull + compose up
 
 ## Install
 
@@ -36,7 +26,15 @@ export ZAOLY_IMAGE=zaoly:latest
 cp .env.example .env
 chmod 600 .env
 # fill AUTH_SECRET, ZAOLY_POSTGRES_PASSWORD, ZAOLY_DATABASE_URL, bootstrap admin, public URLs
+
+docker compose pull
 ./scripts/up.sh
+```
+
+If the GHCR package is still private:
+
+```bash
+echo "$GHCR_TOKEN" | docker login ghcr.io -u YOUR_GITHUB_USER --password-stdin
 ```
 
 App: `http://localhost:3000` (or `ZAOLY_HOST_PORT`). Health: `GET /api/health`.
@@ -44,8 +42,7 @@ App: `http://localhost:3000` (or `ZAOLY_HOST_PORT`). Health: `GET /api/health`.
 ## Update
 
 ```bash
-docker compose pull   # when using a registry image
-# or: docker build -t "$ZAOLY_IMAGE" .   # from product repo
+docker compose pull
 docker compose up -d
 ```
 
