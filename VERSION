@@ -1,0 +1,3 @@
+# Image tag consumed by docker-compose.yml (ZAOLY_IMAGE_TAG).
+# Bump when publishing a release image from the product repo.
+latest

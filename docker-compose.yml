@@ -1,0 +1,52 @@
+# Zaoly delivery — image-based self-host (no product source / build context).
+# SSOT: product repo delivery/ · export: npm run export:delivery
+# Ops: knowledge/zaoly-delivery-repo.md · knowledge/self-host.md
+#
+#   cp .env.example .env   # fill secrets
+#   export ZAOLY_IMAGE=zaoly:latest   # until registry publish
+#   docker compose --env-file .env up -d
+
+name: zaoly-delivery
+
+services:
+  zaoly:
+    image: ${ZAOLY_IMAGE:-zaoly:${ZAOLY_IMAGE_TAG:-latest}}
+    container_name: zaoly
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+      ZAOLY_STANDALONE: "1"
+    ports:
+      - "${ZAOLY_HOST_PORT:-3000}:3000"
+    depends_on:
+      zaoly-postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 40s
+
+  zaoly-postgres:
+    image: postgres:17-alpine
+    container_name: zaoly-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zaoly
+      POSTGRES_PASSWORD: ${ZAOLY_POSTGRES_PASSWORD}
+      POSTGRES_DB: zaoly
+    volumes:
+      - zaoly-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zaoly -d zaoly"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  zaoly-pg:

@@ -1,0 +1,21 @@
+# Optional Traefik file-provider template for a reverse proxy in front of the
+# delivery compose stack. Replace Host() with your public hostname.
+# Product hosted route (zaoly.app) stays in deploy/traefik-zaoly.yml.
+
+http:
+  routers:
+    zaoly:
+      rule: Host(`zaoly.example.com`)
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: zaoly.example.com
+      service: zaoly
+
+  services:
+    zaoly:
+      loadBalancer:
+        servers:
+          - url: http://zaoly:3000
