@@ -159,7 +159,7 @@ export function RegisterPage({
   googleEnabled: boolean
 }) {
   return (
-    <AuthScreenLayout>
+    <AuthScreenLayout landscape>
       <Suspense fallback={<Panel>Loading…</Panel>}>
         <RegisterForm signupEnabled={signupEnabled} googleEnabled={googleEnabled} />
       </Suspense>

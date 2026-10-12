@@ -1,6 +1,7 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { isPublicPath } from '../lib/middleware-public-paths'
 import { paths } from '../lib/paths'
 
 describe('zaoly corporate design', () => {
@@ -59,6 +60,36 @@ describe('zaoly corporate design', () => {
     expect(corporate).not.toMatch(
       /\.ds-inspect-glyph\s*\{[^}]*color:\s*var\(--accent\)/s,
     )
+  })
+
+  it('ships Zaoly Bildmarke favicon assets via paths.brandAssets', () => {
+    const webPublic = path.join(__dirname, '../public')
+    expect(paths.brandAssets.favicon).toBe('/favicon.ico')
+    expect(paths.brandAssets.faviconSvg).toBe('/favicon.svg')
+    expect(paths.brandAssets.mark).toBe('/brand/zaoly-mark.svg')
+    expect(paths.brandAssets.appleTouchIcon).toBe('/apple-touch-icon.png')
+    for (const rel of [
+      'favicon.ico',
+      'favicon.svg',
+      'apple-touch-icon.png',
+      'brand/zaoly-mark.svg',
+      'brand/zaoly-wordmark.svg',
+    ]) {
+      expect(existsSync(path.join(webPublic, rel))).toBe(true)
+    }
+    const mark = readFileSync(path.join(webPublic, 'brand/zaoly-mark.svg'), 'utf8')
+    expect(mark).toMatch(/#1F44FF/i)
+    expect(mark).toMatch(/viewBox="0 0 143 145"/)
+    const favSvg = readFileSync(path.join(webPublic, 'favicon.svg'), 'utf8')
+    expect(favSvg).toMatch(/#1F44FF/i)
+    expect(favSvg).toMatch(/#F3EEE4/i)
+    const layout = readFileSync(path.join(__dirname, '../app/layout.tsx'), 'utf8')
+    expect(layout).toContain('paths.brandAssets.faviconSvg')
+    expect(layout).toContain('paths.brandAssets.favicon')
+    expect(layout).toContain('paths.brandAssets.appleTouchIcon')
+    expect(isPublicPath(paths.brandAssets.favicon, 'GET')).toBe(true)
+    expect(isPublicPath(paths.brandAssets.faviconSvg, 'GET')).toBe(true)
+    expect(isPublicPath(paths.brandAssets.mark, 'GET')).toBe(true)
   })
 
   it('central brand primary is Zaoly cobalt and warm gray is kit token', () => {

@@ -220,7 +220,7 @@ Faces default to CD stacks (Geist / Noto / Spectral / mono as appropriate per ro
 
 | Path |
 |------|
-| `logo.mark` / `logo.wordmark` (placeholder refs OK until assets land) |
+| `logo.mark` / `logo.wordmark` → `paths.brandAssets.mark` / `.wordmark` |
 
 ### M · Local Inspect-only (catalog, not Studio types)
 

@@ -21,13 +21,18 @@ vi.mock('next/navigation', () => ({
 
 describe('RegisterPage', () => {
   it('renders signup form when public signup is on', () => {
-    render(<RegisterPage signupEnabled googleEnabled={false} />)
+    const { container } = render(<RegisterPage signupEnabled googleEnabled={false} />)
     expect(screen.getByLabelText('login.email')).toBeInTheDocument()
     expect(screen.getByLabelText('login.password')).toBeInTheDocument()
     expect(screen.getByLabelText('register.name')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'common.signIn' })).toHaveAttribute(
       'href',
       paths.routes.login,
+    )
+    expect(container.querySelector('.creation-login--landscape')).toBeTruthy()
+    expect(container.querySelector('.creation-login__landscape')).toHaveAttribute(
+      'aria-hidden',
+      'true',
     )
   })
 

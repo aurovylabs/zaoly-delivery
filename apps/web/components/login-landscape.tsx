@@ -1,4 +1,4 @@
-/** Decorative low-poly landscape for the login screen. All motion is CSS driven. */
+/** Decorative low-poly landscape for login and register. All motion is CSS driven. */
 export function LoginLandscape() {
   return (
     <svg

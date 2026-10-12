@@ -68,8 +68,8 @@ The public landing page (`/`) and the application share one account surface: vis
 
 ### Login landscape
 
-- The login page MUST show a locally rendered, vector-based East Asian landscape behind the existing auth form without changing sign-in behavior or routes. Other auth screens keep their current layout. A static raster image MUST NOT be used as the animated scene.
-- At desktop widths the login composition MUST fill the viewport and use two equal columns, with the brand centered in the left column and the auth form centered in the right column. At narrow widths the two blocks MUST stack without horizontal overflow. Other auth screens retain their centered single-column layout.
+- The login **and register** pages MUST show a locally rendered, vector-based East Asian landscape behind the existing auth form without changing auth behavior or routes. Forgot-password, reset-password, and invite-accept keep the centered stack. A static raster image MUST NOT be used as the animated scene.
+- At desktop widths the login/register composition MUST fill the viewport and use two equal columns, with the brand centered in the left column and the auth form centered in the right column. At narrow widths the two blocks MUST stack without horizontal overflow. Other auth screens retain their centered single-column layout.
 - The split-login seal MUST be smaller than its initial 160 px size. The Zaoly wordmark MUST use the CD Lime token and remain readable over the landscape with a dark backing.
 - The composition MUST preserve legible form controls and keyboard focus in both theme settings and at narrow viewport widths.
 - Mountain layers, mist, daylight and water facets MUST have independently timed, calm motion so the entire scene feels alive without distracting from sign-in. With `prefers-reduced-motion: reduce`, all decorative motion MUST stop. The SVG is decorative and MUST not enter the accessibility tree.

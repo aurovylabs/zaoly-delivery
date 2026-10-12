@@ -56,7 +56,12 @@ export function isPublicPath(pathname: string, method: string): boolean {
     pathname.startsWith('/share/p/') ||
     pathname.startsWith('/api/public/client-shares/') ||
     pathname.startsWith('/_next') ||
-    pathname === '/favicon.ico'
+    pathname === paths.brandAssets.favicon ||
+    pathname === paths.brandAssets.faviconSvg ||
+    pathname === paths.brandAssets.appleTouchIcon ||
+    pathname === paths.brandAssets.mark ||
+    pathname === paths.brandAssets.wordmark ||
+    pathname.startsWith('/brand/')
   )
 }
 

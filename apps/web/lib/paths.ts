@@ -15,6 +15,17 @@ export const paths = {
   brandCornerRadiusPx: 0,
   brandLabel: 'Zaoly',
   productId: 'zaoly' as const,
+  /**
+   * Product favicon + brand static assets under `apps/web/public/`.
+   * Geometry: `@zaoly/ui` ZaolyLogoMark · knowledge/corporate-design.md
+   */
+  brandAssets: {
+    mark: '/brand/zaoly-mark.svg',
+    wordmark: '/brand/zaoly-wordmark.svg',
+    favicon: '/favicon.ico',
+    faviconSvg: '/favicon.svg',
+    appleTouchIcon: '/apple-touch-icon.png',
+  },
   /** Public landing section ids and first-party visual assets. */
   landing: {
     sections: {

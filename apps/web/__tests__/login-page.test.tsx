@@ -93,6 +93,12 @@ describe('LoginPage', () => {
 
     const plain = render(<AuthScreenLayout><span>Other auth screen</span></AuthScreenLayout>)
     expect(plain.container.querySelector('.creation-login__landscape')).toBeNull()
+    const registerLayout = render(
+      <AuthScreenLayout landscape>
+        <span>Register</span>
+      </AuthScreenLayout>,
+    )
+    expect(registerLayout.container.querySelector('.creation-login--landscape')).toBeTruthy()
     expect((plain.container.querySelector('.zaoly-seal-mark') as HTMLElement).style.width).toBe(`${paths.loginSealSizePx}px`)
   })
 

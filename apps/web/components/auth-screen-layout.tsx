@@ -3,7 +3,7 @@ import { ZaolySealMark } from './zaoly-seal-mark'
 import { LoginLandscape } from './login-landscape'
 import type { ReactNode } from 'react'
 
-/** Login uses a split composition; other auth screens keep the centered stack. */
+/** Login and register use a split composition; other auth screens keep the centered stack. */
 export function AuthScreenLayout({ children, landscape = false }: { children: ReactNode; landscape?: boolean }) {
   return (
     <div className={`creation-login${landscape ? ' creation-login--landscape' : ''}`}>

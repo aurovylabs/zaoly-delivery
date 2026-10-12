@@ -4,6 +4,7 @@
  * Knowledge: `knowledge/zaoly-starter-token-pack.md` · CD: `knowledge/corporate-design.md`
  */
 import type { InspectTokenOption, TokenGroupId } from '../inspect/token-catalog'
+import { paths } from '../paths'
 
 export type StarterPackLeafDef = {
   path: string
@@ -854,12 +855,12 @@ export const ZAOLY_STARTER_PACK_LEAVES: StarterPackLeafDef[] = [
   {
     path: 'logo.mark',
     type: 'asset',
-    value: { digital: { kind: 'image', src: '/brand/zaoly-seal.svg', alt: 'Zaoly' } },
+    value: { digital: { kind: 'image', src: paths.brandAssets.mark, alt: 'Zaoly' } },
   },
   {
     path: 'logo.wordmark',
     type: 'asset',
-    value: { digital: { kind: 'image', src: '/brand/zaoly-wordmark.svg', alt: 'Zaoly' } },
+    value: { digital: { kind: 'image', src: paths.brandAssets.wordmark, alt: 'Zaoly' } },
   },
 ]
 

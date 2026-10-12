@@ -29,7 +29,13 @@ const notoSansJp = localFont({
 export const metadata: Metadata = {
   title: 'Zaoly',
   description: 'Standalone composition design editor — Design and code, woven into one.',
-  icons: { icon: '/favicon.ico' },
+  icons: {
+    icon: [
+      { url: paths.brandAssets.faviconSvg, type: 'image/svg+xml' },
+      { url: paths.brandAssets.favicon, sizes: 'any' },
+    ],
+    apple: paths.brandAssets.appleTouchIcon,
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
