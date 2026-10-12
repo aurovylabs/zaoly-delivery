@@ -17,7 +17,7 @@ export const paths = {
   productId: 'zaoly' as const,
   /**
    * Product favicon + brand static assets under `apps/web/public/`.
-   * Geometry: `@zaoly/ui` ZaolyLogoMark · knowledge/corporate-design.md
+   * Seal 造 on cobalt (CD) — not suite MSQDX mark. knowledge/corporate-design.md
    */
   brandAssets: {
     mark: '/brand/zaoly-mark.svg',

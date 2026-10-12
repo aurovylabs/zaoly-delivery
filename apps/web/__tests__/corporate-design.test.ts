@@ -79,10 +79,13 @@ describe('zaoly corporate design', () => {
     }
     const mark = readFileSync(path.join(webPublic, 'brand/zaoly-mark.svg'), 'utf8')
     expect(mark).toMatch(/#1F44FF/i)
-    expect(mark).toMatch(/viewBox="0 0 143 145"/)
+    expect(mark).toContain('造')
+    expect(mark).not.toMatch(/M32\.5825 0H7\.74219/) // suite MSQDX geometry
     const favSvg = readFileSync(path.join(webPublic, 'favicon.svg'), 'utf8')
     expect(favSvg).toMatch(/#1F44FF/i)
     expect(favSvg).toMatch(/#F3EEE4/i)
+    expect(favSvg).toContain('造')
+    expect(favSvg).not.toMatch(/M32\.5825 0H7\.74219/)
     const layout = readFileSync(path.join(__dirname, '../app/layout.tsx'), 'utf8')
     expect(layout).toContain('paths.brandAssets.faviconSvg')
     expect(layout).toContain('paths.brandAssets.favicon')

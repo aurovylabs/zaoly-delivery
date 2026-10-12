@@ -15,7 +15,7 @@ Standalone Zaoly MUST present the Zaoly Corporate Design (cobalt / acid / cream,
 2a. Brand primary MUST be centralized as `paths.brandPrimaryHex` (`#1f44ff`) and drive `--accent` / `--brand-primary` / Site Kit `--site-accent` / fixture `color.brand.primary`. Default accent preference MUST be `blue` (Zaoly cobalt, not suite green / coral).
 2b. Warm charcoal MUST be centralized as `paths.brandWarmGrayHex` (`#2e2a24`) → `--editor-warm-gray` / `--warm-gray` / fixture `color.brand.warmGray`.
 3. All chrome radii (`--radius*`) MUST be `0`.
-3a. Product favicon / app icons MUST use the Zaoly Bildmarke (`ZaolyLogoMark` geometry, cobalt `#1F44FF` on cream `#F3EEE4`). Paths: `paths.brandAssets` → `apps/web/public/favicon.{svg,ico}`, `apple-touch-icon.png`, `/brand/zaoly-mark.svg`. MUST NOT ship a generic or suite favicon.
+3a. Product favicon / app icons MUST use the Zaoly product seal (造 on cobalt `#1F44FF` with cream `#F3EEE4` glyph) — same as chrome `ZaolySealMark` / `ZaolyLogoMark`. Paths: `paths.brandAssets` → `apps/web/public/favicon.{svg,ico}`, `apple-touch-icon.png`, `/brand/zaoly-mark.svg`. MUST NOT ship the suite MSQDX five-square mark or a generic favicon.
 4. BrandCorner MUST use the seal mark (造 on cobalt) and Spectral wordmark treatment where labeled.
 4a. Immersive editor MUST reuse the same full-width warm-gray primary-nav bar as hubs (`.zaoly-hub-chrome`); tool strip sits below it.
 4a-hub. Magazine / general pages **and** immersive editor MUST use a full-width warm-gray primary-nav bar (`--editor-warm-gray` / `#2E2A24` light) with seal + thin Spectral wordmark inside (`.zaoly-hub-chrome`). Only the seal MAY use brand blue; wordmark + links use `--editor-warm-gray-fg`. Nav link weight MUST be light (`300`) and slightly smaller than body.

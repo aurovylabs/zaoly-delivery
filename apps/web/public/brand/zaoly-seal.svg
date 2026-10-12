@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Zaoly">
+  <!-- Zaoly Bildmarke seal 造 — cobalt tile + cream glyph (CD). Not MSQDX suite mark. -->
+  <rect width="32" height="32" fill="#1F44FF"/>
+  <text x="16" y="17.2" text-anchor="middle" dominant-baseline="middle"
+    font-family="Noto Serif JP, Hiragino Mincho ProN, Songti SC, serif"
+    font-size="22" font-weight="600" fill="#F3EEE4">造</text>
+</svg>
