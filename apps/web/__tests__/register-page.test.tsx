@@ -34,6 +34,8 @@ describe('RegisterPage', () => {
       'aria-hidden',
       'true',
     )
+    expect(container.querySelector('.section-chrome-meta')).toBeNull()
+    expect(container.querySelector('.section-chrome-title')).toBeTruthy()
   })
 
   it('shows Google when configured', () => {

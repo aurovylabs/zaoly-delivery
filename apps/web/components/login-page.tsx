@@ -146,7 +146,7 @@ function LoginForm({
   if (!authConfigured) {
     return (
       <Panel>
-        <SectionChrome title={t('login.sectionTitle')} meta={paths.brandLabel} />
+        <SectionChrome title={t('login.sectionTitle')} />
         <Hint panel>{t('login.unconfiguredHint')}</Hint>
         <Text role="meta" as="p" style={{ marginTop: '0.75rem' }}>
           Set ZAOLY_DATABASE_URL and ZAOLY_BOOTSTRAP_ADMIN_EMAIL / PASSWORD, or ZAOLY_AUTH_BYPASS=1 for local DX.
@@ -165,7 +165,7 @@ function LoginForm({
 
   return (
     <Panel>
-      <SectionChrome title={t('login.sectionTitle')} meta={paths.brandLabel} />
+      <SectionChrome title={t('login.sectionTitle')} />
       <Text role="meta" as="p" className="creation-login__lede">
         {t('login.localBody')}
       </Text>

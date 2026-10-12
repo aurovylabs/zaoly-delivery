@@ -3,7 +3,7 @@
 import { Button } from '@zaoly/ui'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
-import { paths } from '../lib/paths'
+import { communityGithubUrl, paths } from '../lib/paths'
 import { siteText } from '../lib/public-site-locale'
 import { useUserPrefs } from '../lib/user-prefs'
 import { CollaborationCapabilityVisual, DesignCapabilityVisual, HandoffCapabilityVisual, SystemCapabilityVisual } from './landing-capability-visuals'
@@ -349,7 +349,7 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
 
       <section className="zl-end" aria-labelledby="zl-end-title"><div className="zl-shell"><h2 id="zl-end-title">{locale === 'de' ? <>Mach aus deinem{' '}<br />nächsten Entwurf{' '}<br /><em>mehr.</em></> : <>Make more of{' '}<br />your next{' '}<br /><em>design.</em></>}</h2><div className="zl-end__bottom"><p>{t('Gestalte heute, was morgen als Komponente weiterarbeitet.', 'Design today what keeps working as a component tomorrow.')}</p><Button href={paths.routes.register} size="lg" className="zl-end__cta">{t('Loslegen', 'Get started')} <span aria-hidden="true">↗</span></Button></div></div></section>
 
-      <footer className="zl-footer"><div className="zl-shell zl-footer__inner"><Brand /><nav aria-label={t('Footer Navigation', 'Footer navigation')}><a href={paths.routes.register}>{t('Loslegen', 'Get started')}</a><a href={paths.routes.kit}>Zaoly Kit</a><a href={paths.routes.tokens}>Token Studio</a><a href={paths.routes.faq}>FAQ</a><a href={sectionHref(contact)}>{t('Kontakt', 'Contact')}</a><a href={paths.routes.login}>{t('Anmelden', 'Sign in')}</a></nav></div></footer>
+      <footer className="zl-footer"><div className="zl-shell zl-footer__inner"><Brand /><nav aria-label={t('Footer Navigation', 'Footer navigation')}><a href={paths.routes.register}>{t('Loslegen', 'Get started')}</a><a href={paths.routes.kit}>Zaoly Kit</a><a href={paths.routes.tokens}>Token Studio</a><a href={paths.routes.faq}>FAQ</a><a href={sectionHref(contact)}>{t('Kontakt', 'Contact')}</a><a href={communityGithubUrl()} target="_blank" rel="noopener noreferrer">GitHub</a><a href={paths.routes.login}>{t('Anmelden', 'Sign in')}</a></nav></div></footer>
     </main>
   )
 }

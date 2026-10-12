@@ -79,7 +79,7 @@ function RegisterForm({
   if (!signupEnabled) {
     return (
       <Panel>
-        <SectionChrome title={t('register.sectionTitle')} meta={paths.brandLabel} />
+        <SectionChrome title={t('register.sectionTitle')} />
         <Hint panel>{t('register.disabled')}</Hint>
         <div style={{ marginTop: '1rem' }}>
           <Link href={paths.routes.login}>
@@ -92,7 +92,7 @@ function RegisterForm({
 
   return (
     <Panel>
-      <SectionChrome title={t('register.sectionTitle')} meta={paths.brandLabel} />
+      <SectionChrome title={t('register.sectionTitle')} />
       <Text role="body">{t('register.body')}</Text>
       {error ? (
         <p role="alert" style={{ color: 'var(--danger)', marginTop: '0.75rem' }}>

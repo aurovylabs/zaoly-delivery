@@ -1329,11 +1329,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .creation-login--landscape .creation-login__wordmark {
-  padding: .08em .34em .14em;
-  background: var(--editor-warm-gray, #2e2a24);
+  padding: 0;
+  background: none;
   color: var(--editor-live, #c6f24a);
   font-size: clamp(2rem, 2.5vw, 2.5rem);
   line-height: 1;
+  text-shadow: 0 1px 12px rgba(30, 27, 23, 0.35);
 }
 
 .creation-login--landscape .creation-login__panel {
@@ -1344,6 +1345,13 @@ a { color: inherit; text-decoration: none; }
   background: rgba(251, 246, 236, 0.94);
   box-shadow: 0 24px 72px rgba(27, 35, 30, 0.14);
   backdrop-filter: blur(18px);
+}
+
+/* Auth form titles read larger than default section chrome. */
+.creation-login__panel .section-chrome-title {
+  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 @media (max-width: 48rem) {

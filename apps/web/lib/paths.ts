@@ -209,6 +209,12 @@ export const paths = {
    * Knowledge: `zaoly-delivery-repo.md`
    */
   deliveryContainerImage: 'ghcr.io/chbrdk/zaoly-delivery',
+  /**
+   * Public community source remote (export via `npm run export:community`).
+   * Landing footer links here — not the internal Origin tree.
+   * Knowledge: `zaoly-community-distribution.md`
+   */
+  communityGithubRepo: 'chbrdk/zaoly-delivery',
   /** Default branch for GitHub blob links (Kit atom source SK-V19). */
   creationGithubDefaultBranch: 'main',
   /** Prefer in-app `/editor` when truthy (default on outside production). */
@@ -753,6 +759,11 @@ export function kitPlaygroundHref(options?: {
   if (platformProjectId) q.set(paths.activePackQueryKey, platformProjectId)
   const qs = q.toString()
   return qs ? `${paths.routes.kit}?${qs}` : paths.routes.kit
+}
+
+/** Public community repo URL for landing / docs (not the internal Origin remote). */
+export function communityGithubUrl(): string {
+  return `https://github.com/${paths.communityGithubRepo}`
 }
 
 /**

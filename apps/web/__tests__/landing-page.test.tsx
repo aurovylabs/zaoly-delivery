@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { LandingPage } from '../components/landing-page'
 import { UserPrefsProvider } from '../lib/user-prefs'
-import { paths } from '../lib/paths'
+import { communityGithubUrl, paths } from '../lib/paths'
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ refresh: vi.fn() }) }))
 
@@ -47,6 +47,12 @@ describe('Zaoly landing page', () => {
     )
     expect(screen.getByRole('navigation', { name: /Landingpage/i })).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: 'FAQ' })[0]).toHaveAttribute('href', paths.routes.faq)
+    const github = screen.getByRole('navigation', { name: /Footer/i }).querySelector('a[href*="github.com"]')
+    expect(github).toHaveAttribute('href', communityGithubUrl())
+    expect(github).toHaveAttribute('target', '_blank')
+    expect(github).toHaveAttribute('rel', expect.stringContaining('noopener'))
+    expect(communityGithubUrl()).toBe(`https://github.com/${paths.communityGithubRepo}`)
+    expect(paths.communityGithubRepo).toBe('chbrdk/zaoly-delivery')
     expect(screen.getByText(/Team-Präsenz, Kommentare und benannte Versionsstände/i)).toBeInTheDocument()
     expect(screen.getByRole('img', { name: /Canvas wird eine Komponente ausgewählt/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/Eine Komponente in drei verschiedenen Projekten/i)).toBeInTheDocument()
