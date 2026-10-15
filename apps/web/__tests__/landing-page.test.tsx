@@ -19,7 +19,6 @@ describe('Zaoly landing page', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Vom Design zur echten Komponente.',
     )
-    expect(screen.getByRole('heading', { name: /Weniger nachbauen/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Warum Zaoly.*wann die anderen/i })).toBeInTheDocument()
     expect(document.getElementById(paths.landing.sections.compare)).toBeTruthy()
     expect(screen.getByRole('link', { name: /^Vergleich$/i })).toHaveAttribute(
@@ -34,6 +33,16 @@ describe('Zaoly landing page', () => {
     expect(within(compare).getByRole('rowheader', { name: /^Nachteile$/i })).toBeInTheDocument()
     expect(within(compare).getByText(/^Baustein$/i)).toBeInTheDocument()
     expect(screen.getByText(/will Figma nicht als Design-OS/i)).toBeInTheDocument()
+    // Compare sits on `/` directly under the hero, before the manifesto thesis.
+    const hero = screen.getByRole('heading', { level: 1 })
+    const compareHeading = screen.getByRole('heading', { name: /Warum Zaoly.*wann die anderen/i })
+    const manifesto = screen.getByRole('heading', { name: /Weniger nachbauen/i })
+    expect(
+      hero.compareDocumentPosition(compareHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+    expect(
+      compareHeading.compareDocumentPosition(manifesto) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
     expect(screen.getByRole('heading', { name: /Nicht lesen.*Ausprobieren/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Das System.*In der Anwendung/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Übergabe ohne Ratespiel/i })).toBeInTheDocument()

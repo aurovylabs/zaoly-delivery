@@ -109,15 +109,6 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
         </div>
       </section>
 
-      <section className="zl-manifesto" id={product} aria-labelledby="zl-manifesto-title">
-        <div className="zl-shell">
-          <Index>{t('WARUM ZAOLY', 'WHY ZAOLY')}</Index>
-          <h2 id="zl-manifesto-title">{locale === 'de' ? <>Weniger <em>nachbauen.</em>{' '}<br />Mehr weiterverwenden.</> : <>Less <em>rebuilding.</em>{' '}<br />More reuse.</>}</h2>
-          <div className="zl-manifesto__bottom"><p>{t('Zaoly macht aus visuellen Entscheidungen strukturierte Bausteine: mit Varianten, Markentokens und Code. Damit Design und Entwicklung am selben Ergebnis weiterarbeiten können.', 'Zaoly turns visual decisions into structured building blocks with variants, design tokens, and code, so design and development can keep working from the same source.')}</p></div>
-          <div className="zl-manifesto__rail" aria-label={t('Design wird zur Komponente und zum Produkt', 'Design becomes a component and a product')}><span>DESIGN</span><b>→</b><span>{t('KOMPONENTE', 'COMPONENT')}</span><b>→</b><span>{t('PRODUKT', 'PRODUCT')}</span></div>
-        </div>
-      </section>
-
       <section className="zl-compare" id={compare} aria-labelledby="zl-compare-title">
         <div className="zl-shell">
           <div className="zl-compare__intro">
@@ -203,6 +194,15 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
               'Zaoly isn’t trying to replace Figma as a design OS or Framer/Webflow as a site publisher — it owns the step where design becomes a React building block in your product.',
             )}
           </p>
+        </div>
+      </section>
+
+      <section className="zl-manifesto" id={product} aria-labelledby="zl-manifesto-title">
+        <div className="zl-shell">
+          <Index>{t('WARUM ZAOLY', 'WHY ZAOLY')}</Index>
+          <h2 id="zl-manifesto-title">{locale === 'de' ? <>Weniger <em>nachbauen.</em>{' '}<br />Mehr weiterverwenden.</> : <>Less <em>rebuilding.</em>{' '}<br />More reuse.</>}</h2>
+          <div className="zl-manifesto__bottom"><p>{t('Zaoly macht aus visuellen Entscheidungen strukturierte Bausteine: mit Varianten, Markentokens und Code. Damit Design und Entwicklung am selben Ergebnis weiterarbeiten können.', 'Zaoly turns visual decisions into structured building blocks with variants, design tokens, and code, so design and development can keep working from the same source.')}</p></div>
+          <div className="zl-manifesto__rail" aria-label={t('Design wird zur Komponente und zum Produkt', 'Design becomes a component and a product')}><span>DESIGN</span><b>→</b><span>{t('KOMPONENTE', 'COMPONENT')}</span><b>→</b><span>{t('PRODUKT', 'PRODUCT')}</span></div>
         </div>
       </section>
 
