@@ -127,48 +127,75 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
             </h2>
             <p>
               {t(
-                'Vorteile und Nachteile je Tool — mit klarem Blick darauf, wo Zaoly für Design → React-Baustein gewinnt. Die anderen bleiben stark in ihrem Job.',
-                'Pros and cons per tool — with a clear view of where Zaoly wins for design → React building block. The others stay strong at their own job.',
+                'Eine Tabelle: Job, Vorteile, Nachteile — mit klarem Blick darauf, wo Zaoly für Design → React-Baustein gewinnt.',
+                'One table: job, pros, cons — with a clear view of where Zaoly wins for design → React building block.',
               )}
             </p>
           </div>
-          <div className="zl-compare__grid" role="list" aria-label={t('Vergleich der Design-Tools', 'Design tool comparison')}>
-            {COMPARE_PROFILES.map((profile) => (
-              <article
-                key={profile.id}
-                className={`zl-compare__card${profile.highlight ? ' is-zaoly' : ''}`}
-                role="listitem"
-              >
-                <header className="zl-compare__card-head">
-                  {profile.highlight ? <span className="zl-compare__badge">{t('Unsere Wahl für den Baustein', 'Our pick for the building block')}</span> : null}
-                  <h3>{profile.name}</h3>
-                  <p>{locale === 'de' ? profile.job.de : profile.job.en}</p>
-                </header>
-                <div className="zl-compare__lists">
-                  <div>
-                    <h4>{t('Vorteile', 'Pros')}</h4>
-                    <ul>
-                      {profile.pros.map((line) => (
-                        <li key={line.en}>{locale === 'de' ? line.de : line.en}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4>{t('Nachteile', 'Cons')}</h4>
-                    <ul>
-                      {profile.cons.map((line) => (
-                        <li key={line.en}>{locale === 'de' ? line.de : line.en}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                <p className="zl-compare__pick">
-                  <strong>{t('Am besten, wenn', 'Best when')}</strong>
-                  {' '}
-                  {locale === 'de' ? profile.pickWhen.de : profile.pickWhen.en}
-                </p>
-              </article>
-            ))}
+          <div className="zl-compare__scroll">
+            <table className="zl-compare__table">
+              <caption className="visually-hidden">
+                {t(
+                  'Vergleichstabelle: Zaoly, Figma, Framer, Penpot, Sketch und Webflow mit Job, Vorteilen und Nachteilen',
+                  'Comparison table: Zaoly, Figma, Framer, Penpot, Sketch, and Webflow with job, pros, and cons',
+                )}
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">{t('Kriterium', 'Criterion')}</th>
+                  {COMPARE_PROFILES.map((profile) => (
+                    <th key={profile.id} scope="col" className={profile.highlight ? 'is-zaoly' : undefined}>
+                      {profile.name}
+                      {profile.highlight ? (
+                        <span className="zl-compare__th-note">{t('Baustein', 'Building block')}</span>
+                      ) : null}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">{t('Job', 'Job')}</th>
+                  {COMPARE_PROFILES.map((profile) => (
+                    <td key={profile.id} className={profile.highlight ? 'is-zaoly' : undefined}>
+                      {locale === 'de' ? profile.job.de : profile.job.en}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <th scope="row">{t('Vorteile', 'Pros')}</th>
+                  {COMPARE_PROFILES.map((profile) => (
+                    <td key={profile.id} className={profile.highlight ? 'is-zaoly' : undefined}>
+                      <ul>
+                        {profile.pros.map((line) => (
+                          <li key={line.en}>{locale === 'de' ? line.de : line.en}</li>
+                        ))}
+                      </ul>
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <th scope="row">{t('Nachteile', 'Cons')}</th>
+                  {COMPARE_PROFILES.map((profile) => (
+                    <td key={profile.id} className={profile.highlight ? 'is-zaoly' : undefined}>
+                      <ul>
+                        {profile.cons.map((line) => (
+                          <li key={line.en}>{locale === 'de' ? line.de : line.en}</li>
+                        ))}
+                      </ul>
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <th scope="row">{t('Am besten, wenn', 'Best when')}</th>
+                  {COMPARE_PROFILES.map((profile) => (
+                    <td key={profile.id} className={profile.highlight ? 'is-zaoly' : undefined}>
+                      {locale === 'de' ? profile.pickWhen.de : profile.pickWhen.en}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           </div>
           <p className="zl-compare__note">
             {t(

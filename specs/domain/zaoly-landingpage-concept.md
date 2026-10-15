@@ -245,7 +245,7 @@ App-Routen `/editor`, `/kit`, `/tokens` bleiben Produktflächen nach Login; Expl
 ## Vergleich V20 — Vorteile / Nachteile, optimistisch auf Zaoly
 
 1. Die Landingpage MUST einen Vergleich zu **Figma**, **Framer**, **Penpot**, **Sketch** und **Webflow** zeigen (Anker `paths.landing.sections.compare`).
-2. Pro Tool MUST **Vorteile**, **Nachteile** und eine kurze „Am besten, wenn…“-Zeile sichtbar sein. Zaoly MUST hervorgehoben sein (erste Karte / Badge).
+2. Darstellung MUST eine **HTML-Tabelle** sein (Tools als Spalten; Zeilen: Job · Vorteile · Nachteile · Am besten, wenn). Zaoly-Spalte MUST hervorgehoben sein.
 3. Ton MAY optimistisch für Zaolys Job (Design → React-Baustein) sein; Nachteile der anderen DÜRFEN auf diese Lücke zeigen. Nachteile von Zaoly MUST ehrlich bleiben, MAY aber als bewusste Trade-offs formuliert sein.
 4. MUST NOT erfundene Feature-Siege, Preise oder „wir ersetzen Figma/Webflow“-Claims.
 5. Daten leben zentral in `apps/web/lib/landing/compare.ts` · Knowledge `knowledge/zaoly-competitive-positioning.md`.
@@ -254,7 +254,7 @@ App-Routen `/editor`, `/kit`, `/tokens` bleiben Produktflächen nach Login; Expl
 
 1. **Hero** — Marke, eine Headline, eine kurze Subline, Primär-CTA Register und Sekundär-CTA Login. Canvas→Code-Bühne bleibt die dominante Visualisierung.
 2. **These** — kurze typografische Zäsur (Wiederverwendung statt Nachbau) mit der Kette Design → Komponente → Produkt. Anker `paths.landing.sections.product`.
-2a. **Vergleich** — Vorteile/Nachteile-Karten vs Figma / Framer / Penpot / Sketch / Webflow (Zaoly hervorgehoben). Anker `paths.landing.sections.compare`.
+2a. **Vergleich** — Vorteile/Nachteile-**Tabelle** vs Figma / Framer / Penpot / Sketch / Webflow (Zaoly-Spalte hervorgehoben). Anker `paths.landing.sections.compare`.
 3. **Erlebnis-Bühne** — ein sticky Produkt-Stage mit **fünf Kapiteln**, die per Scroll (Intersection) und per Tablist umschalten:
    - Editor (Canvas / Masters / Preflight — Illustration)
    - Zaoly Kit (Anker `kit`)
