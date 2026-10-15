@@ -30,6 +30,7 @@ export const paths = {
   landing: {
     sections: {
       product: 'produkt',
+      compare: 'vergleich',
       kit: 'zaoly-kit',
       tokens: 'token-studio',
       workflow: 'workflow',

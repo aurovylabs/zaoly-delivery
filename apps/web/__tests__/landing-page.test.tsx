@@ -20,6 +20,20 @@ describe('Zaoly landing page', () => {
       'Vom Design zur echten Komponente.',
     )
     expect(screen.getByRole('heading', { name: /Weniger nachbauen/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Warum Zaoly.*wann die anderen/i })).toBeInTheDocument()
+    expect(document.getElementById(paths.landing.sections.compare)).toBeTruthy()
+    expect(screen.getByRole('link', { name: /^Vergleich$/i })).toHaveAttribute(
+      'href',
+      `${paths.routes.home}#${paths.landing.sections.compare}`,
+    )
+    const compare = screen.getByLabelText(/Vergleich der Design-Tools/i)
+    expect(within(compare).getByRole('heading', { name: 'Zaoly', level: 3 })).toBeInTheDocument()
+    expect(within(compare).getByRole('heading', { name: 'Figma', level: 3 })).toBeInTheDocument()
+    expect(within(compare).getByRole('heading', { name: 'Webflow', level: 3 })).toBeInTheDocument()
+    expect(within(compare).getByText(/Unsere Wahl für den Baustein/i)).toBeInTheDocument()
+    expect(within(compare).getAllByText(/^Vorteile$/i).length).toBeGreaterThanOrEqual(6)
+    expect(within(compare).getAllByText(/^Nachteile$/i).length).toBeGreaterThanOrEqual(6)
+    expect(screen.getByText(/will Figma nicht als Design-OS/i)).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Nicht lesen.*Ausprobieren/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Das System.*In der Anwendung/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Übergabe ohne Ratespiel/i })).toBeInTheDocument()

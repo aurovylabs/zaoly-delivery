@@ -3,6 +3,7 @@
 import { Button } from '@zaoly/ui'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
+import { COMPARE_PROFILES } from '../lib/landing/compare'
 import { LANDING_EXAMPLE_COMPOSITION } from '../lib/landing/example-composition'
 import { communityGithubUrl, paths } from '../lib/paths'
 import { siteText } from '../lib/public-site-locale'
@@ -41,7 +42,7 @@ function CodeLines({ locale }: { locale: 'de' | 'en' }) {
 }
 
 export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault }: { contactEmail?: string | null }) {
-  const { product, kit, tokens, workflow, contact } = paths.landing.sections
+  const { product, compare, kit, tokens, workflow, contact } = paths.landing.sections
   const { locale, setLocale } = useUserPrefs()
   const router = useRouter()
   const t = (de: string, en: string) => siteText(locale, de, en)
@@ -55,6 +56,7 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
           <a className="zl-header__brand" href={paths.routes.home} aria-label={t('Zaoly Startseite', 'Zaoly home')}><Brand /></a>
           <nav className="zl-nav" aria-label={t('Landingpage Navigation', 'Landing page navigation')}>
             <a href={sectionHref(product)}>{t('Produkt', 'Product')}</a>
+            <a href={sectionHref(compare)}>{t('Vergleich', 'Compare')}</a>
             <a href={sectionHref(kit)}>{t('Kit · Demo', 'Kit · Demo')}</a>
             <a href={sectionHref(tokens)}>{t('Tokens · Demo', 'Tokens · Demo')}</a>
             <a href={paths.routes.explore}>{t('Explore · Demos', 'Explore · Demos')}</a>
@@ -113,6 +115,67 @@ export function LandingPage({ contactEmail = paths.publicSiteContactEmailDefault
           <h2 id="zl-manifesto-title">{locale === 'de' ? <>Weniger <em>nachbauen.</em>{' '}<br />Mehr weiterverwenden.</> : <>Less <em>rebuilding.</em>{' '}<br />More reuse.</>}</h2>
           <div className="zl-manifesto__bottom"><p>{t('Zaoly macht aus visuellen Entscheidungen strukturierte Bausteine: mit Varianten, Markentokens und Code. Damit Design und Entwicklung am selben Ergebnis weiterarbeiten können.', 'Zaoly turns visual decisions into structured building blocks with variants, design tokens, and code, so design and development can keep working from the same source.')}</p></div>
           <div className="zl-manifesto__rail" aria-label={t('Design wird zur Komponente und zum Produkt', 'Design becomes a component and a product')}><span>DESIGN</span><b>→</b><span>{t('KOMPONENTE', 'COMPONENT')}</span><b>→</b><span>{t('PRODUKT', 'PRODUCT')}</span></div>
+        </div>
+      </section>
+
+      <section className="zl-compare" id={compare} aria-labelledby="zl-compare-title">
+        <div className="zl-shell">
+          <div className="zl-compare__intro">
+            <Index>{t('ORIENTIERUNG', 'ORIENTATION')}</Index>
+            <h2 id="zl-compare-title">
+              {locale === 'de' ? <>Warum Zaoly.<br /><em>Und wann die anderen.</em></> : <>Why Zaoly.<br /><em>And when the others.</em></>}
+            </h2>
+            <p>
+              {t(
+                'Vorteile und Nachteile je Tool — mit klarem Blick darauf, wo Zaoly für Design → React-Baustein gewinnt. Die anderen bleiben stark in ihrem Job.',
+                'Pros and cons per tool — with a clear view of where Zaoly wins for design → React building block. The others stay strong at their own job.',
+              )}
+            </p>
+          </div>
+          <div className="zl-compare__grid" role="list" aria-label={t('Vergleich der Design-Tools', 'Design tool comparison')}>
+            {COMPARE_PROFILES.map((profile) => (
+              <article
+                key={profile.id}
+                className={`zl-compare__card${profile.highlight ? ' is-zaoly' : ''}`}
+                role="listitem"
+              >
+                <header className="zl-compare__card-head">
+                  {profile.highlight ? <span className="zl-compare__badge">{t('Unsere Wahl für den Baustein', 'Our pick for the building block')}</span> : null}
+                  <h3>{profile.name}</h3>
+                  <p>{locale === 'de' ? profile.job.de : profile.job.en}</p>
+                </header>
+                <div className="zl-compare__lists">
+                  <div>
+                    <h4>{t('Vorteile', 'Pros')}</h4>
+                    <ul>
+                      {profile.pros.map((line) => (
+                        <li key={line.en}>{locale === 'de' ? line.de : line.en}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>{t('Nachteile', 'Cons')}</h4>
+                    <ul>
+                      {profile.cons.map((line) => (
+                        <li key={line.en}>{locale === 'de' ? line.de : line.en}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <p className="zl-compare__pick">
+                  <strong>{t('Am besten, wenn', 'Best when')}</strong>
+                  {' '}
+                  {locale === 'de' ? profile.pickWhen.de : profile.pickWhen.en}
+                </p>
+              </article>
+            ))}
+          </div>
+          <p className="zl-compare__note">
+            {t(
+              'Zaoly will Figma nicht als Design-OS und Framer/Webflow nicht als Site-Publisher ersetzen — sondern den Schritt, in dem aus Design ein React-Baustein in eurem Produkt wird.',
+              'Zaoly isn’t trying to replace Figma as a design OS or Framer/Webflow as a site publisher — it owns the step where design becomes a React building block in your product.',
+            )}
+          </p>
         </div>
       </section>
 

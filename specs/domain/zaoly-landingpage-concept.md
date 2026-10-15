@@ -1,6 +1,6 @@
-# Zaoly Landingpage — Produktkonzept und Layout V19
+# Zaoly Landingpage — Produktkonzept und Layout V20
 
-**Status:** Accepted · Layout V19 · 2026-10-13  
+**Status:** Accepted · Layout V20 · 2026-10-15  
 **Product:** Zaoly standalone · **Route:** `/` · **Application:** `/editor`  
 **Public deep demos:** `/explore` (+ Kapitel-Unterseiten)
 
@@ -242,10 +242,19 @@ App-Routen `/editor`, `/kit`, `/tokens` bleiben Produktflächen nach Login; Expl
 2. **`FeatureCard` ist Marketing-Beispiel, kein Seed-Atom.** Sichtbare Labels MUST „Beispiel-Master“ / „Example master“ tragen (Hero-Inspect, Editor-/Weg-/Handoff-Illustrationen). Der Seed-Katalog bleibt die Quelle der Wahrheit für Kit-Atome.
 3. **Deep Kit (`/explore/kit`) MUST eine Playground-lite-Triade** zeigen: Atom-Katalog · Live-Vorschau · kurzer TSX-Snippet (`import { Atom } from '@zaoly/site-kit'`). Compact MAY den TSX-Pane weglassen. Das ersetzt nicht den authentifizierten Kit Playground.
 
+## Vergleich V20 — Vorteile / Nachteile, optimistisch auf Zaoly
+
+1. Die Landingpage MUST einen Vergleich zu **Figma**, **Framer**, **Penpot**, **Sketch** und **Webflow** zeigen (Anker `paths.landing.sections.compare`).
+2. Pro Tool MUST **Vorteile**, **Nachteile** und eine kurze „Am besten, wenn…“-Zeile sichtbar sein. Zaoly MUST hervorgehoben sein (erste Karte / Badge).
+3. Ton MAY optimistisch für Zaolys Job (Design → React-Baustein) sein; Nachteile der anderen DÜRFEN auf diese Lücke zeigen. Nachteile von Zaoly MUST ehrlich bleiben, MAY aber als bewusste Trade-offs formuliert sein.
+4. MUST NOT erfundene Feature-Siege, Preise oder „wir ersetzen Figma/Webflow“-Claims.
+5. Daten leben zentral in `apps/web/lib/landing/compare.ts` · Knowledge `knowledge/zaoly-competitive-positioning.md`.
+
 ### Seitenstruktur (verbindlich)
 
 1. **Hero** — Marke, eine Headline, eine kurze Subline, Primär-CTA Register und Sekundär-CTA Login. Canvas→Code-Bühne bleibt die dominante Visualisierung.
 2. **These** — kurze typografische Zäsur (Wiederverwendung statt Nachbau) mit der Kette Design → Komponente → Produkt. Anker `paths.landing.sections.product`.
+2a. **Vergleich** — Vorteile/Nachteile-Karten vs Figma / Framer / Penpot / Sketch / Webflow (Zaoly hervorgehoben). Anker `paths.landing.sections.compare`.
 3. **Erlebnis-Bühne** — ein sticky Produkt-Stage mit **fünf Kapiteln**, die per Scroll (Intersection) und per Tablist umschalten:
    - Editor (Canvas / Masters / Preflight — Illustration)
    - Zaoly Kit (Anker `kit`)
