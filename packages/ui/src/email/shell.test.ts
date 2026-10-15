@@ -19,6 +19,9 @@ describe('zaoly email shell', () => {
     expect(ZAOLY_EMAIL_LOGO_MARK_URL).toMatch(/^https:\/\//)
     expect(ZAOLY_EMAIL_LOGO_MARK_URL).not.toMatch(/plygrnd\.tech/)
     expect(ZAOLY_EMAIL_LOGO_MARK_URL).toContain('zaoly-mark.png')
+    // Public delivery only — private chbrdk/Origin trees are not CDN-reachable
+    expect(ZAOLY_EMAIL_LOGO_MARK_URL).toContain('aurovylabs/zaoly-delivery')
+    expect(ZAOLY_EMAIL_LOGO_MARK_URL).not.toMatch(/chbrdk\//)
 
     const html = renderZaolyEmailDocument({
       productLabel: 'PLEXON',
