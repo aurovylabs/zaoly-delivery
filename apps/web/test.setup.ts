@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
 import { afterEach, beforeEach, vi } from 'vitest'
+import { paths } from './lib/paths'
 
 /** Vitest defaults to local auth bypass (`ZAOLY_AUTH_BYPASS`). */
 if (!process.env.ZAOLY_AUTH_BYPASS && !process.env.ZAOLY_AUTH_BYPASS) {
@@ -75,6 +76,21 @@ class MockEventSource {
 
 vi.stubGlobal('EventSource', MockEventSource as unknown as typeof EventSource)
 
+class MockIntersectionObserver {
+  readonly root: Element | Document | null = null
+  readonly rootMargin = ''
+  readonly thresholds: ReadonlyArray<number> = []
+  constructor(private readonly callback: IntersectionObserverCallback) {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return []
+  }
+}
+
+vi.stubGlobal('IntersectionObserver', MockIntersectionObserver as unknown as typeof IntersectionObserver)
+
 /**
  * Node undici rejects relative `/api/...` URLs. Editor mounts probe kit drift,
  * tokens, and auth session — answer those with empty ok JSON so jsdom workers
@@ -84,6 +100,10 @@ vi.stubGlobal('EventSource', MockEventSource as unknown as typeof EventSource)
 beforeEach(() => {
   memoryLocal.clear()
   memorySession.clear()
+  // Default: onboarding already completed so editor workspace tests are not blocked
+  // by Welcome/tour overlays. Onboarding suites clear these via `clearOnboardingFlags`.
+  memoryLocal.setItem(paths.onboarding.welcomeStorageKey, '1')
+  memoryLocal.setItem(paths.onboarding.tourStorageKey, 'done')
   MockEventSource.instances = []
   globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input)

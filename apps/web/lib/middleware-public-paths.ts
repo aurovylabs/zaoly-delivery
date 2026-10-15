@@ -5,7 +5,15 @@ export function isPublicPath(pathname: string, method: string): boolean {
   const m = method.toUpperCase()
 
   // Marketing pages are public; editor and product data keep their own gates.
-  if ((pathname === paths.routes.home || pathname === paths.routes.faq) && m === 'GET') return true
+  if (
+    (pathname === paths.routes.home ||
+      pathname === paths.routes.faq ||
+      pathname === paths.routes.explore ||
+      pathname.startsWith(`${paths.routes.explore}/`)) &&
+    m === 'GET'
+  ) {
+    return true
+  }
 
   // Storybook live list — GET only; POST stays session-gated (or machine scene).
   if (

@@ -35,7 +35,7 @@ Tile widths MUST use `EDITOR_BREAKPOINT_WIDTHS` (`390` / `768` / `1440`).
 
 | Action | Result |
 |--------|--------|
-| Toggle Compare on | Leave scene page board paint; show BP board for active page **or** Master-Edit active variant root |
+| Toggle Compare on | Leave scene page board paint; show BP board for active page **or** Master-Edit active variant root; **fit viewport** so Desktop · Tablet · Mobile tiles are all visible (`fitAllFrames` / board canvas bounds) |
 | Toggle Compare off | Restore scene board / Master variant board / single artboard |
 | Click inactive tile / remapped node | Set `activeBreakpoint` to that tile’s BP; if remapped node → select original id |
 | Click in active tile | Normal select (same as today) |

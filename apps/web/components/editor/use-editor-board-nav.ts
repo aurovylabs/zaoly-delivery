@@ -32,6 +32,10 @@ export function useEditorBoardNav(args: {
   sceneRef: { current: CompositionScene }
   viewportRef: { current: HTMLDivElement | null }
   sceneBoardMode: boolean
+  /** Breakpoint Compare or Master Breakpoints matrix — wide board surface. */
+  breakpointBoardMode: boolean
+  /** Live board world size (compare / matrix / scene board). */
+  boardCanvasSize: { width: number; height: number }
   editingMasterId: string | null
   activeBreakpoint: EditorBreakpoint
   activePrintPreset: PrintPresetId
@@ -51,6 +55,8 @@ export function useEditorBoardNav(args: {
     sceneRef,
     viewportRef,
     sceneBoardMode,
+    breakpointBoardMode,
+    boardCanvasSize,
     editingMasterId,
     activeBreakpoint,
     activePrintPreset,
@@ -69,9 +75,30 @@ export function useEditorBoardNav(args: {
   const fitToViewRef = useRef<() => void>(() => {})
   const fitAllFramesRef = useRef<() => void>(() => {})
 
+  function fitToBoardCanvas() {
+    const viewport = viewportRef.current
+    if (!viewport) return
+    const next = fitCanvasToBounds({
+      viewportWidth: viewport.clientWidth,
+      viewportHeight: viewport.clientHeight,
+      bounds: {
+        x: 0,
+        y: 0,
+        width: Math.max(1, boardCanvasSize.width),
+        height: Math.max(1, boardCanvasSize.height),
+      },
+      padding: 64,
+    })
+    commitViewportImmediate(next)
+  }
+
   function fitToActiveFrame() {
     const viewport = viewportRef.current
     if (!viewport) return
+    if (breakpointBoardMode) {
+      fitToBoardCanvas()
+      return
+    }
     const pad = 64
     const size = artboardCssSize(activeBreakpoint, activePrintPreset)
     const paintHeight = size.height ?? artboardHeight
@@ -97,6 +124,10 @@ export function useEditorBoardNav(args: {
   function fitToAllFrames() {
     const viewport = viewportRef.current
     if (!viewport) return
+    if (breakpointBoardMode) {
+      fitToBoardCanvas()
+      return
+    }
     const pad = 64
     const size = artboardCssSize(activeBreakpoint, activePrintPreset)
     const paintHeight = size.height ?? artboardHeight

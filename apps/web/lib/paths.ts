@@ -35,6 +35,8 @@ export const paths = {
       workflow: 'workflow',
       contact: 'kontakt',
     },
+    /** Public marketing demos (not authenticated `/kit` / `/tokens` hubs). */
+    exploreChapters: ['editor', 'kit', 'tokens', 'screens', 'path'] as const,
     assets: {
       heroArtboard: '/landing/hero-artboard.svg',
       kitAssembly: '/landing/kit-assembly.svg',
@@ -242,6 +244,21 @@ export const paths = {
    * Detail: `{ active: boolean }`. Knowledge: `knowledge/canvas-inline-text-edit.md`.
    */
   inlineEditActiveEvent: 'zaoly:inline-edit-active',
+  /**
+   * Hybrid editor onboarding (Welcome → Empty → tour → Done).
+   * Spec: `specs/domain/onboarding.md` · knowledge: `aurovi-onboarding-reference.md`
+   */
+  onboarding: {
+    welcomeStorageKey: 'zaoly-onboarding-welcome-v1',
+    /** v3 = 12 micro-steps (inspect notice, token pick, activate BP tile). */
+    tourStorageKey: 'zaoly-onboarding-tour-v3',
+    emptySkipStorageKey: 'zaoly-onboarding-empty-skip',
+    queryParam: 'onboarding',
+    compositionChangedEvent: 'zaoly:composition-changed',
+    actionEvent: 'zaoly:onboarding-action',
+    /** Host asks panels to focus a useful target (e.g. Tokens → color filter). */
+    prepareEvent: 'zaoly:onboarding-prepare',
+  },
   /** Absolute or cwd-relative JSON file for durable scene persistence. */
   envSceneStorePath: 'ZAOLY_SCENE_STORE_PATH',
   envTokenPackStorePath: 'ZAOLY_TOKEN_PACK_PATH',
@@ -555,6 +572,9 @@ export const paths = {
     apiAuthNextAuth: '/api/auth',
     home: '/',
     faq: '/faq',
+    /** Public interactive product demos (marketing). */
+    explore: '/explore',
+    exploreChapter: (chapter: string) => `/explore/${encodeURIComponent(chapter)}`,
     login: '/login',
     register: '/register',
     forgotPassword: '/forgot-password',

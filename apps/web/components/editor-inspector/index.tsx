@@ -182,6 +182,26 @@ export function EditorInspector({
     return () => window.removeEventListener(paths.hudHostOpenSvgDeepEditEvent, open)
   }, [])
 
+  // Hooks must run even when nothing is selected (deselect must not shrink the hook list).
+  const hookSelected = selected ?? sceneRoot
+  const { writeProp, writeLiteral, setToken, setDataBinding, clearDataBinding } = useInspectorWrites({
+    selected: hookSelected,
+    selectedNodes,
+    multi,
+    useOverride,
+    activeBreakpoint,
+    activeInteractiveState: activeState,
+    onOps,
+  })
+
+  const { openPromoteLiteral, promoteDialog } = useInspectorPromote({
+    brandPack,
+    catalog,
+    setToken,
+    onTokenSaved,
+    t,
+  })
+
   if (!selected) {
     return (
       <PropertyInspector title={t('editor.inspector')} data-testid="creation-editor-inspector">
@@ -236,24 +256,6 @@ export function EditorInspector({
         : activeBreakpoint === 'print'
           ? t('editor.breakpoint.print')
           : t('editor.breakpoint.desktop')
-
-  const { writeProp, writeLiteral, setToken, setDataBinding, clearDataBinding } = useInspectorWrites({
-    selected,
-    selectedNodes,
-    multi,
-    useOverride,
-    activeBreakpoint,
-    activeInteractiveState: activeState,
-    onOps,
-  })
-
-  const { openPromoteLiteral, promoteDialog } = useInspectorPromote({
-    brandPack,
-    catalog,
-    setToken,
-    onTokenSaved,
-    t,
-  })
 
   return (
     <PropertyInspector title={t('editor.inspector')} data-testid="creation-editor-inspector">

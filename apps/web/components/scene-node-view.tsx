@@ -110,7 +110,11 @@ import { cascadeNodeHidden } from '../lib/scene/breakpoint-visibility'
 import { usePrimaryBreakpoint } from '../lib/scene/primary-breakpoint-context'
 import { cascadeNodeForState, writesToStateOverride } from '../lib/scene/state-cascade'
 import { sceneNodeViewPropsAreEqual } from '../lib/scene/scene-node-view-memo'
-import { isTextLeafNodeType } from '../lib/scene/text-ink-bounds'
+import {
+  canInlineEditCanvasNode,
+  isInlineLabelShellType,
+  isTextLeafNodeType,
+} from '../lib/scene/text-ink-bounds'
 import { shouldStartBoardFrameDrag, isSceneBoardNodeId } from '../lib/scene/scene-board'
 import { InlineCanvasTextEdit } from './editor/inline-canvas-text-edit'
 import {
@@ -844,7 +848,7 @@ function SceneNodeViewInner({
     const contentsPaint =
       (listPaint?.parentType === 'PrintTable' && (node.type === 'RankedRow' || node.type === 'Text')) ||
       (listPaint?.parentType === 'PrintDonut' && node.type === 'RankedRow')
-    const canInlineEdit = isTextLeafNodeType(node.type) && !node.locked
+    const canInlineEdit = canInlineEditCanvasNode(node)
     const isPageFrameChrome = node.props?.['data-page-frame-chrome'] === 'true'
     const isPageFrameActive = node.props?.['data-page-frame-active'] === 'true'
     const isPageFrameBody = node.props?.['data-page-frame-body'] === 'true'
@@ -864,6 +868,10 @@ function SceneNodeViewInner({
     const isBreakpointLabel = node.props?.['data-breakpoint-label'] === 'true'
     const isBreakpointBody = node.props?.['data-breakpoint-body'] === 'true'
     const isBreakpointBodyActive = node.props?.['data-breakpoint-body-active'] === 'true'
+    const breakpointTile =
+      typeof node.props?.['data-breakpoint-tile'] === 'string'
+        ? String(node.props['data-breakpoint-tile'])
+        : ''
     const isPageFrameDragging = Boolean(
       pageFrameId && boardFrameDraggingPageId && boardFrameDraggingPageId === pageFrameId,
     )
@@ -982,6 +990,7 @@ function SceneNodeViewInner({
       }
       data-breakpoint-label={isBreakpointLabel ? 'true' : undefined}
       data-breakpoint-body={isBreakpointBody ? 'true' : undefined}
+      data-breakpoint-tile={breakpointTile || undefined}
       data-node-locked={node.locked ? 'true' : undefined}
       aria-label={node.type === 'Chip' ? 'Chip' : undefined}
       data-print-surface-stroke={printChipSurface?.stroke ? 'true' : undefined}
@@ -1356,7 +1365,19 @@ function SceneNodeViewInner({
           size={(props.size as 'md') || 'md'}
           shape={(props.shape as 'square' | 'pill' | 'rounded' | 'default') || 'square'}
         >
-          {slotKids('label') ?? String(props.children ?? 'Button')}
+          {editing && onSetProp && canInlineEditCanvasNode(node) ? (
+            <InlineCanvasTextEdit
+              editRef={editRef}
+              value={String(props.children ?? 'Button')}
+              onCommit={(text) => {
+                onSetProp(node.id, 'children', text)
+                setEditing(false)
+              }}
+              onCancel={() => setEditing(false)}
+            />
+          ) : (
+            (slotKids('label') ?? String(props.children ?? 'Button'))
+          )}
         </Button>,
       )
     case 'Text':
@@ -1431,7 +1452,19 @@ function SceneNodeViewInner({
     case 'Badge':
       return wrap(
         <Badge tone={(props.tone as 'neutral') || 'neutral'}>
-          {slotKids('label') ?? String(props.children ?? 'Badge')}
+          {editing && onSetProp && canInlineEditCanvasNode(node) ? (
+            <InlineCanvasTextEdit
+              editRef={editRef}
+              value={String(props.children ?? 'Badge')}
+              onCommit={(text) => {
+                onSetProp(node.id, 'children', text)
+                setEditing(false)
+              }}
+              onCancel={() => setEditing(false)}
+            />
+          ) : (
+            (slotKids('label') ?? String(props.children ?? 'Badge'))
+          )}
         </Badge>,
       )
     case 'Spacer':
@@ -1489,7 +1522,19 @@ function SceneNodeViewInner({
           selected={props.selected === true || props.selected === 'true'}
           size={props.size === 'md' ? 'md' : 'sm'}
         >
-          {slotKids('label') ?? String(props.children ?? 'Chip')}
+          {editing && onSetProp && canInlineEditCanvasNode(node) ? (
+            <InlineCanvasTextEdit
+              editRef={editRef}
+              value={String(props.children ?? 'Chip')}
+              onCommit={(text) => {
+                onSetProp(node.id, 'children', text)
+                setEditing(false)
+              }}
+              onCancel={() => setEditing(false)}
+            />
+          ) : (
+            (slotKids('label') ?? String(props.children ?? 'Chip'))
+          )}
         </Chip>,
       )
     case 'Divider':
@@ -2391,6 +2436,30 @@ function SceneNodeViewInner({
         }
         const tableChrome =
           node.type === 'SiteTableRow' || node.type === 'SiteTableCell'
+        // Label shell (SiteButton, …): keep chrome, edit string children inline.
+        if (
+          editing &&
+          onSetProp &&
+          isInlineLabelShellType(node.type) &&
+          canInlineEditCanvasNode(node)
+        ) {
+          return wrap(
+            createElement(
+              SiteComp,
+              paintedProps,
+              <InlineCanvasTextEdit
+                editRef={editRef}
+                value={String(props.children ?? '')}
+                onCommit={(text) => {
+                  onSetProp(node.id, 'children', text)
+                  setEditing(false)
+                }}
+                onCancel={() => setEditing(false)}
+              />,
+            ),
+            { paintOnSelf: true, flowTransparent: tableChrome || pseudoDecor },
+          )
+        }
         // Empty kids array would override props.children in createElement.
         return wrap(
           kids.length

@@ -28,6 +28,7 @@ import {
   resolveActivePageId,
 } from '../../lib/scene/scene-pages'
 import { replaceSelection, toggleSelectedId } from '../../lib/scene/selection'
+import { dispatchOnboardingAction } from '../../lib/editor/onboarding'
 import type { EditorMutateResult } from './use-editor-mutations'
 
 export function useEditorNodeSelect(args: {
@@ -86,6 +87,7 @@ export function useEditorNodeSelect(args: {
       }
       if (resolved.nodeId) {
         setSelectedIds(replaceSelection(resolved.nodeId))
+        dispatchOnboardingAction('select')
       }
       return
     }
@@ -97,6 +99,7 @@ export function useEditorNodeSelect(args: {
         onActivateBreakpoint(resolved.breakpoint)
         if (resolved.selectId) {
           setSelectedIds(replaceSelection(resolved.selectId))
+          dispatchOnboardingAction('select')
         }
         return
       }
@@ -189,6 +192,7 @@ export function useEditorNodeSelect(args: {
             )
           : result.scene.root.id
         setSelectedIds(replaceSelection(nextSelect))
+        dispatchOnboardingAction('select')
         return
       }
       id = resolveSceneBoardSelectionId(
@@ -207,9 +211,11 @@ export function useEditorNodeSelect(args: {
     const additive = Boolean(mods?.shiftKey || mods?.metaKey || mods?.ctrlKey)
     if (additive) {
       setSelectedIds((prev) => toggleSelectedId(prev, mapped))
+      dispatchOnboardingAction('select')
       return
     }
     setSelectedIds(replaceSelection(mapped))
+    dispatchOnboardingAction('select')
   }
 
   return { selectNode }

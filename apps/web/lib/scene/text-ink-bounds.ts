@@ -10,8 +10,45 @@ export const TEXT_LEAF_NODE_TYPES = new Set([
   'SiteLink',
 ])
 
+/**
+ * Shell atoms whose label lives in `props.children` (no slotted Text).
+ * Double-click opens the same canvas inline edit as text leaves.
+ * Spec / knowledge: `canvas-inline-text-edit.md`
+ */
+export const INLINE_LABEL_SHELL_TYPES = new Set([
+  'SiteButton',
+  'Button',
+  'Badge',
+  'Chip',
+  'SiteBadge',
+  'SiteCheckbox',
+])
+
 export function isTextLeafNodeType(type: string | null | undefined): boolean {
   return Boolean(type && TEXT_LEAF_NODE_TYPES.has(type))
+}
+
+export function isInlineLabelShellType(type: string | null | undefined): boolean {
+  return Boolean(type && INLINE_LABEL_SHELL_TYPES.has(type))
+}
+
+/** Whether double-click may open `creation-inline-edit` on this node. */
+export function canInlineEditCanvasNode(node: {
+  type: string
+  locked?: boolean
+  children?: Array<{ type: string; props?: Record<string, unknown> | null }> | null
+  props?: Record<string, unknown> | null
+}): boolean {
+  if (node.locked) return false
+  if (isTextLeafNodeType(node.type)) return true
+  if (!isInlineLabelShellType(node.type)) return false
+  // Slotted label Text is the editable target — not the shell.
+  const hasLabelSlot = (node.children ?? []).some(
+    (c) => c.props?.slot === 'label' && isTextLeafNodeType(c.type),
+  )
+  if (hasLabelSlot) return false
+  const kids = node.props?.children
+  return kids == null || typeof kids === 'string'
 }
 
 export type ClientRectLike = {

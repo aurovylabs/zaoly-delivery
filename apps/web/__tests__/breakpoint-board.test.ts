@@ -102,7 +102,20 @@ describe('breakpoint compare board (Wave A)', () => {
     expect(toolbar).toContain('editor-breakpoint-compare')
     expect(toolbar).toContain('onBreakpointCompareToggle')
     expect(spec).toContain('Compare board')
+    expect(spec).toContain('fit viewport')
     expect(en.editor.breakpointCompare).toMatch(/Compare/i)
+    const sceneState = readFileSync(
+      path.join(root, 'apps/web/components/editor/use-editor-scene-state.ts'),
+      'utf8',
+    )
+    const boardNav = readFileSync(
+      path.join(root, 'apps/web/components/editor/use-editor-board-nav.ts'),
+      'utf8',
+    )
+    expect(sceneState).toContain('fitAllFramesRef.current()')
+    expect(sceneState).toContain('wideBoardCameraRef')
+    expect(boardNav).toContain('breakpointBoardMode')
+    expect(boardNav).toContain('fitToBoardCanvas')
   })
 
   it('Master-Edit Compare paints an arbitrary working root (variant tree)', () => {

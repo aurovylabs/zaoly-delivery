@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
+  canInlineEditCanvasNode,
+  isInlineLabelShellType,
   isTextLeafNodeType,
   preferTighterTextBounds,
   unionClientRectsToBounds,
@@ -12,6 +14,31 @@ describe('text-ink-bounds (text leaf hug)', () => {
     expect(isTextLeafNodeType('SiteText')).toBe(true)
     expect(isTextLeafNodeType('SiteLink')).toBe(true)
     expect(isTextLeafNodeType('Stack')).toBe(false)
+  })
+
+  it('allows inline edit on string-label shells (SiteButton) but not slotted shells', () => {
+    expect(isInlineLabelShellType('SiteButton')).toBe(true)
+    expect(
+      canInlineEditCanvasNode({
+        type: 'SiteButton',
+        props: { children: 'Get started' },
+      }),
+    ).toBe(true)
+    expect(
+      canInlineEditCanvasNode({
+        type: 'SiteButton',
+        locked: true,
+        props: { children: 'Get started' },
+      }),
+    ).toBe(false)
+    expect(
+      canInlineEditCanvasNode({
+        type: 'Button',
+        props: { children: 'Button' },
+        children: [{ type: 'Text', props: { slot: 'label', children: 'Button' } }],
+      }),
+    ).toBe(false)
+    expect(canInlineEditCanvasNode({ type: 'SiteStack', props: {} })).toBe(false)
   })
 
   it('unions client rects relative to viewport', () => {

@@ -225,7 +225,9 @@ SOLANGE an Instance references a Master, MUST paint/Layers use the current Maste
 
 WENN the selected node is an Instance (or a descendant only visible via expand), DANN MUST structure ops that would rewrite Instance children (`insert_child` into instance interior, `reorder` of expand children, …) reject on the persisted Instance ref. Root-level overrides via Inspect (`set_prop` / token / style on the Instance root id) MUST write `instanceOverrides`.
 
-WENN the designer double-clicks an **expanded descendant** (id not present on the persisted page tree), DANN MUST inline text edit **not** commit `set_prop` against that expand id (sealed). Inline edit remains allowed on free (non-Instance) Text/Heading/SiteText and on a persisted Instance root whose expanded type is editable text.
+**Page-mode palette drop into section Instances (transparent Master write):** WENN Master-Edit is **inactive** and the designer drops a palette type `into` / beside an **expanded** container inside a **Composition section** Instance (or `into` the Instance shell itself), DANN MUST the planner route the hydrate to that section Master’s active/default variant working root (`applyPaletteHydrateInsertIntoMaster`) — same outcome as Master-Edit insert. Atom Masters stay sealed. Sibling `before`/`after` on the **persisted** Instance id (page band reorder) MUST continue to insert under the page root. Token bind remains override-based (CT-19), not a structure rewrite.
+
+WENN the designer double-clicks an **expanded descendant** text leaf (expand id `hostId::defPath`), DANN MUST canvas inline edit commit `set_prop` `children` via `instanceOverrides.descendants[defPath]` on the host Instance — same write path as Inspect/HUD. MUST NOT silent-no-op expand ids that `resolveDescendantWriteTarget` accepts. Free (non-Instance) Text/Heading/SiteText and persisted Instance roots whose expanded type is editable text remain allowed.
 
 ### Expand id stability (P78)
 

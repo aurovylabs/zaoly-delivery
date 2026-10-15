@@ -11,6 +11,7 @@ import { paths } from '../lib/paths'
 import { PRINT_CHIP_SURFACE_VARS } from '../lib/scene/print-chip-surface'
 import { clearSceneExpandCache } from '../lib/scene/expand-cache'
 import { createDemoScene, createEmptyArtboardScene, createLegacyFixtureScene } from '../lib/scene/demo-scene'
+import { createZaolyDefaultLandingScene } from '../lib/scene/zaoly-default-landing-scene'
 import { paletteChildForInsert } from '../lib/scene/ops'
 import { resolveCatalogInsertType } from '../lib/scene/catalog-palette'
 import { resolveActivePage } from '../lib/scene/scene-pages'
@@ -630,6 +631,21 @@ describe('editor workspace', { timeout: 20_000 }, () => {
     expect(screen.getByText('Canvas SiteText')).toBeInTheDocument()
   })
 
+  it('double-click SiteButton opens inline edit that writes children label', () => {
+    render(
+      <AppProviders>
+        <EditorWorkspace initialScene={sceneWithCatalogType('SiteButton')} />
+      </AppProviders>,
+    )
+    const btn = activeCanvasNode('SiteButton')
+    expect(btn).toBeTruthy()
+    fireEvent.doubleClick(btn)
+    const editor = screen.getByTestId('creation-inline-edit')
+    editor.textContent = 'Canvas Button'
+    fireEvent.blur(editor)
+    expect(screen.getByText('Canvas Button')).toBeInTheDocument()
+  })
+
   it('double-click Link opens inline edit that writes children', () => {
     render(
       <AppProviders>
@@ -658,6 +674,21 @@ describe('editor workspace', { timeout: 20_000 }, () => {
     editor.textContent = 'Canvas SiteLink'
     fireEvent.blur(editor)
     expect(screen.getByText('Canvas SiteLink')).toBeInTheDocument()
+  })
+
+  it('double-click nested landing Instance text commits via expand-id descendants', () => {
+    render(
+      <AppProviders>
+        <EditorWorkspace initialScene={createZaolyDefaultLandingScene()} />
+      </AppProviders>,
+    )
+    const headline = screen.getByText(/Compose product pages from kit atoms and tokens/i)
+    fireEvent.doubleClick(headline)
+    const editor = screen.getByTestId('creation-inline-edit')
+    editor.textContent = 'Page-only canvas headline'
+    fireEvent.blur(editor)
+    expect(screen.getByText('Page-only canvas headline')).toBeInTheDocument()
+    expect(screen.queryByText(/Compose product pages from kit atoms and tokens/i)).toBeNull()
   })
 
   it('inserts SiteTable with structure controls that add a row', () => {

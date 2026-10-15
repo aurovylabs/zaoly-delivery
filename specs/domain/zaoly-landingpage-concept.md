@@ -1,7 +1,8 @@
-# Zaoly Landingpage — Produktkonzept und Layout V7
+# Zaoly Landingpage — Produktkonzept und Layout V19
 
-**Status:** Accepted · Layout V7 · 2026-10-05  
-**Product:** Zaoly standalone · **Route:** `/` · **Application:** `/editor`
+**Status:** Accepted · Layout V19 · 2026-10-13  
+**Product:** Zaoly standalone · **Route:** `/` · **Application:** `/editor`  
+**Public deep demos:** `/explore` (+ Kapitel-Unterseiten)
 
 ## Positionierung
 
@@ -164,7 +165,7 @@ Die Animationen haben einen vollständigen Endzustand für `prefers-reduced-moti
 
 ## Editor-Positionierung V11 — vollständiger Arbeitsbereich
 
-Die Landingpage MUSS den eigenständigen `/editor` früh als umfassenden Designarbeitsplatz zeigen. Nach der Marken-These erscheint eine große, ausdrücklich illustrative Editor-Bühne, bevor die einzelnen Kit-, Token- und Handoff-Funktionen vertieft werden. Die Bühne hat eine erkennbare Topbar, Seiten-/Ebenenstruktur, Canvas-Artboard und Inspector. Ein ruhiger Loop wechselt zwischen drei **Werkzeugansichten**: Gestalten (Ebenen, direkte Auswahl, Inspect), System (Komponenten/Masters, Varianten, Token-Bindung) und Prüfen (Preflight/Export-Kontext). Es handelt sich um redaktionelle Ausschnitte vorhandener Funktionen, nicht um einen authentischen Laufzeit-Screenshot oder eine Behauptung automatischer UI-Umschaltung.
+Die Landingpage MUSS den eigenständigen `/editor` früh als umfassenden Designarbeitsplatz zeigen. Nach der Marken-These erscheint eine große, ausdrücklich illustrative Editor-Bühne, bevor die einzelnen Kit-, Token- und Handoff-Funktionen vertieft werden. Die Bühne hat eine erkennbare Topbar, Seiten-/Ebenenstruktur, Canvas-Artboard und Inspector und MUSS als Illustration gekennzeichnet sein. Ein ruhiger Loop wechselt zwischen drei **Linsen**: Canvas (Ebenen, direkte Auswahl, Inspect), Masters (Komponenten/Masters, Varianten, Token-Bindung) und Preflight (Preflight/Export-Kontext). Die Labels sollten an reale Workspace-Begriffe anbinden und keine erfundenen Produkt-Modi vortäuschen. Es handelt sich um redaktionelle Ausschnitte vorhandener Funktionen, nicht um einen authentischen Laufzeit-Screenshot oder eine Behauptung automatischer UI-Umschaltung.
 
 Eine kurze, großzügig gesetzte Capability-Folge macht den Umfang konkret: Seiten, Ebenen, Artboards und Breakpoints; Kit-Atome, Masters, Varianten und Tokens; Asset Library, Team-Präsenz, Kommentare und benannte Versionen; Preview, A11y-Preflight und React-Handoff. Aussagen bleiben an bestehende Editor- und Contract-Spezifikationen gebunden. Weder simultanes konfliktfreies Dokument-Merging noch eine automatische Veröffentlichung in fremde Systeme wird versprochen. Der primäre CTA führt wie bisher über `paths.routes.editor` zum Editor.
 
@@ -206,3 +207,72 @@ Die Breakpoint-Sektion und der Produkt-Einblick zeigen eine **echte** Editor-Auf
 - Die illustrative `BreakpointLoop`-Bühne darf unter dem Screenshot bleiben; der Screenshot ist der primäre Beweis.
 - Öffentliche Distribution (README) darf dasselbe Motiv unter `docs/images/zaoly-editor-breakpoints.jpg` führen.
 - UI-Smoke prüft Asset-Pfad, Datei auf Disk und sichtbare Caption; Specs-Inventar und Build.
+
+## Erlebnis-Verdichtung V16 — kürzer, erlebbarer
+
+Die öffentliche Landingpage verdichtet die Merkmalsstrecke aus V8–V15. Ziel: weniger lineare Feature-Abschnitte, mehr ein durchgängiges Produkterlebnis. Detailtiefe bleibt über `/editor`, `/kit`, `/tokens`, FAQ und Kontakt erreichbar.
+
+## Erlebnis V17 — kompakt auf `/`, Tiefe auf `/explore`
+
+V17 trennt **Vorschau** und **Vertiefung**:
+
+1. **`/` (compact)** — Die sticky Erlebnis-Bühne bleibt, wird aber dichter (kürzere Kapitel-Marker, kompaktere Stage-Höhen, reduzierte Sekundär-Controls). Kern-Klicks bleiben (Modi, Hotspots, Tabs). Jedes Kapitel MUST einen Deep-Link auf die passende Explore-Unterseite anbieten (`paths.routes.exploreChapter`).
+2. **`/explore` (hub)** — Öffentliche, auth-freie Übersicht der fünf interaktiven Kapitel. MUST NOT die authentifizierten App-Hubs `/kit` und `/tokens` ersetzen.
+3. **`/explore/:chapter` (deep)** — Eine Unterseite pro Kapitel (`editor` | `kit` | `tokens` | `screens` | `path`) mit voller Interaktionsdichte plus zusätzlichen Deep-Controls. GET ist öffentlich (`isPublicPath`).
+
+### Compact vs Deep
+
+| Density | Wo | Pflicht |
+|---------|-----|---------|
+| `compact` | `/` Erlebnis-Bühne | Kern-Interaktion + Tour + Statuschip; Sekundär-Controls MAY versteckt sein |
+| `deep` | `/explore/:chapter` | Alle Compact-Controls + Deep-Extras (Editor: Grid/Pin/Saved; Kit: Reset/Checkliste; Tokens: Copy-Pfad; Screens: Chrome/Orientation; Weg: scrubbare Steps + Autoplay) |
+
+App-Routen `/editor`, `/kit`, `/tokens` bleiben Produktflächen nach Login; Explore ist Marketing-Demo only.
+
+## Klarheit V18 — Demo vs App, ehrliche Chrome, echte CTAs
+
+1. **Demo vs App MUST getrennt sein.** Öffentliche Demos (`/`, `/explore`, `/explore/:chapter`) MUST als Demo/Illustration gekennzeichnet sein. Links in die authentifizierten Hubs (`/editor`, `/kit`, `/tokens`) MUST als App-Ziel erkennbar sein und MAY einen kurzen Login-Hinweis tragen (Copy, nicht Modal). Gleicher Produktname in Nav/Footer DARF nicht zwei unterschiedliche Welten ohne Kennzeichnung öffnen.
+2. **Editor-Bühne MUST keine erfundenen Produkt-Modi vortäuschen.** Die drei Linsen MUST an reale Workspace-Begriffe anbinden (`Canvas` · `Masters` · `Preflight`) und MUST sichtbar als Illustration gekennzeichnet sein. Sie ersetzen nicht die echten Left-Rail-Tabs Components ‖ Layers ‖ Tokens.
+3. **Projekt-Mosaik MUST keine Fake-CTAs zeigen.** Dekorative Projektkarten DÜRFEN keine klickbar wirkenden Links ohne `href` tragen. Ein echter Abschnitt-CTA (Register oder Explore) ist erlaubt.
+4. Experience-Captions MUST primär den Explore-Deep-Link (Demo) und sekundär den App-Link führen — Reihenfolge und Labels machen den Unterschied lesbar.
+
+## Orientierung V19 — Header-Demos, Beispiel-Master, Kit Playground-lite
+
+1. **Header-Anker Kit/Tokens MUST als Demo gekennzeichnet sein** (z. B. `Kit · Demo` / `Tokens · Demo`), weil sie Hash-Panels auf `/` öffnen — nicht die App-Hubs. Footer/App-CTAs behalten die App-Kennzeichnung aus V18.
+2. **`FeatureCard` ist Marketing-Beispiel, kein Seed-Atom.** Sichtbare Labels MUST „Beispiel-Master“ / „Example master“ tragen (Hero-Inspect, Editor-/Weg-/Handoff-Illustrationen). Der Seed-Katalog bleibt die Quelle der Wahrheit für Kit-Atome.
+3. **Deep Kit (`/explore/kit`) MUST eine Playground-lite-Triade** zeigen: Atom-Katalog · Live-Vorschau · kurzer TSX-Snippet (`import { Atom } from '@zaoly/site-kit'`). Compact MAY den TSX-Pane weglassen. Das ersetzt nicht den authentifizierten Kit Playground.
+
+### Seitenstruktur (verbindlich)
+
+1. **Hero** — Marke, eine Headline, eine kurze Subline, Primär-CTA Register und Sekundär-CTA Login. Canvas→Code-Bühne bleibt die dominante Visualisierung.
+2. **These** — kurze typografische Zäsur (Wiederverwendung statt Nachbau) mit der Kette Design → Komponente → Produkt. Anker `paths.landing.sections.product`.
+3. **Erlebnis-Bühne** — ein sticky Produkt-Stage mit **fünf Kapiteln**, die per Scroll (Intersection) und per Tablist umschalten:
+   - Editor (Canvas / Masters / Preflight — Illustration)
+   - Zaoly Kit (Anker `kit`)
+   - Token Studio (Anker `tokens`)
+   - Screens (echte Multi-Breakpoint-Aufnahme + illustrative Breakpoint-Loop)
+   - Weg (Workflow-Illustration Design → System → React; Anker `workflow`)
+4. **Einblick** — drei echte App-Aufnahmen (Token Studio, Kit Playground, Multi-Breakpoint) in einem kompakten Raster, jeweils als „Echte App-Ansicht · Demodaten“.
+5. **Projekte** — drei Kontexte, dieselbe Komponentenidee.
+6. **Handoff** — visuelle Komponente neben React-Modul.
+7. **Kontakt** und **Abschluss-CTA**, Footer inkl. Community-GitHub.
+
+### Was bewusst entfällt als eigene Vollabschnitte
+
+Die früheren Einzelbühnen Varianten, Token-Craft (Farbe/Rad/Compose), Typografie-Loop, Composition-Loop und das vierteilige Capability-Kartenraster bleiben als Produktfunktionen gültig, erscheinen auf der Landingpage aber nicht mehr als eigene Vollhöhen-Abschnitte. Ihre Aussagen dürfen in Kapitel-Copy und Deep-Links (`/tokens`, `/kit`, `/editor`) weiterleben. Die zugehörigen Illustrationskomponenten dürfen im Repo bleiben, müssen aber nicht auf `/` gemountet sein.
+
+### Erlebnis-Regeln
+
+- Pro Kapitel höchstens eine dominante Visualisierung und kurze Copy (ein Job).
+- Sticky Stage ist die Primärfläche; Kapitel-Copy bleibt knapp unter der Bühne. Scroll-Marker steuern den aktiven Tab, ohne eine zweite Textspalte zu füllen.
+- Tablist ist tastaturbedienbar (`role="tablist"` / `tab` / `tabpanel`). Scroll-Umschaltung aktualisiert den aktiven Tab.
+- Jede Bühne MUST mindestens eine **klickbare Interaktion** anbieten (Editor-Modi, Kit-Atome, Token-Override, Breakpoint-Tabs, Workflow-Schritte). Interaktive Zustände nutzen `data-*` und pausieren CSS-Loops (`is-interactive`).
+- Die Kit-Bühne MUST den **Atom-Katalog** des Zaoly Kits zeigen (Content, Form, Media, Layout, Data — abgeleitet vom Seed in `packages/site-kit` / `lib/landing/kit-atoms.ts`), nicht nur eine einzelne FeatureCard-Assembly. Interaktion: Kategorie wählen, Atom fokussieren, und den Schritt **Page** zeigen, der erklärt, warum Layout-Atome (`Stack` / `Grid` / `Container`) die Basis für vollständige Seiten sind. Compact MAY Kategorien + Page verkürzen; Deep MUST den vollen Katalog, die Layout-Vorschau und einen TSX-Snippet (Playground-lite) anbieten.
+- Editor-Bühne MUST als Illustration gekennzeichnet sein; Linsen `Canvas` / `Masters` / `Preflight`; plus Seitenwechsel (Home/Contact), Zoom (Deep), Canvas-Hotspots, Layer-Auswahl und Inspector-Fokus (Deep).
+- Token-Bühne MUST Katalogwechsel, Farbswatches, Typo-/Abstand-Skalen und klickbare gebundene Karten (inkl. „Beide hervorheben“) anbieten.
+- Screens MUST Desktop/Tablet/Mobile (Zonen + Tabs), Compare-Modus und Cycle-Tap auf der Illustration anbieten.
+- Weg MUST Tabs, Progress-Rail, klickbare Szene-Details und einen expliziten Weiter-Button anbieten. Sichtbarer Statuschip (`aria-live`) spiegelt den aktuellen Zustand.
+- Die Erlebnis-Bühne MUST eine optionale **Tour abspielen**-Aktion anbieten (`apps/web/lib/landing/experience-tour.ts`). Die Tour durchläuft die Kapitel mit kurzen Beats (inkl. Tablet) und stoppt bei manueller Interaktion oder am Ende.
+- `prefers-reduced-motion: reduce` zeigt sinnvolle Endzustände; Interaktionen und Tour bleiben erreichbar (längeres Tour-Intervall).
+- Keine erfundenen Kennzahlen, Testimonials oder Suite-Voraussetzungen.
+- UI-Smoke, Specs-Inventar und Build prüfen die verdichtete Struktur (Kapitel-Anker, Interaktionen, Screenshots, Handoff, Kontakt, Register-CTA).

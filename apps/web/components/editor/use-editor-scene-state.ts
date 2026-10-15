@@ -854,6 +854,8 @@ export function useEditorSceneState(initialScene: CompositionScene) {
     sceneRef,
     viewportRef,
     sceneBoardMode,
+    breakpointBoardMode: breakpointBoardMode || matrixBoardMode,
+    boardCanvasSize,
     editingMasterId,
     activeBreakpoint,
     activePrintPreset,
@@ -868,6 +870,26 @@ export function useEditorSceneState(initialScene: CompositionScene) {
     setSelectedIds,
     setError,
   })
+
+  // Entering Compare / Master BP matrix: reset camera so all tiles are in view.
+  const wideBoardCameraRef = useRef(false)
+  useEffect(() => {
+    if (!comparePrefsReady) return
+    const wide = breakpointBoardMode || matrixBoardMode
+    const entering = wide && !wideBoardCameraRef.current
+    wideBoardCameraRef.current = wide
+    if (!entering) return
+    let cancelled = false
+    const outer = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!cancelled) fitAllFramesRef.current()
+      })
+    })
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(outer)
+    }
+  }, [breakpointBoardMode, matrixBoardMode, comparePrefsReady])
 
   const onBreakpointChangeRef = useRef<(value: string) => void>(() => undefined)
   const { selectNode } = useEditorNodeSelect({

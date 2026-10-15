@@ -8,6 +8,7 @@ import {
 } from '../../lib/inspect/inspector-write-ops'
 import { mapOpsToInteractiveState } from '../../lib/inspect/map-ops-to-interactive-state'
 import type { SiblingWriteContext } from '../../lib/inspect/inspector-field-values'
+import { dispatchOnboardingAction } from '../../lib/editor/onboarding'
 
 export function useInspectorWrites({
   selected,
@@ -39,6 +40,7 @@ export function useInspectorWrites({
 
   function setToken(key: string, tokenPath: string, sibling?: SiblingWriteContext) {
     emit(buildSetTokenOps(targets(), key, tokenPath, useOverride, activeBreakpoint, sibling))
+    dispatchOnboardingAction('tokenBind')
   }
 
   function setDataBinding(key: string, dataRef: string) {

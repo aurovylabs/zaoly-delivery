@@ -57,6 +57,8 @@ const requiredSpecs = [
   'specs/domain/magazine-template.md',
   'specs/domain/library-composition-roundtrip.md',
   'specs/domain/editor-workspace.md',
+  'specs/domain/onboarding.md',
+  'knowledge/aurovi-onboarding-reference.md',
   'specs/domain/scene-pages.md',
   'specs/domain/editor-inspect.md',
   'specs/domain/canvas-drag-reorder.md',

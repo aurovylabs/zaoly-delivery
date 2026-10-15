@@ -21,6 +21,7 @@ import { sceneSaveFingerprint, type SceneDirtyIdentity } from '../../lib/scene/s
 import { fetchScene } from '../../lib/scene/scene-save-client'
 import { type SceneUpdatedEvent } from '../../lib/scene/scene-events'
 import { replaceSelection } from '../../lib/scene/selection'
+import { dispatchOnboardingAction } from '../../lib/editor/onboarding'
 
 export function useEditorSceneSync(args: {
   sceneId: string
@@ -75,12 +76,16 @@ export function useEditorSceneSync(args: {
       value = 'desktop'
     }
     if (!isEditorBreakpoint(value) || value === 'print') return
+    const prev = activeBreakpointRef.current
     setActiveBreakpoint(value)
     mutatePresent((present) => ({
       ...present,
       activeBreakpoint: value,
       updatedAt: new Date().toISOString(),
     }))
+    if ((value === 'tablet' || value === 'mobile') && value !== prev) {
+      dispatchOnboardingAction('activateBreakpoint')
+    }
   }
 
   function onPrintPresetChange(value: string) {

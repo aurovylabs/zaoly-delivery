@@ -15,7 +15,6 @@ import {
   planTokenDrop,
   type BrandTokenDragPayload,
 } from '../../lib/inspect/token-drop'
-import { findNodeInTree } from '../../lib/scene/expand-instances'
 import {
   applyMasterEditOp,
   applyPaletteHydrateInsert,
@@ -27,7 +26,9 @@ import {
   findSceneNode,
   isNodeOrAncestorLocked,
   isSceneContainerType,
+  planExpandAwarePaletteDrop,
   planPaletteDrop,
+  resolveTokenDropTarget,
   type PaletteDropEdge,
 } from '../../lib/scene/ops'
 import { planBreakpointAwareInsertVisibility } from '../../lib/scene/breakpoint-visibility'
@@ -48,6 +49,10 @@ import {
   type EditorPaletteLayer,
 } from '../../lib/scene/catalog-palette'
 import { replaceSelection } from '../../lib/scene/selection'
+import {
+  dispatchOnboardingAction,
+  rememberOnboardingInsertNodeId,
+} from '../../lib/editor/onboarding'
 import { zaolyLandingSectionMasters } from '../../lib/scene/zaoly-default-landing-scene'
 
 export type EditorPalettePatternItem = {
@@ -188,13 +193,16 @@ export function useEditorPalette(args: {
     template: { sourceKey: string; root: SceneNode; name: string },
     parentId: string,
     index?: number,
+    masterRoute?: { masterId: string; variantId?: string },
   ): void {
-    const editingMasterId = editingMasterIdRef.current
+    const editingMasterId = masterRoute?.masterId ?? editingMasterIdRef.current
+    const editingVariantId =
+      masterRoute?.variantId ?? editingVariantIdRef.current ?? undefined
     const result = editingMasterId
       ? applyPaletteHydrateInsertIntoMaster(
           sceneRef.current,
           editingMasterId,
-          editingVariantIdRef.current ?? undefined,
+          editingVariantId,
           {
             sourceKey: template.sourceKey,
             root: template.root,
@@ -226,12 +234,7 @@ export function useEditorPalette(args: {
           : 'desktop',
       )) {
         const applied = editingMasterId
-          ? applyMasterEditOp(
-              nextScene,
-              editingMasterId,
-              vis,
-              editingVariantIdRef.current ?? undefined,
-            )
+          ? applyMasterEditOp(nextScene, editingMasterId, vis, editingVariantId)
           : applySceneOp(nextScene, vis)
         if (!applied.ok) {
           setError(applied.reason)
@@ -242,7 +245,11 @@ export function useEditorPalette(args: {
     }
     setError(null)
     pushPresent(nextScene)
-    if (result.selectId) setSelectedIds(replaceSelection(result.selectId))
+    if (result.selectId) {
+      rememberOnboardingInsertNodeId(result.selectId)
+      setSelectedIds(replaceSelection(result.selectId))
+    }
+    dispatchOnboardingAction('insert')
   }
 
   function onAdd(type: string) {
@@ -257,6 +264,24 @@ export function useEditorPalette(args: {
       }
     }
     const root = workingRoot(scene)
+    // Page mode: selected section Instance / expand container → Master-routed into.
+    if (!editingMasterId && selectedId) {
+      const into = planExpandAwarePaletteDrop(scene, selectedId, 'into', root)
+      if (into.ok) {
+        void resolveHydrateTemplate(type).then((template) => {
+          if (!template) return
+          commitPaletteHydrate(
+            template,
+            into.parentId,
+            into.index,
+            into.mode === 'master'
+              ? { masterId: into.masterId, variantId: into.variantId }
+              : undefined,
+          )
+        })
+        return
+      }
+    }
     const primary = selectedId ? findSceneNode(scene, selectedId, root) : null
     const parentId =
       primary && isSceneContainerType(primary.type) ? primary.id : root.id
@@ -294,30 +319,43 @@ export function useEditorPalette(args: {
       }
       dropTargetId = mapped
     }
-    const planned = planPaletteDrop(current, dropTargetId, edge, root)
+    // Master-Edit stays on the working root; page mode uses expand-aware routing
+    // so landing section Instances accept into-drops via their Composition Master.
+    const planned = editingMasterId
+      ? (() => {
+          const p = planPaletteDrop(current, dropTargetId, edge, root)
+          return p.ok
+            ? ({ ok: true as const, mode: 'page' as const, parentId: p.parentId, index: p.index })
+            : p
+        })()
+      : planExpandAwarePaletteDrop(current, dropTargetId, edge, root)
     if (!planned.ok) {
       setError(planned.reason.startsWith('Node is locked:') ? t('editor.lockedHint') : planned.reason)
       return
     }
     void resolveHydrateTemplate(type).then((template) => {
       if (!template) return
-      commitPaletteHydrate(template, planned.parentId, planned.index)
+      commitPaletteHydrate(
+        template,
+        planned.parentId,
+        planned.index,
+        planned.mode === 'master'
+          ? { masterId: planned.masterId, variantId: planned.variantId }
+          : undefined,
+      )
     })
   }
 
   function onTokenDrop(payload: BrandTokenDragPayload, targetId: string): void {
     const current = sceneRef.current
     const root = workingRoot(current)
-    if (isNodeOrAncestorLocked(root, targetId)) {
-      setError(t('editor.lockedHint'))
-      return
-    }
-    const node = findNodeInTree(root, targetId)
-    if (!node) return
-    const planned = planTokenDrop(payload.type, node.type)
+    const target = resolveTokenDropTarget(current, root, targetId)
+    if (!target) return
+    const planned = planTokenDrop(payload.type, target.nodeType)
     if (!planned.ok) return
-    runOps(buildTokenBindOps(node.id, planned.keys, payload.path))
-    setSelectedIds(replaceSelection(node.id))
+    runOps(buildTokenBindOps(target.nodeId, planned.keys, payload.path))
+    setSelectedIds(replaceSelection(target.nodeId))
+    dispatchOnboardingAction('tokenBind')
   }
 
   return {

@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, type CSSProperties, type KeyboardEvent, type Ref } from 'react'
+import { useEffect, useRef, type CSSProperties, type KeyboardEvent, type Ref } from 'react'
+import { dispatchOnboardingAction } from '../../lib/editor/onboarding'
 import { paths } from '../../lib/paths'
 
 type InlineCanvasTextEditProps = {
@@ -31,6 +32,8 @@ export function InlineCanvasTextEdit({
   onCommit,
   onCancel,
 }: InlineCanvasTextEditProps) {
+  const cancelledRef = useRef(false)
+
   useEffect(() => {
     dispatchInlineEditActive(true)
     return () => dispatchInlineEditActive(false)
@@ -49,7 +52,12 @@ export function InlineCanvasTextEdit({
         outline: '1px dashed currentColor',
       }}
       onBlur={(e) => {
+        if (cancelledRef.current) {
+          cancelledRef.current = false
+          return
+        }
         onCommit(e.currentTarget.textContent ?? '')
+        dispatchOnboardingAction('inlineText')
       }}
       onKeyDown={(e: KeyboardEvent<HTMLSpanElement>) => {
         e.stopPropagation()
@@ -59,6 +67,7 @@ export function InlineCanvasTextEdit({
         }
         if (e.key === 'Escape') {
           e.preventDefault()
+          cancelledRef.current = true
           onCancel()
         }
       }}

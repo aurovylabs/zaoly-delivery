@@ -65,6 +65,13 @@ import { EditorFallbackToolbar, EditorTopbarChrome } from './editor/editor-toolb
 import { EditorCanvasChrome } from './editor/editor-canvas-chrome'
 import { paths } from '../lib/paths'
 import {
+  buildOnboardingSampleScene,
+  countActivePageChildren,
+  dispatchCompositionChanged,
+  dispatchOnboardingAction,
+} from '../lib/editor/onboarding'
+import { OnboardingHost } from './editor/onboarding/OnboardingHost'
+import {
   claimEditorInsertOnce,
   stripEditorHintFromLocation,
   stripEditorInsertTypeFromLocation,
@@ -402,7 +409,10 @@ export function EditorWorkspace({
     onDownloadPdf: () => void onDownloadPdf(),
     onSurfaceExport: (format: 'png' | 'pdf', scope?: 'active' | 'all') =>
       void onSurfaceExport(format, scope),
-    onHtmlPreviewOpen: () => setHtmlPreviewOpen(true),
+    onHtmlPreviewOpen: () => {
+      setHtmlPreviewOpen(true)
+      dispatchOnboardingAction('preview')
+    },
     onCodeExportOpen: () => setCodeExportOpen(true),
     onSavePageAsPattern: (opts?: { allPages?: boolean; pageId?: string }) =>
       void onSavePageAsPattern(opts),
@@ -508,7 +518,11 @@ export function EditorWorkspace({
               : 'creation-editor-left-tabs__tab'
           }
           data-testid="editor-left-tab-components"
-          onClick={() => setLeftTab('components')}
+          data-onboarding-anchor="openComponents"
+          onClick={() => {
+            setLeftTab('components')
+            dispatchOnboardingAction('openComponents')
+          }}
         >
           {t('editor.leftTabComponents')}
         </button>
@@ -536,7 +550,11 @@ export function EditorWorkspace({
               : 'creation-editor-left-tabs__tab'
           }
           data-testid="editor-left-tab-tokens"
-          onClick={() => setLeftTab('tokens')}
+          data-onboarding-anchor="openTokens"
+          onClick={() => {
+            setLeftTab('tokens')
+            dispatchOnboardingAction('openTokens')
+          }}
         >
           {t('editor.leftTabTokens')}
         </button>
@@ -1006,6 +1024,16 @@ export function EditorWorkspace({
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  const onboardingRootCount = useMemo(() => countActivePageChildren(scene), [scene])
+
+  useEffect(() => {
+    dispatchCompositionChanged(onboardingRootCount)
+  }, [onboardingRootCount])
+
+  const handleLoadOnboardingSample = useCallback(() => {
+    applySceneSnapshot(buildOnboardingSampleScene(sceneRef.current))
+  }, [applySceneSnapshot, sceneRef])
+
   const topbarChrome = (
     <div className="creation-topbar-trail__bundle" data-testid="creation-topbar-trail-bundle">
       <EditorTopbarChrome {...toolbarProps} />
@@ -1056,6 +1084,10 @@ export function EditorWorkspace({
         platformProjectId={scene.platformProjectId}
       >
       <div className="creation-editor-workspace" data-testid="creation-editor-workspace">
+        <OnboardingHost
+          rootCount={onboardingRootCount}
+          onLoadSample={handleLoadOnboardingSample}
+        />
         {savePatternHintOpen ? (
           <div className="creation-editor-save-pattern-hint" data-testid="editor-save-pattern-hint">
             <Hint panel>

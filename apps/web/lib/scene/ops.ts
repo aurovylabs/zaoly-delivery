@@ -122,6 +122,12 @@ export {
   type PaletteDropEdge,
 } from './scene-drop-plan'
 export {
+  planExpandAwarePaletteDrop,
+  resolveTokenDropTarget,
+  type ExpandAwarePaletteDropPlan,
+  type TokenDropTarget,
+} from './expand-drop'
+export {
   EDITOR_CLIPBOARD_KIND,
   clipboardNodesFromSelection,
   isValidClipboardNodes,

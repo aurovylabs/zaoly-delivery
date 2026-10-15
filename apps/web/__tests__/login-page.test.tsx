@@ -66,7 +66,7 @@ describe('LoginPage', () => {
     const css = readFileSync(join(__dirname, '../app/globals.css'), 'utf8')
     expect(css).toMatch(/\.creation-login--landscape\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s)
     expect(css).toMatch(
-      /\.creation-login--landscape \.creation-login__wordmark\s*\{[^}]*background:\s*none;[^}]*color:\s*var\(--editor-live/s,
+      /\.creation-login--landscape \.creation-login__wordmark\s*\{[^}]*background:\s*none;[^}]*color:\s*var\(--editor-accent/s,
     )
     expect(css).toMatch(/\.creation-login__panel \.section-chrome-title\s*\{[^}]*font-size:\s*clamp/s)
     expect(container.querySelector('.section-chrome-meta')).toBeNull()

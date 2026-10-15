@@ -37,13 +37,17 @@ describe('InlineCanvasTextEdit', () => {
     expect(onCancel).not.toHaveBeenCalled()
   })
 
-  it('Escape cancels without commit', () => {
+  it('Escape cancels without commit even when blur follows unmount', () => {
     const onCommit = vi.fn()
     const onCancel = vi.fn()
-    render(<Harness onCommit={onCommit} onCancel={onCancel} />)
+    const { unmount } = render(<Harness onCommit={onCommit} onCancel={onCancel} />)
     const editor = screen.getByTestId('creation-inline-edit')
+    editor.textContent = 'Draft that must discard'
     fireEvent.keyDown(editor, { key: 'Escape' })
     expect(onCancel).toHaveBeenCalled()
+    // Parent typically unmounts on cancel; blur must not commit the draft.
+    fireEvent.blur(editor)
+    unmount()
     expect(onCommit).not.toHaveBeenCalled()
   })
 

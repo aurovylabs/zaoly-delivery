@@ -78,6 +78,8 @@ WENN the designer drags an active catalog leaf from Token Studio onto a canvas n
 
 WENN no matching Inspect field exists on the node type, OR the node is locked / hidden, DANN MUST reject the drop (drop chrome `Can't drop`). Shadow/asset and other non-studio types MUST reject.
 
+**Expand / Instance targets (Zaoly landing sections):** WENN the drop hotspot is an **expanded** descendant (`hostId::defPath`) or a section **Instance** shell that paints as a bindable type, DANN MUST CT-19 resolve the **painted** node type (via expand) and write with the same expand-id / Instance path as Inspect (`set_token_binding` → `instanceOverrides.descendants` when needed). MUST NOT require Detach for token bind on the default landing.
+
 Drop chrome MUST reuse the existing `data-drop-*` ghost (edge `into`) with a bind label (`Bind background`, `Bind gap`, `Bind type`, …). Hotspot zones (fill vs stroke), modifier keys for alternate fields, and multi-select drop are out of this wave.
 
 Fixture catalog leaves MAY drag-bind (paths only); Brandion write is unrelated.

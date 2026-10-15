@@ -36,7 +36,7 @@ import type {
   ZaolyPackLeaf,
 } from '../lib/inspect/token-catalog'
 import { INSPECT_TOKEN_CATALOG } from '../lib/inspect/token-catalog'
-import { IconEdit, IconExternalLink } from '../lib/zaoly-ui'
+import { dispatchOnboardingAction } from '../lib/editor/onboarding'
 import {
   BRAND_TOKEN_DND_MIME,
   encodeBrandTokenDragPayload,
@@ -44,6 +44,7 @@ import {
 } from '../lib/inspect/token-drop'
 import { isBrandPackPromoteWritable } from '../lib/inspect/brand-pack-writable'
 import { paths } from '../lib/paths'
+import { IconEdit, IconExternalLink } from '../lib/zaoly-ui'
 import { useUserPrefs } from '../lib/user-prefs'
 
 type Props = {
@@ -155,6 +156,20 @@ export function EditorTokenStudio({
   useEffect(() => {
     setUsedOnly(hasHighlights)
   }, [hasHighlights])
+
+  // Onboarding tokenPick / tokenBind: filter to color so a top swatch is immediately actionable.
+  useEffect(() => {
+    const onPrepare = (e: Event) => {
+      const stepId = (e as CustomEvent<{ stepId?: string }>).detail?.stepId
+      if (stepId !== 'tokenPick' && stepId !== 'tokenBind') return
+      setQuery('')
+      setUsedOnly(false)
+      setTypeFilter('color')
+      setAddOpen(false)
+    }
+    window.addEventListener(paths.onboarding.prepareEvent, onPrepare)
+    return () => window.removeEventListener(paths.onboarding.prepareEvent, onPrepare)
+  }, [])
   /** Explicit open/closed; unset → first section open, others closed. */
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [savingPath, setSavingPath] = useState<string | null>(null)
@@ -422,7 +437,11 @@ export function EditorTokenStudio({
     return {
       draggable: true as const,
       title: t('editor.tokenStudioDragHint'),
+      onPointerDown: () => {
+        if (typeName === 'color') dispatchOnboardingAction('tokenPick')
+      },
       onDragStart: (event: DragEvent) => {
+        if (typeName === 'color') dispatchOnboardingAction('tokenPick')
         const payload = { path: tok.path, type: typeName }
         setActiveBrandTokenDrag(payload)
         event.dataTransfer.setData(BRAND_TOKEN_DND_MIME, encodeBrandTokenDragPayload(payload))
@@ -744,6 +763,7 @@ export function EditorTokenStudio({
             type="button"
             className="creation-editor-token-studio__chip"
             data-active={typeFilter === ty ? 'true' : 'false'}
+            data-testid={`token-studio-filter-${ty}`}
             onClick={() => setTypeFilter(ty)}
           >
             <TokenKindGlyph id={tokenKindGlyphId(ty)} />
@@ -929,7 +949,10 @@ export function EditorTokenStudio({
                             title={t('editor.tokenStudioEdit')}
                             data-testid={`token-studio-edit-${tok.path}`}
                             onMouseDown={(event) => event.stopPropagation()}
-                            onClick={() => openEdit(live)}
+                            onClick={() => {
+                              openEdit(live)
+                              dispatchOnboardingAction('tokenBind')
+                            }}
                           >
                             <IconEdit />
                           </button>

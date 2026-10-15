@@ -97,6 +97,56 @@ describe('Interactive Pseudo-States (Phase 2)', () => {
     expect(css).toContain('opacity: 0.9 !important;')
   })
 
+  it('keeps hook order when selection clears (no early-return hook skip)', () => {
+    const onOps = vi.fn()
+    const node: SceneNode = {
+      id: 'btn-1',
+      type: 'Button',
+      props: { children: 'Submit' },
+    }
+    const root: SceneNode = { id: 'root', type: 'SiteStack', children: [node] }
+    const { rerender } = render(
+      <AppProviders>
+        <InteractiveStateProvider>
+          <EditorInspector
+            selected={node}
+            selectedNodes={[node]}
+            selectedCount={1}
+            sceneRoot={root}
+            isRoot={false}
+            locked={false}
+            activeBreakpoint="desktop"
+            onOp={(op) => onOps([op])}
+            onOps={onOps}
+            onRemove={() => {}}
+          />
+        </InteractiveStateProvider>
+      </AppProviders>,
+    )
+    expect(screen.getByTestId('creation-editor-inspector')).toBeInTheDocument()
+    expect(() => {
+      rerender(
+        <AppProviders>
+          <InteractiveStateProvider>
+            <EditorInspector
+              selected={null}
+              selectedNodes={[]}
+              selectedCount={0}
+              sceneRoot={root}
+              isRoot={false}
+              locked={false}
+              activeBreakpoint="desktop"
+              onOp={(op) => onOps([op])}
+              onOps={onOps}
+              onRemove={() => {}}
+            />
+          </InteractiveStateProvider>
+        </AppProviders>,
+      )
+    }).not.toThrow()
+    expect(screen.getByText(/select/i)).toBeInTheDocument()
+  })
+
   it('hides Inspect interactive state bar while UI gate is off', () => {
     const onOps = vi.fn()
     const node: SceneNode = {
