@@ -13,7 +13,7 @@ function git(args) {
 }
 
 if (!existsSync(resolve(out, '.git'))) {
-  console.error('No .git in', out, '— clone chbrdk/zaoly-delivery there first')
+  console.error('No .git in', out, '— clone aurovylabs/zaoly-delivery there first')
   process.exit(1)
 }
 

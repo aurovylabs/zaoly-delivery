@@ -30,9 +30,10 @@ export const metadata: Metadata = {
   title: 'Zaoly',
   description: 'Standalone composition design editor — Design and code, woven into one.',
   icons: {
+    // ICO first — reliable seal in tabs; SVG is baked raster (no live 造 text).
     icon: [
-      { url: paths.brandAssets.faviconSvg, type: 'image/svg+xml' },
       { url: paths.brandAssets.favicon, sizes: 'any' },
+      { url: paths.brandAssets.faviconSvg, type: 'image/svg+xml' },
     ],
     apple: paths.brandAssets.appleTouchIcon,
   },

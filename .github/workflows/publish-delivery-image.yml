@@ -1,5 +1,5 @@
 # Build the production app image and publish to GHCR.
-# Image: paths.deliveryContainerImage → ghcr.io/chbrdk/zaoly-delivery
+# Image: paths.deliveryContainerImage → ghcr.io/aurovylabs/zaoly-delivery
 # Knowledge: knowledge/zaoly-delivery-repo.md · zaoly-community-distribution.md
 
 name: Publish delivery image

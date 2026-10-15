@@ -6,7 +6,7 @@ Zaoly is an open-source **enterprise web design** editor: compose responsive pag
 
 Try the hosted product at [zaoly.app](https://zaoly.app), or clone this repo to develop and self-host (AGPL).
 
-**Latest release:** [`v0.1.0`](https://github.com/chbrdk/zaoly-delivery/releases/tag/v0.1.0) · Image: `ghcr.io/chbrdk/zaoly-delivery:0.1.0`
+**Latest release:** [`v0.1.0`](https://github.com/aurovylabs/zaoly-delivery/releases/tag/v0.1.0) · Image: `ghcr.io/aurovylabs/zaoly-delivery:0.1.0`
 
 <p align="center">
   <img src="docs/images/zaoly-editor.png" alt="Zaoly editor — canvas, Site Kit library, and design inspector" width="920" />
@@ -66,7 +66,7 @@ Print / magazine PDF production and suite federation are intentionally out of sc
 Requires Node 22+ (see root `package.json` engines if present).
 
 ```bash
-git clone https://github.com/chbrdk/zaoly-delivery.git
+git clone https://github.com/aurovylabs/zaoly-delivery.git
 cd zaoly-delivery
 npm install
 npm run dev
@@ -100,15 +100,15 @@ Public signup defaults **on** when Postgres is configured (`ZAOLY_PUBLIC_SIGNUP=
 
 ### Prebuilt image (GHCR)
 
-Tagged releases publish `ghcr.io/chbrdk/zaoly-delivery`:
+Tagged releases publish `ghcr.io/aurovylabs/zaoly-delivery`:
 
 ```bash
-docker pull ghcr.io/chbrdk/zaoly-delivery:0.1.0
+docker pull ghcr.io/aurovylabs/zaoly-delivery:0.1.0
 # or
-docker pull ghcr.io/chbrdk/zaoly-delivery:latest
+docker pull ghcr.io/aurovylabs/zaoly-delivery:latest
 ```
 
-See [Releases](https://github.com/chbrdk/zaoly-delivery/releases) and [CHANGELOG.md](CHANGELOG.md).
+See [Releases](https://github.com/aurovylabs/zaoly-delivery/releases) and [CHANGELOG.md](CHANGELOG.md).
 
 ---
 

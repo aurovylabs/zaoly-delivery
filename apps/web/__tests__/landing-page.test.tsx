@@ -105,7 +105,7 @@ describe('Zaoly landing page', () => {
     expect(github).toHaveAttribute('target', '_blank')
     expect(github).toHaveAttribute('rel', expect.stringContaining('noopener'))
     expect(communityGithubUrl()).toBe(`https://github.com/${paths.communityGithubRepo}`)
-    expect(paths.communityGithubRepo).toBe('chbrdk/zaoly-delivery')
+    expect(paths.communityGithubRepo).toBe('aurovylabs/zaoly-delivery')
     expect(screen.getByRole('img', { name: /Canvas wird eine Komponente ausgewählt/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/Eine Komponente in drei verschiedenen Projekten/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/Beispiel eines exportierten React-Moduls/i)).toBeInTheDocument()

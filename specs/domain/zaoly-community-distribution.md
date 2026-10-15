@@ -20,7 +20,7 @@ Maintain **two surfaces**:
 5. Export MUST be reproducible via a script in the internal repo (`npm run export:community`).
 6. Public README and delivery commits MUST present Zaoly as the product (open-source / self-hostable) — MUST NOT frame the tree as a lesser “community-only” edition.
 7. Public tree MUST ship a root \`version\`, \`CHANGELOG.md\`, and clean root scripts (no internal export/weddy tooling). First public release is \`0.1.0\` (\`v0.1.0\` git tag + GitHub Release).
-8. Tag \`v*\` on the public remote MUST publish \`ghcr.io/chbrdk/zaoly-delivery\` via \`.github/workflows/publish-delivery-image.yml\` (image name MUST match \`github.repository\` so Actions can push).
+8. Tag \`v*\` on the public remote MUST publish \`ghcr.io/aurovylabs/zaoly-delivery\` via \`.github/workflows/publish-delivery-image.yml\` (image name MUST match \`github.repository\` so Actions can push). Public GitHub org is **`aurovylabs`** (delivery only — no private product trees).
 9. Public Vitest MUST skip knowledge-gated / hosted-default inventory tests when \`knowledge/\` is absent (\`apps/web/lib/test/public-tree.ts\`).
 
 ## MUST NOT

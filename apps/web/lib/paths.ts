@@ -211,13 +211,14 @@ export const paths = {
    * consumed by `delivery/docker-compose.yml` (no source tree).
    * Knowledge: `zaoly-delivery-repo.md`
    */
-  deliveryContainerImage: 'ghcr.io/chbrdk/zaoly-delivery',
+  deliveryContainerImage: 'ghcr.io/aurovylabs/zaoly-delivery',
   /**
    * Public community source remote (export via `npm run export:community`).
    * Landing footer links here — not the internal Origin tree.
-   * Knowledge: `zaoly-community-distribution.md`
+   * Org `aurovylabs` hosts **delivery only** (no private product repos).
+   * Knowledge: `zaoly-community-distribution.md` · `zaoly-repo-remotes.md`
    */
-  communityGithubRepo: 'chbrdk/zaoly-delivery',
+  communityGithubRepo: 'aurovylabs/zaoly-delivery',
   /** Default branch for GitHub blob links (Kit atom source SK-V19). */
   creationGithubDefaultBranch: 'main',
   /** Prefer in-app `/editor` when truthy (default on outside production). */

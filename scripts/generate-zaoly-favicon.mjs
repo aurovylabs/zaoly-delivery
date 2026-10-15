@@ -3,6 +3,9 @@
  * Regenerate Zaoly favicon.ico / apple-touch / desktop icons from the product seal 造.
  * MUST use cobalt tile + cream glyph — never the suite MSQDX five-square geometry.
  *
+ * Favicon SVG MUST embed a rasterized seal (no live `<text>`). Browser tabs often lack
+ * CJK fonts, so a text-based SVG renders as an empty cobalt square.
+ *
  * One-shot deps (not committed):
  *   npm install --prefix /tmp/zaoly-icons sharp@0.34 png-to-ico@3 @resvg/resvg-js@2
  * Then: NODE_PATH=/tmp/zaoly-icons/node_modules node scripts/generate-zaoly-favicon.mjs
@@ -54,25 +57,36 @@ function render(size) {
   return Buffer.from(resvg.render().asPng())
 }
 
-const faviconSvg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Zaoly">
-  <!-- Zaoly product seal 造 — cobalt tile + cream glyph (CD). Not MSQDX suite mark. -->
-  <rect width="32" height="32" fill="#1F44FF"/>
-  <text x="16" y="17.2" text-anchor="middle" dominant-baseline="middle"
-    font-family="Noto Serif JP, Hiragino Mincho ProN, Songti SC, serif"
-    font-size="22" font-weight="600" fill="#F3EEE4">造</text>
+/** SVG that browsers can show in tabs without CJK fonts (baked raster). */
+function bakedSealSvg(pngBuffer, viewSize = 32) {
+  const b64 = pngBuffer.toString('base64')
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${viewSize} ${viewSize}" fill="none" role="img" aria-label="Zaoly">
+  <!-- Zaoly product seal 造 — baked raster (CD). Not MSQDX suite mark. No live &lt;text&gt; — tab favicons lack CJK fonts. -->
+  <image width="${viewSize}" height="${viewSize}" href="data:image/png;base64,${b64}" xlink:href="data:image/png;base64,${b64}"/>
 </svg>
 `
+}
 
 const webPublic = join(repo, 'apps/web/public')
 const uiPublic = join(repo, 'packages/ui/public')
 const brandDir = join(webPublic, 'brand')
+const emailAssets = join(repo, 'packages/ui/src/email/assets')
 mkdirSync(brandDir, { recursive: true })
+mkdirSync(uiPublic, { recursive: true })
+mkdirSync(emailAssets, { recursive: true })
+
+const mark32 = await sharp(render(32)).png().toBuffer()
+const mark286 = await sharp(render(286)).png().toBuffer()
+const faviconSvg = bakedSealSvg(mark32, 32)
+const brandSvg = bakedSealSvg(await sharp(render(64)).png().toBuffer(), 64)
 
 writeFileSync(join(webPublic, 'favicon.svg'), faviconSvg)
 copyFileSync(join(webPublic, 'favicon.svg'), join(uiPublic, 'favicon.svg'))
-writeFileSync(join(brandDir, 'zaoly-mark.svg'), faviconSvg)
-writeFileSync(join(brandDir, 'zaoly-seal.svg'), faviconSvg)
+writeFileSync(join(brandDir, 'zaoly-mark.svg'), brandSvg)
+writeFileSync(join(brandDir, 'zaoly-seal.svg'), brandSvg)
+writeFileSync(join(emailAssets, 'zaoly-mark.png'), mark286)
+writeFileSync(join(emailAssets, 'zaoly-mark.svg'), brandSvg)
 
 const ico = await pngToIco([
   await sharp(render(16)).png().toBuffer(),
@@ -125,4 +139,4 @@ try {
   console.warn('iconutil skipped:', e.message)
 }
 
-console.log('Updated seal favicons (造 on cobalt) for web, Storybook, desktop')
+console.log('Updated baked seal favicons (造 on cobalt) for web, Storybook, desktop')

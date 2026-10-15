@@ -78,18 +78,27 @@ describe('zaoly corporate design', () => {
       expect(existsSync(path.join(webPublic, rel))).toBe(true)
     }
     const mark = readFileSync(path.join(webPublic, 'brand/zaoly-mark.svg'), 'utf8')
-    expect(mark).toMatch(/#1F44FF/i)
-    expect(mark).toContain('造')
+    expect(mark).toMatch(/data:image\/png;base64,/)
+    expect(mark).toMatch(/<image\b/i)
+    expect(mark).not.toMatch(/<text[\s>]/i) // tabs lack CJK fonts — bake glyph
     expect(mark).not.toMatch(/M32\.5825 0H7\.74219/) // suite MSQDX geometry
     const favSvg = readFileSync(path.join(webPublic, 'favicon.svg'), 'utf8')
-    expect(favSvg).toMatch(/#1F44FF/i)
-    expect(favSvg).toMatch(/#F3EEE4/i)
-    expect(favSvg).toContain('造')
+    expect(favSvg).toMatch(/data:image\/png;base64,/)
+    expect(favSvg).toMatch(/<image\b/i)
+    expect(favSvg).not.toMatch(/<text[\s>]/i)
     expect(favSvg).not.toMatch(/M32\.5825 0H7\.74219/)
+    // Baked seal must be cobalt-dominant (not empty / not suite coral)
+    const apple = readFileSync(path.join(webPublic, 'apple-touch-icon.png'))
+    expect(apple[0]).toBe(0x89) // PNG magic
+    expect(apple.length).toBeGreaterThan(500)
     const layout = readFileSync(path.join(__dirname, '../app/layout.tsx'), 'utf8')
     expect(layout).toContain('paths.brandAssets.faviconSvg')
     expect(layout).toContain('paths.brandAssets.favicon')
     expect(layout).toContain('paths.brandAssets.appleTouchIcon')
+    // ICO listed before SVG so tabs prefer the baked multi-size icon
+    expect(layout.indexOf('paths.brandAssets.favicon')).toBeLessThan(
+      layout.indexOf('paths.brandAssets.faviconSvg'),
+    )
     expect(isPublicPath(paths.brandAssets.favicon, 'GET')).toBe(true)
     expect(isPublicPath(paths.brandAssets.faviconSvg, 'GET')).toBe(true)
     expect(isPublicPath(paths.brandAssets.mark, 'GET')).toBe(true)
